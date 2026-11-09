@@ -97,6 +97,17 @@ textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 @media(max-width:480px){.checks{grid-template-columns:1fr}.card{padding:14px}}
+
+/* --- إعدادات الطباعة لتقرير الطبيب --- */
+@media print {
+    body * { visibility: hidden; }
+    #doctorViewModal, #doctorViewModal * { visibility: visible; }
+    #doctorViewModal { position: absolute; left: 0; top: 0; width: 100%; background: white; }
+    .modal-content { box-shadow: none; border: none; max-width: 100%; width: 100%; padding: 0; }
+    .close-modal, .print-btn { display: none !important; }
+    .modal-header h3 { font-size: 24px; color: black; border-bottom: 2px solid black; padding-bottom: 10px; }
+    .clinical-row { font-size: 16px; padding: 10px 0; border-bottom: 1px solid #ccc; }
+}
 </style>
 </head>
 <body>
@@ -123,10 +134,13 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 <div id="doctorViewModal" class="modal hidden">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 data-ar="لوحة تحكم الطبيب (معاينة)" data-fr="Tableau de bord médecin" data-en="Doctor's Dashboard (Preview)">لوحة تحكم الطبيب (معاينة)</h3>
-            <button class="close-modal" onclick="closeDoctorView()">×</button>
+            <h3 data-ar="تقرير طبي (SahaPath AI)" data-fr="Rapport Médical" data-en="Medical Report">تقرير طبي (SahaPath AI)</h3>
+            <div>
+                <button class="btn secondary print-btn" onclick="window.print()" style="margin:0; padding:5px 10px; font-size:12px; margin-left:5px;">🖨️ طباعة</button>
+                <button class="close-modal" onclick="closeDoctorView()">×</button>
+            </div>
         </div>
-        <p class="small" data-ar="هكذا يرى الطبيب بيانات المريض قبل الجلسة." data-fr="Voici comment le médecin voit les données." data-en="This is how the doctor views patient data.">هكذا يرى الطبيب بيانات المريض قبل الجلسة.</p>
+        <p class="small print-btn" data-ar="يمكنك الآن طباعة هذا التقرير كملف PDF وإرساله للطبيب." data-fr="Imprimez ce rapport en PDF." data-en="Print this report as PDF.">يمكنك الآن طباعة هذا التقرير كملف PDF وإرساله للطبيب.</p>
         <div id="doctorViewContent"></div>
     </div>
 </div>
@@ -293,7 +307,6 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
       <p id="labBenchmark"></p>
     </div>
 
-    <!-- رحلة الـ 74 يوماً -->
     <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: #FFF8E8;">
         <h3 style="margin-top:0; color:#8A6D2A;">⏳ رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</h3>
         <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
@@ -308,6 +321,18 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h2 data-ar="سجلي الطبي والتواصل" data-fr="Mon Dossier" data-en="My Record">سجلي الطبي والتواصل</h2>
         <button onclick="lockProfile()" style="margin:0; padding:5px 10px; font-size:14px; background:var(--danger); color:white; border:0; border-radius:8px; cursor:pointer;">🔒 <span data-ar="قفل" data-fr="Verrouiller" data-en="Lock">قفل</span></button>
+    </div>
+
+    <!-- النسخ الاحتياطي والاستيراد -->
+    <div class="note" style="margin-bottom:15px;">
+        <strong>💾 حماية بياناتك:</strong> يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً.
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn secondary" style="margin:0; flex:1; font-size:12px;" onclick="exportData()">تصدير البيانات</button>
+            <label class="btn secondary" style="margin:0; flex:1; font-size:12px; text-align:center; cursor:pointer;">
+                استيراد البيانات
+                <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+            </label>
+        </div>
     </div>
     
     <h3 data-ar="بيانات تحليل السائل المنوي (إن وجدت)" data-fr="Analyse du sperme (si disponible)" data-en="Semen Analysis (if available)">بيانات تحليل السائل المنوي (إن وجدت)</h3>
@@ -348,7 +373,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <div id="recordList"></div>
     
     <hr>
-    <button class="btn gold full" onclick="openDoctorView()" data-ar="معاينة لوحة تحكم الطبيب" data-fr="Aperçu Tableau de bord Médecin" data-en="Preview Doctor's Dashboard">معاينة لوحة تحكم الطبيب</button>
+    <button class="btn gold full" onclick="openDoctorView()" data-ar="معاينة وطباعة تقرير الطبيب" data-fr="Aperçu et impression du rapport" data-en="Preview & Print Doctor's Report">معاينة وطباعة تقرير الطبيب</button>
     
     <hr>
     <h3 data-ar="إرسال الملخص" data-fr="Envoyer le résumé" data-en="Send Summary">إرسال الملخص</h3>
@@ -448,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labTimeline:"تذكر دائماً: ⏳", labTimelineText:"جسمك يحتاج 74 يوماً (شهرين ونصف) لتكوين حيوانات منوية جديدة. لا تستعجل النتائج، فقط استمر في العادات الصحية وسترى الفرق.",
         labBenchmark:"مقارنة سريعة: 📊", labBenchmarkText:"مؤشرك الحالي أقل من المعدل المثالي لرجل في عمرك، لكن التغيير يبدأ بخطوة واحدة، وأنت قادر على ذلك.",
         storySaved:"تم نشر قصتك!", needStory:"اكتب قصتك أولاً.", assessmentSaved:"تم حفظ التقييم في السجل الطبي.", noDoctorFound:"لم يتم العثور على طبيب في القائمة. يرجى إضافة طبيب من قسم (قائمة الأطباء).",
+        exportSuccess:"تم تصدير البيانات بنجاح!", importSuccess:"تم استيراد البيانات بنجاح! سيتم إعادة تحميل الصفحة.", importError:"ملف غير صالح!",
         
         solVaricocele:"نصيحة طبيبك: لا تقلق، الدوالي سبب شائع جداً وعلاجه فعال. توجد عملية جراحية دقيقة (ربط الأوردة بالمجهر) تضاعف من فرص الحمل الطبيعي. ناقشها مع طبيبك.",
         solErection:"نصيحة طبيبك: ضعف الانتصاب قد يكون مرتبطاً بالتوتر أو هرمونات أو أدوية. لا تقلق، طبيبك سيقوم بفحص بسيط للتستوستيرون وسيوجهك للعلاج المناسب.",
@@ -472,6 +498,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labTimeline:"Rappelez-vous : ⏳", labTimelineText:"Votre corps a besoin de 74 jours pour régénérer les spermatozoïdes. Ne soyez pas pressé, continuez vos bonnes habitudes.",
         labBenchmark:"Comparaison : 📊", labBenchmarkText:"Votre score est inférieur à la moyenne idéale pour votre âge, mais le changement commence par une étape. Vous pouvez le faire !",
         storySaved:"Histoire publiée!", needStory:"Écrivez votre histoire.", assessmentSaved:"Évaluation enregistrée.", noDoctorFound:"Aucun médecin trouvé. Ajoutez-en un dans l'annuaire.",
+        exportSuccess:"Données exportées!", importSuccess:"Données importées!", importError:"Fichier invalide!",
         
         solVaricocele:"Conseil de votre médecin : Ne vous inquiétez pas, la varicocèle est une cause fréquente et traitable. La microchirurgie double les chances de grossesse naturelle.",
         solErection:"Conseil de votre médecin : L'absence d'érection peut être liée au stress, aux hormones ou aux médicaments. Ne vous inquiétez pas, un simple test de testostérone aidera.",
@@ -496,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labTimeline:"Always remember: ⏳", labTimelineText:"Your body needs 74 days to regenerate sperm. Don't rush the results, just keep up the healthy habits.",
         labBenchmark:"Quick comparison: 📊", labBenchmarkText:"Your current score is below the ideal average for your age, but change starts with one step. You can do it!",
         storySaved:"Story published!", needStory:"Write your story.", assessmentSaved:"Assessment saved.", noDoctorFound:"No doctor found in your list. Please add one in Doctors Directory.",
+        exportSuccess:"Data exported successfully!", importSuccess:"Data imported successfully! Page will reload.", importError:"Invalid file!",
         
         solVaricocele:"Doctor's advice: Don't worry, varicocele is a very common and treatable cause. Microsurgery doubles natural pregnancy chances.",
         solErection:"Doctor's advice: Erectile dysfunction can be linked to stress, hormones, or meds. A simple testosterone test will guide us.",
@@ -534,6 +562,46 @@ document.addEventListener("DOMContentLoaded", function() {
       else showTab(this.getAttribute('data-target'), this);
     });
   });
+
+  // --- تصدير واستيراد البيانات ---
+  window.exportData = function() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith('sahapath_')) {
+              data[key] = localStorage.getItem(key);
+          }
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SahaPath_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      alert(t("exportSuccess"));
+  }
+
+  window.importData = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          try {
+              const data = JSON.parse(e.target.result);
+              for (const key in data) {
+                  if (key.startsWith('sahapath_')) {
+                      localStorage.setItem(key, data[key]);
+                  }
+              }
+              alert(t("importSuccess"));
+              location.reload();
+          } catch (err) {
+              alert(t("importError"));
+          }
+      };
+      reader.readAsText(file);
+  }
 
   // --- تغيير اللغة ---
   document.getElementById("language").addEventListener("change", function() {
@@ -745,7 +813,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function getSemenData() {
       const data = getData("sahapath_semen");
-      return data.length ? data[data.length - 1] : null; // آخر تحليل
+      return data.length ? data[data.length - 1] : null;
   }
   function getSemenHistory() { return getData("sahapath_semen"); }
 
@@ -795,14 +863,18 @@ document.addEventListener("DOMContentLoaded", function() {
       const labs = getData("sahapath_labs");
       
       let html = `
-        <div class="clinical-row"><span class="clinical-label">Age:</span> <span>${age}</span></div>
-        <div class="clinical-row"><span class="clinical-label">Semen Analysis (Latest):</span> <span>${semen ? `Count: ${semen.count}, Motility: ${semen.motility}%, Morph: ${semen.morph}%` : 'Not provided'}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Patient Age:</span> <span>${age} years</span></div>
+        <div class="clinical-row"><span class="clinical-label">Date Generated:</span> <span>${new Date().toLocaleDateString()}</span></div>
+        <div style="margin-top:20px; margin-bottom:10px; font-weight:bold; color:#333; border-bottom: 1px solid #ccc; padding-bottom:5px;">Semen Analysis (Latest)</div>
+        <div class="clinical-row"><span class="clinical-label">Count (M/ml):</span> <span>${semen ? semen.count : 'Not provided'}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Motility (%):</span> <span>${semen ? semen.motility : 'Not provided'}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Morphology (%):</span> <span>${semen ? semen.morph : 'Not provided'}</span></div>
       `;
       
       if(labs.length) {
-          html += `<div style="margin-top:15px; margin-bottom:5px; font-weight:bold; color:var(--primary);">Hormonal Labs:</div>`;
+          html += `<div style="margin-top:20px; margin-bottom:10px; font-weight:bold; color:#333; border-bottom: 1px solid #ccc; padding-bottom:5px;">Hormonal Labs</div>`;
           labs.forEach(l => {
-              html += `<div class="clinical-row"><span class="clinical-label">${l.name}:</span> <span>${l.val}</span></div>`;
+              html += `<div class="clinical-row"><span class="clinical-label">${l.name} (${l.date}):</span> <span>${l.val}</span></div>`;
           });
       }
       
@@ -967,12 +1039,21 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
       let reply = t("chatFallback");
       const lower = text.toLowerCase();
+      let isKnown = true;
       
       if(lower.includes("دوالي") || lower.includes("varicocele")) reply = t("chatVaricocele");
       else if(lower.includes("سائل") || lower.includes("semen")) reply = t("chatSemen");
       else if(lower.includes("تستوستيرون") || lower.includes("testosterone")) reply = t("chatTestosterone");
+      else isKnown = false;
       
-      box.innerHTML += `<div class="chat-msg chat-bot">${reply}</div>`;
+      let htmlReply = `<div class="chat-msg chat-bot">${reply}`;
+      if(!isKnown) {
+          // إضافة زر التوجيه الذكي
+          htmlReply += `<br><br><button class="btn secondary" style="font-size:12px; margin-top:5px; padding:5px 10px;" onclick="document.getElementById('navEvaluate').click();">الذهاب لتقييم الأعراض</button>`;
+      }
+      htmlReply += `</div>`;
+      
+      box.innerHTML += htmlReply;
       box.scrollTop = box.scrollHeight;
     }, 800);
   }
@@ -980,7 +1061,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // --- نظام الحماية (PIN) والتشفير ---
   let savedPinHash = localStorage.getItem("sahapath_pin_hash") || null;
 
-  // ترحيل تلقائي من النسخة القديمة النصية إذا وجدت
   if (!savedPinHash && localStorage.getItem("sahapath_pin")) {
       const oldPin = localStorage.getItem("sahapath_pin");
       crypto.subtle.digest('SHA-256', new TextEncoder().encode(oldPin)).then(buf => {
