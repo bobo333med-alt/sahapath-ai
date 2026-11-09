@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#42BFA3">
+<title>SahaPath AI | صحة الرجل والخصوبة</title>
+<style>
+:root{
+  --primary:#42BFA3; --green:#A8DCC0; --cream:#F8FAF6; --gold:#F4D99B;
+  --ink:#243B35; --muted:#687A73; --white:#fff; --danger:#B83232; --border:#E4ECE6; --shadow:0 5px 20px rgba(40,90,70,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Tahoma",sans-serif;line-height:1.65;}
+header{background:linear-gradient(120deg,#DDF4E9,#F8FAF6);padding:22px 16px 18px;text-align:center;border-bottom:1px solid var(--border);}
+.logo{font-size:28px;font-weight:800;color:#237F68}
+.tagline{font-size:13px;color:var(--muted)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:900px;margin:12px auto 0;padding:0 12px;}
+select,button,input,textarea{font:inherit;}
+select{border:1px solid var(--border);border-radius:12px;padding:8px;background:white;color:var(--ink);}
+nav{display:flex;gap:7px;overflow-x:auto;padding:12px;max-width:900px;margin:auto;scrollbar-width: none;}
+nav::-webkit-scrollbar { display: none; }
+nav button{white-space:nowrap;border:1px solid var(--border);background:white;border-radius:13px;padding:9px 13px;color:var(--ink);cursor:pointer;}
+nav button.active{background:var(--primary);color:white;border-color:var(--primary)}
+main{max-width:900px;margin:auto;padding:10px 14px 40px}
+.card{background:white;border:1px solid var(--border);border-radius:18px;padding:17px;margin:12px 0;box-shadow:var(--shadow);}
+h2{font-size:20px;margin:0 0 10px;color:#287F68}
+h3{font-size:16px;margin:8px 0}
+p{margin:7px 0}
+.small{font-size:12px;color:var(--muted)}
+a{color:var(--primary);text-decoration:none;}
+a:hover{text-decoration:underline;}
+label{display:block;margin:12px 0 5px;font-weight:600}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:11px;background:#FCFEFC;color:var(--ink);}
+textarea{min-height:90px;resize:vertical}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.check{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);padding:9px;border-radius:11px;font-weight:400;margin:0;background:#FCFEFC;cursor:pointer; font-size:14px;}
+.check input{accent-color:var(--primary);width:17px;height:17px;margin-top:3px;}
+.btn{background:var(--primary);color:white;border:0;padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:700;margin-top:10px;}
+.btn.secondary{background:#E7F5ED;color:#26765F}
+.btn.gold{background:#F4D99B;color:#584719}
+.btn.danger{background:#B83232;color:white}
+.btn.full{width:100%}
+.result{background:#EDF8F1;border-right:4px solid var(--primary);border-radius:12px;padding:13px;margin-top:13px;}
+.warning{background:#FFF1F0;border-right:4px solid var(--danger);border-radius:12px;padding:13px;margin-top:13px;}
+.note{background:#FFF8E8;border-right:4px solid #D7AD4C;padding:12px;border-radius:10px;font-size:13px;}
+.hidden{display:none!important}
+.item{border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;background:#FCFEFC;}
+.item strong{color:#287F68}
+.story-title { color: var(--primary); margin-bottom: 5px; font-size:15px; font-weight:bold;}
+.source-link { font-size:11px; color:var(--muted); display:block; margin-top:5px; }
+
+/* Doctor Cards */
+.doctor-card {border:1px solid var(--border); border-radius:12px; padding:15px; margin:10px 0; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+.doctor-card h4 {margin:0 0 5px; color:#287F68; font-size:16px;}
+.doctor-card p {margin:4px 0; font-size:14px;}
+.doctor-card .badge {background:#E7F5ED; color:#26765F; padding:3px 8px; border-radius:8px; font-size:11px; font-weight:bold;}
+
+/* Chatbot UI */
+.chat-container {display:flex; flex-direction:column; height: 400px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:white;}
+.chat-header {display:flex; justify-content:space-between; align-items:center; padding:10px; background:#F8FAF6; border-bottom:1px solid var(--border);}
+.chat-messages {flex:1; overflow-y:auto; padding:15px; background:#FCFEFC;}
+.chat-msg {margin-bottom:10px; padding:10px; border-radius:12px; max-width:80%; font-size:14px;}
+.chat-bot {background:#E7F5ED; color:#243B35; border-bottom-right-radius:2px; align-self:flex-start;}
+.chat-user {background:var(--primary); color:white; border-bottom-left-radius:2px; align-self:flex-end; margin-left:auto;}
+.chat-input-area {display:flex; border-top:1px solid var(--border); padding:10px; background:white;}
+.chat-input-area input {flex:1; border-radius:20px; padding:10px 15px; border:1px solid var(--border);}
+.chat-input-area button {border-radius:50%; width:40px; height:40px; margin-left:8px; margin-top:0; padding:0; display:flex; align-items:center; justify-content:center;}
+.quick-replies {display:flex; gap:5px; overflow-x:auto; padding:5px 10px; background:white; border-top:1px solid var(--border);}
+.quick-reply {font-size:12px; padding:5px 10px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:15px; cursor:pointer; white-space:nowrap; margin:0;}
+
+/* Lock Screen UI */
+#lockScreen {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(248,250,246,0.98); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;}
+.lock-card {background:white; padding:30px 20px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); text-align:center; width:90%; max-width:350px; border:1px solid var(--border);}
+.pin-display {font-size:32px; letter-spacing:12px; margin:20px 0; color:var(--primary); height:45px; font-weight:bold; padding-right:12px;}
+.keypad {display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px;}
+.keypad button {font-size:22px; padding:15px 0; border-radius:50%; background:#F8FAF6; border:1px solid var(--border); cursor:pointer; font-weight:bold; color:var(--ink); transition:0.1s;}
+.keypad button:active {background:var(--primary); color:white;}
+.keypad button.enter-btn {background:#DDF4E9; color:#287F68; font-size:16px;}
+
+/* Digital Lab UI */
+.simulator-bar-container {width:100%; background:#E4ECE6; border-radius:10px; height:25px; margin:15px 0; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);}
+.simulator-bar {height:100%; background:var(--primary); width:100%; transition:width 0.5s ease-in-out, background-color 0.5s;}
+.simulator-score {font-size:42px; font-weight:bold; color:var(--primary); text-align:center; margin:10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;}
+.analytics-box {background:#F8FAF6; border:1px dashed var(--primary); border-radius:12px; padding:15px; margin-top:15px; font-size:14px;}
+.analytics-box h4 {margin:0 0 8px; color:var(--primary); font-size:15px;}
+
+/* Modals */
+.modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:10000; display:flex; align-items:center; justify-content:center;}
+.modal-content {background:white; width:90%; max-width:500px; border-radius:15px; padding:20px; max-height:80vh; overflow-y:auto; box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.modal-header {display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:15px;}
+.modal-header h3 {margin:0; color:var(--primary);}
+.close-modal {background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted);}
+.clinical-row {display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding:8px 0; font-size:14px;}
+.clinical-label {font-weight:bold; color:var(--muted);}
+
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+hr{border:0;border-top:1px solid var(--border);margin:15px 0}
+@media(max-width:480px){.checks{grid-template-columns:1fr}.card{padding:14px}}
+</style>
+</head>
+<body>
+
+<!-- شاشة القفل -->
+<div id="lockScreen" class="hidden">
+    <div class="lock-card">
+        <h2 id="lockTitle" style="text-align:center;" data-ar="🔒 الملف الشخصي محمي" data-fr="🔒 Dossier protégé" data-en="🔒 Protected Profile">🔒 الملف الشخصي محمي</h2>
+        <p class="small" id="lockDesc" data-ar="أدخل رمز PIN المكون من 4 أرقام للوصول إلى بياناتك." data-fr="Entrez votre code PIN à 4 chiffres." data-en="Enter your 4-digit PIN to access data.">أدخل رمز PIN المكون من 4 أرقام للوصول إلى بياناتك.</p>
+        <div class="pin-display" id="pinDisplay">••••</div>
+        <div class="keypad" id="keypad">
+            <button onclick="inputPin('1')">1</button><button onclick="inputPin('2')">2</button><button onclick="inputPin('3')">3</button>
+            <button onclick="inputPin('4')">4</button><button onclick="inputPin('5')">5</button><button onclick="inputPin('6')">6</button>
+            <button onclick="inputPin('7')">7</button><button onclick="inputPin('8')">8</button><button onclick="inputPin('9')">9</button>
+            <button onclick="submitPin()" class="enter-btn" data-ar="دخول" data-fr="Entrer" data-en="Enter">دخول</button>
+            <button onclick="inputPin('0')">0</button><button onclick="clearPin()" style="font-size:16px;" data-ar="مسح" data-fr="Effacer" data-en="Clear">مسح</button>
+        </div>
+        <div id="pinError" class="small" style="color:var(--danger); margin-top:15px; height:15px;"></div>
+        <button class="btn secondary full" style="margin-top:10px;" onclick="cancelLock()" data-ar="إلغاء" data-fr="Annuler" data-en="Cancel">إلغاء</button>
+    </div>
+</div>
+
+<!-- واجهة الطبيب (Modal) -->
+<div id="doctorViewModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 data-ar="لوحة تحكم الطبيب (معاينة)" data-fr="Tableau de bord médecin" data-en="Doctor's Dashboard (Preview)">لوحة تحكم الطبيب (معاينة)</h3>
+            <button class="close-modal" onclick="closeDoctorView()">×</button>
+        </div>
+        <p class="small" data-ar="هكذا يرى الطبيب بيانات المريض قبل الجلسة." data-fr="Voici comment le médecin voit les données." data-en="This is how the doctor views patient data.">هكذا يرى الطبيب بيانات المريض قبل الجلسة.</p>
+        <div id="doctorViewContent"></div>
+    </div>
+</div>
+
+<!-- نموذج إضافة قصة (Modal) -->
+<div id="addStoryModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 data-ar="شاركنا قصتك" data-fr="Partagez votre histoire" data-en="Share your story">شاركنا قصتك</h3>
+            <button class="close-modal" onclick="closeStoryModal()">×</button>
+        </div>
+        <label data-ar="اسمك (اختياري)" data-fr="Votre nom (optionnel)" data-en="Your name (optional)">اسمك (اختياري)</label>
+        <input type="text" id="storyAuthor" placeholder="مثال: أحمد">
+        <label data-ar="قصتك" data-fr="Votre histoire" data-en="Your story">قصتك</label>
+        <textarea id="storyText" placeholder="اكتب تجربتك هنا..."></textarea>
+        <button class="btn gold full" onclick="submitStory()" data-ar="نشر القصة" data-fr="Publier" data-en="Publish">نشر القصة</button>
+        <div id="storyMessage" class="small" style="text-align:center; margin-top:10px; color:green;"></div>
+    </div>
+</div>
+
+<header>
+  <div class="logo">SahaPath AI</div>
+  <div class="tagline" id="tagline" data-ar="رفيقك لفهم صحة الرجل والخصوبة" data-fr="Votre allié pour la santé masculine et la fertilité" data-en="Your ally for men's health and fertility">رفيقك لفهم صحة الرجل والخصوبة</div>
+  <div class="top">
+    <span class="small" id="privacyLabel" data-ar="نسخة تجريبية محلية" data-fr="Démo locale" data-en="Local demo">نسخة تجريبية محلية</span>
+    <select id="language">
+      <option value="ar">العربية</option>
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+</header>
+
+<nav id="mainNav">
+  <button class="active" data-target="home" id="navHome" data-ar="الرئيسية" data-fr="Accueil" data-en="Home">الرئيسية</button>
+  <button data-target="evaluate" id="navEvaluate" data-ar="قيم حالتك" data-fr="Évaluer" data-en="Evaluate">قيم حالتك</button>
+  <button data-target="digitalLab" id="navDigitalLab" data-ar="المختبر الرقمي" data-fr="Labo Numérique" data-en="Digital Lab">المختبر الرقمي</button>
+  <button data-target="askDoctor" id="navAskDoctor" data-ar="اسأل طبيبك" data-fr="Médecin" data-en="Ask Doctor">اسأل طبيبك</button>
+  <button data-target="doctorsDirectory" id="navDoctorsDirectory" data-ar="قائمة الأطباء" data-fr="Annuaire" data-en="Doctors">قائمة الأطباء</button>
+  <button data-target="chatbot" id="navChatbot" data-ar="المساعد الذكي" data-fr="Chatbot" data-en="AI Assistant">المساعد الذكي</button>
+  <button data-target="hopeStories" id="navHopeStories" data-ar="قصص أمل" data-fr="Histoires" data-en="Hope Stories">قصص أمل</button>
+</nav>
+
+<main>
+<section id="home">
+  <div class="card">
+    <h2 id="welcome" data-ar="أهلاً بك في SahaPath AI" data-fr="Bienvenue sur SahaPath AI" data-en="Welcome to SahaPath AI">أهلاً بك في SahaPath AI</h2>
+    <p id="welcomeText" data-ar="منصة مخصصة لمساعدة الرجال على فهم مؤشرات صحتهم الإنجابية، وتنظيم الفحوصات، ومتابعة التغيرات بمرور الوقت." data-fr="Une plateforme dédiée aux hommes pour comprendre leur santé reproductive." data-en="A platform dedicated to helping men understand their reproductive health.">منصة مخصصة لمساعدة الرجال على فهم مؤشرات صحتهم الإنجابية، وتنظيم الفحوصات، ومتابعة التغيرات بمرور الوقت.</p>
+    <div class="result">
+      <strong id="missionTitle" data-ar="هدفنا" data-fr="Notre objectif" data-en="Our goal">هدفنا</strong>
+      <p id="missionText" data-ar="كسر حاجز الصمت حول صحة الرجل، وتقديم معلومات دقيقة، وتحضير أكثر فاعلية للحوار مع الطبيب." data-fr="Briser le silence sur la santé masculine." data-en="Break the silence on men's health.">كسر حاجز الصمت حول صحة الرجل، وتقديم معلومات دقيقة، وتحضير أكثر فاعلية للحوار مع الطبيب.</p>
+    </div>
+  </div>
+</section>
+
+<section id="evaluate" class="hidden">
+  <div class="card">
+    <h2 id="evalTitle" data-ar="تقييم الأعراض الطبية" data-fr="Évaluation Clinique" data-en="Clinical Evaluation">تقييم الأعراض الطبية</h2>
+    
+    <div class="warning" style="margin-top:0; margin-bottom:15px;">
+        <label id="emergencyLabel" style="margin-top:0; color:var(--danger);" data-ar="هل تعاني الآن من ألم مفاجئ وشديد في الخصية؟" data-fr="Douleur soudaine et intense ?" data-en="Sudden, severe testicular pain?">هل تعاني الآن من ألم مفاجئ وشديد في الخصية؟</label>
+        <select id="emergency" style="border-color:var(--danger);">
+          <option value="no" data-ar="لا" data-fr="Non" data-en="No">لا</option>
+          <option value="yes" data-ar="نعم" data-fr="Oui" data-en="Yes">نعم</option>
+        </select>
+    </div>
+
+    <div class="checks" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
+      <div>
+        <label id="ageLabel" data-ar="عمرك" data-fr="Votre âge" data-en="Your age">عمرك</label>
+        <input type="number" id="userAge" min="15" max="80" data-ar-placeholder="15 - 80" data-fr-placeholder="15 - 80" data-en-placeholder="15 - 80" placeholder="15 - 80">
+      </div>
+      <div>
+        <label id="partnerAgeLabel" data-ar="عمر الشريكة" data-fr="Âge de la partenaire" data-en="Partner's age">عمر الشريكة</label>
+        <input type="number" id="partnerAge" min="15" max="60" data-ar-placeholder="15 - 60" data-fr-placeholder="15 - 60" data-en-placeholder="15 - 60" placeholder="15 - 60">
+      </div>
+    </div>
+
+    <label id="tryingDurationLabel" data-ar="منذ متى تحاولان الإنجاب؟" data-fr="Depuis combien de temps essayez-vous ?" data-en="How long have you been trying?">منذ متى تحاولان الإنجاب؟</label>
+    <select id="tryingDuration">
+      <option value="less6" data-ar="أقل من 6 أشهر" data-fr="Moins de 6 mois" data-en="Less than 6 months">أقل من 6 أشهر</option>
+      <option value="6to12" data-ar="من 6 إلى 12 شهراً" data-fr="De 6 à 12 mois" data-en="6 to 12 months">من 6 إلى 12 شهراً</option>
+      <option value="over1" data-ar="أكثر من سنة" data-fr="Plus d'un an" data-en="Over 1 year">أكثر من سنة</option>
+      <option value="over2" data-ar="أكثر من سنتين" data-fr="Plus de 2 ans" data-en="Over 2 years">أكثر من سنتين</option>
+    </select>
+
+    <hr>
+    <h3 data-ar="أعراضك الحالية" data-fr="Vos symptômes" data-en="Your symptoms">أعراضك الحالية</h3>
+    <div class="checks" id="symptoms">
+      <label class="check"><input type="checkbox" value="erection"> <span data-ar="صعوبة متكررة في الحفاظ على الانتصاب" data-fr="Difficulté à maintenir une érection" data-en="Difficulty maintaining erection">صعوبة متكررة في الحفاظ على الانتصاب</span></label>
+      <label class="check"><input type="checkbox" value="desire"> <span data-ar="انخفاض ملحوظ في الرغبة الجنسية (خلال 3 أشهر)" data-fr="Baisse de la libido (3 mois)" data-en="Decreased libido (3 months)">انخفاض ملحوظ في الرغبة الجنسية (خلال 3 أشهر)</span></label>
+      <label class="check"><input type="checkbox" value="pain"> <span data-ar="ألم أو ثقل متكرر في كيس الصفن (> أسبوعين)" data-fr="Douleur scrotale (> 2 semaines)" data-en="Scrotal pain (> 2 weeks)">ألم أو ثقل متكرر في كيس الصفن (> أسبوعين)</span></label>
+      <label class="check"><input type="checkbox" value="lump"> <span data-ar="وجود كتلة صلبة أو تورم غير مؤلم في الخصية" data-fr="Masse dure ou gonflement indolore" data-en="Hard mass or painless swelling">وجود كتلة صلبة أو تورم غير مؤلم في الخصية</span></label>
+      <label class="check"><input type="checkbox" value="fatigue"> <span data-ar="تعب مستمر وفقدان للطاقة" data-fr="Fatigue persistante" data-en="Persistent fatigue">تعب مستمر وفقدان للطاقة</span></label>
+    </div>
+
+    <hr>
+    <h3 data-ar="تقييم الشريكة (لإعطاء نتيجة أدق)" data-fr="Évaluation de la partenaire" data-en="Partner Evaluation">تقييم الشريكة (لإعطاء نتيجة أدق)</h3>
+    <div class="checks" id="partnerSymptoms">
+      <label class="check"><input type="checkbox" value="irregular"><span data-ar="دورة غير منتظمة (> 35 يوماً) أو انقطاع" data-fr="Cycle irrégulier (> 35 jours)" data-en="Irregular cycle (> 35 days)">دورة غير منتظمة (> 35 يوماً) أو انقطاع</span></label>
+      <label class="check"><input type="checkbox" value="pcos"><span data-ar="تشخيص مؤكد لمتلازمة تكيس المبايض (PCOS)" data-fr="Diagnostic confirmé de SOPK" data-en="Confirmed PCOS diagnosis">تشخيص مؤكد لمتلازمة تكيس المبايض (PCOS)</span></label>
+      <label class="check"><input type="checkbox" value="endo"><span data-ar="تاريخ طبي لبطانة الرحم المهاجرة" data-fr="Antécédent d'endométriose" data-en="History of endometriosis">تاريخ طبي لبطانة الرحم المهاجرة</span></label>
+      <label class="check"><input type="checkbox" value="tubes"><span data-ar="انسداد قنوات فالوب (مؤكد بالأشعة)" data-fr="Trompes bouchées (confirmé)" data-en="Blocked tubes (confirmed)">انسداد قنوات فالوب (مؤكد بالأشعة)</span></label>
+      <label class="check"><input type="checkbox" value="prevPreg"><span data-ar="وجود حمل سابق (حتى لو انتهى بإجهاض)" data-fr="Grossesse antérieure" data-en="Previous pregnancy">وجود حمل سابق (حتى لو انتهى بإجهاض)</span></label>
+    </div>
+
+    <button class="btn full" id="analyzeBtn" data-ar="حلّل المؤشرات" data-fr="Analyser" data-en="Analyze">حلّل المؤشرات</button>
+    <div id="analysisResult"></div>
+    <button class="btn gold full hidden" id="saveAssessmentBtn" onclick="saveAssessment()" data-ar="حفظ التقييم في سجلي" data-fr="Enregistrer l'évaluation" data-en="Save Assessment">حفظ التقييم في سجلي</button>
+  </div>
+</section>
+
+<section id="digitalLab" class="hidden">
+  <div class="card">
+    <h2 data-ar="المختبر الرقمي للتنبؤ بالخصوبة" data-fr="Labo Numérique de Prédiction" data-en="Digital Fertility Lab">المختبر الرقمي للتنبؤ بالخصوبة</h2>
+    
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+        <div style="flex:1; margin-left:10px;">
+            <label data-ar="عمرك (لحساب عامل العمر)" data-fr="Votre âge (facteur d'âge)" data-en="Your age (age factor)">عمرك (لحساب عامل العمر)</label>
+            <input type="number" id="ageInputLab" onchange="calculateDigitalLab()" placeholder="أدخل عمرك">
+        </div>
+        <button class="btn secondary" style="margin-bottom:0;" onclick="resetLab()" data-ar="مسح الكل" data-fr="Réinitialiser" data-en="Reset">مسح الكل</button>
+    </div>
+
+    <div class="simulator-score" id="labScoreDisplay">
+        <span id="scoreText">100%</span>
+        <span onclick="showEvidence()" style="font-size: 20px; cursor: pointer; color: var(--primary);" title="المرجع العلمي">ℹ️</span>
+    </div>
+    
+    <div class="simulator-bar-container"><div class="simulator-bar" id="labBar" style="width:100%;"></div></div>
+    <p class="small" style="text-align:center;" data-ar="مؤشر الخصوبة التنبؤي" data-fr="Indice de fertilité prédictif" data-en="Predictive Fertility Score">مؤشر الخصوبة التنبؤي</p>
+    
+    <hr>
+    <h3 data-ar="1. البيئة والمهنة (Occupational)" data-fr="1. Environnement" data-en="1. Environment">1. البيئة والمهنة (Occupational)</h3>
+    <div class="checks" id="labEnv">
+      <label class="check"><input type="checkbox" value="heat" onchange="calculateDigitalLab()"> <span data-ar="العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات" data-fr="Travail à >35°C > 4h/jour" data-en="Work >35°C > 4h/day">العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات</span></label>
+      <label class="check"><input type="checkbox" value="welding" onchange="calculateDigitalLab()"> <span data-ar="لحام TIG/MIG أو صهر معادن" data-fr="Soudure TIG/MIG" data-en="TIG/MIG welding">لحام TIG/MIG أو صهر معادن</span></label>
+      <label class="check"><input type="checkbox" value="chemicals" onchange="calculateDigitalLab()"> <span data-ar="التعرض للمبيدات أو المذيبات" data-fr="Pesticides ou solvants" data-en="Pesticides or solvents">التعرض للمبيدات أو المذيبات</span></label>
+      <label class="check"><input type="checkbox" value="driving" onchange="calculateDigitalLab()"> <span data-ar="قيادة سيارة بدون تكييف > ساعتين يومياً" data-fr="Conduite sans climatisation > 2h/jour" data-en="Driving without AC > 2h/day">قيادة سيارة بدون تكييف > ساعتين يومياً</span></label>
+    </div>
+
+    <h3 data-ar="2. العادات اليومية (Micro-Habits)" data-fr="2. Habitudes quotidiennes" data-en="2. Daily Habits">2. العادات اليومية (Micro-Habits)</h3>
+    <div class="checks" id="labLife">
+      <label class="check"><input type="checkbox" value="laptop" onchange="calculateDigitalLab()"> <span data-ar="وضع اللابتوب على الحضن > ساعتين يومياً" data-fr="Ordinateur sur genoux > 2h/jour" data-en="Laptop on lap > 2h/day">وضع اللابتوب على الحضن > ساعتين يومياً</span></label>
+      <label class="check"><input type="checkbox" value="tightClothes" onchange="calculateDigitalLab()"> <span data-ar="ارتداء ملابس داخلية ضيقة (Briefs) أو حمامات ساخنة متكررة" data-fr="Sous-vêtements serrés ou bains chauds" data-en="Tight underwear or hot baths">ارتداء ملابس داخلية ضيقة (Briefs) أو حمامات ساخنة متكررة</span></label>
+      <label class="check"><input type="checkbox" value="smoking" onchange="calculateDigitalLab()"> <span data-ar="تدخين مكثف (> 10 سجائر) أو فيب" data-fr="Tabagisme intensif ou vape" data-en="Heavy smoking or vape">تدخين مكثف (> 10 سجائر) أو فيب</span></label>
+      <label class="check"><input type="checkbox" value="obesity" onchange="calculateDigitalLab()"> <span data-ar="سمنة (محيط الخصر > 102 سم)" data-fr="Obésité (taille > 102 cm)" data-en="Obesity (waist > 102 cm)">سمنة (محيط الخصر > 102 سم)</span></label>
+      <label class="check"><input type="checkbox" value="psychological" onchange="calculateDigitalLab()"> <span data-ar="ضغط نفسي شديد أو خوف من الفحص الطبي" data-fr="Stress intense ou peur de l'examen" data-en="Severe stress or fear of medical exam">ضغط نفسي شديد أو خوف من الفحص الطبي</span></label>
+    </div>
+
+    <h3 data-ar="3. التاريخ الطبي والأدوية (Medical)" data-fr="3. Médical" data-en="3. Medical">3. التاريخ الطبي والأدوية (Medical)</h3>
+    <div class="checks" id="labMed">
+      <label class="check"><input type="checkbox" value="mumps" onchange="calculateDigitalLab()"> <span data-ar="إصابة بالنكاف بعد البلوغ" data-fr="Oreillons après puberté" data-en="Mumps after puberty">إصابة بالنكاف بعد البلوغ</span></label>
+      <label class="check"><input type="checkbox" value="varicocele" onchange="calculateDigitalLab()"> <span data-ar="تشخيص مؤكد لدوالي الخصية" data-fr="Varicocèle confirmée" data-en="Confirmed varicocele">تشخيص مؤكد لدوالي الخصية</span></label>
+      <label class="check"><input type="checkbox" value="hairMeds" onchange="calculateDigitalLab()"> <span data-ar="تناول أدوية تساقط الشعر (Finasteride) أو حب الشباب" data-fr="Finastéride ou médicaments contre l'acné" data-en="Finasteride or acne meds">تناول أدوية تساقط الشعر (Finasteride) أو حب الشباب</span></label>
+      <label class="check"><input type="checkbox" value="testosterone" onchange="calculateDigitalLab()"> <span data-ar="استخدام ستيرويدات أو تستوستيرون" data-fr="Stéroïdes ou testostérone" data-en="Steroids or testosterone">استخدام ستيرويدات أو تستوستيرون</span></label>
+    </div>
+
+    <div class="analytics-box" id="labAnalytics">
+      <h4 data-ar="تحليل طبيبك:" data-fr="Analyse de votre médecin :" data-en="Your doctor's analysis:">تحليل طبيبك:</h4>
+      <p id="labDiag"></p>
+      <p id="labWhatIf" style="color:var(--primary); font-weight:bold;"></p>
+      <p id="labTimeline"></p>
+      <p id="labBenchmark"></p>
+    </div>
+
+    <!-- رحلة الـ 74 يوماً -->
+    <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: #FFF8E8;">
+        <h3 style="margin-top:0; color:#8A6D2A;">⏳ رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</h3>
+        <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
+        <button class="btn gold full hidden" id="startJourneyBtn" onclick="startJourney()">ابدأ رحلة الـ 74 يوماً الآن</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="askDoctor" class="hidden">
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h2 data-ar="سجلي الطبي والتواصل" data-fr="Mon Dossier" data-en="My Record">سجلي الطبي والتواصل</h2>
+        <button onclick="lockProfile()" style="margin:0; padding:5px 10px; font-size:14px; background:var(--danger); color:white; border:0; border-radius:8px; cursor:pointer;">🔒 <span data-ar="قفل" data-fr="Verrouiller" data-en="Lock">قفل</span></button>
+    </div>
+    
+    <h3 data-ar="بيانات تحليل السائل المنوي (إن وجدت)" data-fr="Analyse du sperme (si disponible)" data-en="Semen Analysis (if available)">بيانات تحليل السائل المنوي (إن وجدت)</h3>
+    <div class="checks" style="grid-template-columns: 1fr 1fr;">
+      <div>
+        <label data-ar="العدد (مليون/مل)" data-fr="Numération (M/ml)" data-en="Count (M/ml)">العدد (مليون/مل)</label>
+        <input type="number" id="semenCount" placeholder="15">
+      </div>
+      <div>
+        <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
+        <input type="number" id="semenMotility" placeholder="40">
+      </div>
+    </div>
+    <div class="checks" style="grid-template-columns: 1fr 1fr;">
+        <div>
+            <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
+            <input type="number" id="semenMorphology" placeholder="4">
+        </div>
+        <div>
+            <label data-ar="تاريخ التحليل" data-fr="Date" data-en="Date">تاريخ التحليل</label>
+            <input type="date" id="semenDate">
+        </div>
+    </div>
+    <button class="btn secondary full" onclick="saveSemenData()" data-ar="حفظ بيانات التحليل" data-fr="Enregistrer" data-en="Save">حفظ بيانات التحليل</button>
+    <div id="semenMessage" class="small" style="color:green; margin-top:5px;"></div>
+
+    <h3 style="margin-top:20px;" data-ar="التحاليل الهرمونية (اختياري)" data-fr="Hormones (Optionnel)" data-en="Hormones (Optional)">التحاليل الهرمونية (اختياري)</h3>
+    <label data-ar="اسم التحليل" data-fr="Nom de l'analyse" data-en="Test name">اسم التحليل</label>
+    <input id="testName" type="text" placeholder="Testosterone">
+    <label data-ar="القيمة" data-fr="Valeur" data-en="Value">القيمة</label>
+    <input id="testValue" type="text" placeholder="450">
+    <label data-ar="تاريخ التحليل" data-fr="Date" data-en="Date">تاريخ التحليل</label>
+    <input id="testDate" type="date">
+    <button class="btn full" id="saveLabBtn" data-ar="حفظ النتيجة" data-fr="Enregistrer" data-en="Save">حفظ النتيجة</button>
+    <div id="labMessage" class="small" style="color:green; margin-top:5px;"></div>
+
+    <h3 style="margin-top:20px;" data-ar="نتائجك المحفوظة" data-fr="Résultats" data-en="Saved Results">نتائجك المحفوظة</h3>
+    <div id="recordList"></div>
+    
+    <hr>
+    <button class="btn gold full" onclick="openDoctorView()" data-ar="معاينة لوحة تحكم الطبيب" data-fr="Aperçu Tableau de bord Médecin" data-en="Preview Doctor's Dashboard">معاينة لوحة تحكم الطبيب</button>
+    
+    <hr>
+    <h3 data-ar="إرسال الملخص" data-fr="Envoyer le résumé" data-en="Send Summary">إرسال الملخص</h3>
+    <p class="small" data-ar="سيتم إرسال الملخص تلقائياً إلى الطبيب الأول في قائمتك. (يمكنك إضافة طبيبك من قائمة الأطباء)." data-fr="Le résumé sera envoyé automatiquement au premier médecin de votre liste." data-en="The summary will be automatically sent to the first doctor in your list.">سيتم إرسال الملخص تلقائياً إلى الطبيب الأول في قائمتك. (يمكنك إضافة طبيبك من قائمة الأطباء).</p>
+    <button class="btn full" id="sendToMyDoctorBtn" onclick="sendToMyDoctor()" data-ar="إرسال لطبيبي الآن" data-fr="Envoyer à mon médecin" data-en="Send to my Doctor">إرسال لطبيبي الآن</button>
+    <div id="shareMessage" class="small" style="text-align:center; margin-top:5px;"></div>
+  </div>
+</section>
+
+<section id="doctorsDirectory" class="hidden">
+  <div class="card">
+    <h2 data-ar="دليل الأطباء المتخصصين" data-fr="Annuaire des médecins" data-en="Doctors Directory">دليل الأطباء المتخصصين</h2>
+    <div id="doctorsList"></div>
+    
+    <hr>
+    <button class="btn secondary full" id="toggleAddDocBtn" onclick="toggleAddDoctorForm()" data-ar="إضافة طبيب جديد للقائمة" data-fr="Ajouter un nouveau médecin" data-en="Add New Doctor to List">إضافة طبيب جديد للقائمة</button>
+    
+    <div id="addDocForm" class="hidden" style="margin-top:15px;">
+        <h3 data-ar="بيانات الطبيب" data-fr="Détails du médecin" data-en="Doctor Details">بيانات الطبيب</h3>
+        <input type="text" id="newDocName" placeholder="اسم الطبيب">
+        <input type="text" id="newDocSpec" placeholder="التخصص">
+        <input type="text" id="newDocPhone" placeholder="رقم الهاتف">
+        <input type="text" id="newDocEmail" placeholder="البريد الإلكتروني (اختياري)">
+        <button class="btn full" onclick="addNewDoctor()" data-ar="حفظ الطبيب" data-fr="Enregistrer" data-en="Save Doctor">حفظ الطبيب</button>
+        <div id="addDocMessage" class="small" style="text-align:center; margin-top:5px;"></div>
+    </div>
+  </div>
+</section>
+
+<section id="chatbot" class="hidden">
+  <div class="card">
+    <h2 data-ar="المساعد الطبي الذكي" data-fr="Assistant Médical" data-en="AI Medical Assistant">المساعد الطبي الذكي</h2>
+    <div class="chat-container">
+      <div class="chat-header">
+        <span class="small">SahaPath AI</span>
+        <button class="btn secondary" style="margin:0; padding:5px 10px; font-size:12px;" onclick="clearChat()" data-ar="مسح الشاشة" data-fr="Effacer" data-en="Clear Screen">مسح الشاشة</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="quick-replies">
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="ما هي دوالي الخصية؟" data-fr="Qu'est-ce qu'une varicocèle ?" data-en="What is varicocele?">ما هي دوالي الخصية؟</button>
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="تحليل السائل المنوي" data-fr="Analyse du sperme" data-en="Semen analysis">تحليل السائل المنوي</button>
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="التستوستيرون والخصوبة" data-fr="Testostérone et fertilité" data-en="Testosterone and fertility">التستوستيرون والخصوبة</button>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="handleChatEnter(event)">
+        <button class="btn" onclick="sendChatMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hopeStories" class="hidden">
+  <div class="card">
+    <h2 data-ar="قصص أمل حقيقية" data-fr="Histoires d'espoir" data-en="Real Stories of Hope">قصص أمل حقيقية</h2>
+    <p class="small" data-ar="حالات سريرية موثقة، نرويها بأسلوب طبي مبسط ليمنحك الأمل." data-fr="Cas cliniques documentés, racontés de manière simple." data-en="Documented clinical cases, told in a simple medical way.">حالات سريرية موثقة، نرويها بأسلوب طبي مبسط ليمنحك الأمل.</p>
+    
+    <button class="btn gold full" onclick="openStoryModal()" data-ar="أضف قصتك" data-fr="Ajouter votre histoire" data-en="Add Your Story">أضف قصتك</button>
+    
+    <div id="storiesContainer" style="margin-top:15px;"></div>
+    <h3 style="margin-top:20px;" data-ar="قصص المستخدمين" data-fr="Histoires des utilisateurs" data-en="User Stories">قصص المستخدمين</h3>
+    <div id="userStoriesContainer"></div>
+  </div>
+</section>
+
+</main>
+
+<footer id="footerText" data-ar="SahaPath AI – نسخة تعليمية. لا تستبدل الاستشارة الطبية." data-fr="SahaPath AI – Démo éducative." data-en="SahaPath AI – Educational demo.">SahaPath AI – نسخة تعليمية. لا تستبدل الاستشارة الطبية.</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  
+  const hopeStoriesData = [
+    { id:1, ar:{title:"قصة أمل: شاب استعاد حيواناته المنوية من الصفر", problem:"شاب في الـ 26 اكتشف مؤخراً انعدام الحيوانات المنوية بسبب دوالي الخصية، وشعر باليأس الشديد.", result:"أجرى عملية دقيقة جداً لربط الأوردة مع علاج هرموني. النتيجة: استعاد جسمه إنتاجه الطبيعي (26 مليون/مل)، واليوم هو أب لطفل سليم."}, fr:{title:"Histoire d'espoir: De zéro à la paternité", problem:"Un jeune homme de 26 ans a découvert une absence de spermatozoïdes due à une varicocèle.", result:"Après une microchirurgie et un traitement hormonal, sa production est revenue à la normale (26M/ml). Il est aujourd'hui père."}, en:{title:"Hope Story: From Zero to Fatherhood", problem:"A 26-year-old discovered he had zero sperm due to a varicocele, feeling deep despair.", result:"After precise microsurgery and hormonal therapy, his natural production returned (26M/ml). Today, he is a father to a healthy child."}, source:"https://www.medicoverhospitals.in" },
+    { id:2, ar:{title:"قصة إسلام: الأمل بعد جراحة غير دقيقة", problem:"انخفض عدد الحيوانات المنوية إلى صفر بعد عملية سابقة، ونُصح بعملية استخراج مؤلمة جداً.", result:"لجأ لمركز متخصص، وأجرى عملية دقيقة لإصلاح انسداد ثانوي. عاد العدد إلى 10 ملايين ورُزق بمولود بعد حمل طبيعي."}, fr:{title:"L'histoire d'Islam: L'espoir après une erreur", problem:"Sa numération est tombée à zéro après une opération. On lui a conseillé une extraction douloureuse.", result:"Dans un centre spécialisé, une microchirurgie a réparé l'obstruction. La numération est remontée à 10 millions, et il a eu un bébé."}, en:{title:"Islam's Story: Hope After Surgery", problem:"His sperm count dropped to zero after a previous operation. He was advised to undergo a painful extraction.", result:"At a specialized center, microsurgery repaired a secondary obstruction. Count returned to 10M, and he had a baby naturally."}, source:"https://misrandrology.com" },
+    { id:3, ar:{title:"بعد 20 عاماً من اليأس... معجزة طبية", problem:"رجل (39 عاماً) عانى من العقم 20 عاماً، ونُصح باستخدام أجنة متبرع بها.", result:"تم إصلاح انسداد القنوات المنوية بجراحة دقيقة. عاد التحليل طبيعياً بعد 3 أشهر، وأنجب طفلاً يحمل جيناته."}, fr:{title:"Après 20 ans de désespoir... un miracle", problem:"Un homme (39 ans) a souffert d'infertilité pendant 20 ans. On lui a conseillé des embryons de donneur.", result:"Une microchirurgie a rétabli les canaux. L'analyse est redevenue normale en 3 mois, et il a eu un enfant biologique."}, en:{title:"After 20 Years of Despair... A Miracle", problem:"A 39-year-old suffered from infertility for 20 years. He was advised to use donor embryos.", result:"Microsurgery restored the ducts. Test became normal after 3 months, and he had his biological child."}, source:"https://tums.ac.ir" },
+    { id:4, ar:{title:"الحمل العفوي بعد جراحة معقدة", problem:"انخفاض شديد في السائل المنوي وضعف حركة الحيوانات المنوية بعد جراحة قديمة.", result:"تم استئصال كيس في البروستاتا وإصلاح دوالي الخصية. حدث حمل عفوي بعد شهرين فقط وعادت التحاليل طبيعية."}, fr:{title:"Grossesse naturelle après une chirurgie", problem:"Faible volume séminal et mauvaise motilité après une ancienne chirurgie.", result:"Excision d'un kyste prostatique et cure de varicocèle. Grossesse naturelle après 2 mois."}, en:{title:"Natural Pregnancy After Complex Surgery", problem:"Low semen volume and poor motility after old surgery.", result:"Prostatic cyst excision and varicocele repair. Natural pregnancy after 2 months."}, source:"https://pubmed.ncbi.nlm.nih.gov" },
+    { id:5, ar:{title:"التغلب على انعدام الحيوانات المنوية", problem:"فشل محاولات حقن مجهري سابقة في مراكز أخرى، مما أصاب الزوجين بالإحباط.", result:"تم استخراج حيوانات منوية نادرة بالمجهر (Micro-TESE). نجحت محاولة الحقن المجهري ووُلدت طفلة سليمة."}, fr:{title:"Vaincre l'azoospermie", problem:"Échec des tentatives de FIV dans d'autres centres.", result:"Extraction de spermatozoïdes rares par Micro-TESE. FIV-ICSI réussie, naissance d'une fille."}, en:{title:"Overcoming Azoospermia", problem:"Failed IVF attempts at other clinics, causing frustration.", result:"Rare sperm found via Micro-TESE. Successful ICSI, healthy girl born."}, source:"https://www.ivf-tunisia.com" },
+    { id:6, ar:{title:"الأمل بعد تشخيص متلازمة كلاينفلتر", problem:"مريض (45 عاماً) بمتلازمة كلاينفلتر الفسيفسائية مع انخفاض شديد في الحيوانات.", result:"استخدام حيوانات منوية من القذف في دورة حقن مجهري ناجحة. وُلد طفل سليم."}, fr:{title:"Klinefelter", problem:"Patient (45 ans) avec KS mosaïque.", result:"ICSI réussie avec sperme éjaculé, naissance d'un enfant sain."}, en:{title:"Hope After Klinefelter Syndrome", problem:"45yo male with mosaic KS.", result:"Successful ICSI with ejaculated sperm, healthy child born."}, source:"https://www.fertstert.org" },
+    { id:7, ar:{title:"طفل سليم رغم حذف الكروموسوم Y", problem:"انعدام حيوانات منوية بسبب حذف جيني في الكروموسوم Y.", result:"تم استخراج حيوانات منوية بالمجهر (Micro-TESE) ونجح الحمل. الطفل يحمل نفس الحذف الجيني لكنه سليم."}, fr:{title:"Délétion Y", problem:"Azoospermie due à une microdélétion.", result:"Micro-TESE réussie. L'enfant porte la même délétion mais est en bonne santé."}, en:{title:"Healthy Child Despite Y Deletion", problem:"Azoospermia due to genetic deletion.", result:"Successful Micro-TESE. The child carries the same deletion but is healthy."}, source:"https://www.ncbi.nlm.nih.gov" },
+    { id:8, ar:{title:"التغلب على انعدام النطف بسبب النكاف", problem:"التهاب خصية بسبب النكاف في سن 19 أدى إلى ضمور وانعدام تام للنطف.", result:"تم اللجوء لـ Micro-TESE لاستخراج نطف حية. نجح الحقن المجهري ورُزق بطفل."}, fr:{title:"Azoospermie post-oreillons", problem:"Orchite ourlienne à 19 ans causant une atrophie.", result:"Micro-TESE. Spermatozoïdes vivants extraits, ICSI réussie."}, en:{title:"Overcoming Mumps-Induced Azoospermia", problem:"Mumps orchitis at 19 causing atrophy.", result:"Micro-TESE. Viable sperm extracted, successful ICSI."}, source:"https://academic.oup.com" },
+    { id:9, ar:{title:"علاج الانسداد يعيد الأمل", problem:"انعدام حيوانات منوية انسدادي بسبب كيس في البروستاتا.", result:"تم استئصال الكيس بالمنظار. عاد السائل المنوي طبيعياً وحدث حمل عفوي."}, fr:{title:"Traitement de l'obstruction", problem:"Azoospermie obstructive due à un kyste prostatique.", result:"Excision du kyste par coelioscopie. Retour à la normale et grossesse naturelle."}, en:{title:"Obstruction Treatment Restores Hope", problem:"Obstructive azoospermia due to prostatic cyst.", result:"Laparoscopic cyst excision. Normal semen and natural pregnancy."}, source:"https://www.mayoclinic.org" },
+    { id:10, ar:{title:"طفل بعد رحلة علاج السرطان", problem:"انعدام حيوانات منوية بعد جلسات علاج كيميائي لسرطان الغدد الليمفاوية.", result:"تم إجراء Micro-TESE بعد سنتين. تم استخراج نطف ونجح الحمل."}, fr:{title:"Bébé après un cancer", problem:"Azoospermie après chimiothérapie pour lymphome.", result:"Micro-TESE réalisée 2 ans après. Spermatozoïdes extraits, grossesse réussie."}, en:{title:"Child After Cancer Treatment", problem:"Azoospermia after lymphoma chemotherapy.", result:"Micro-TESE performed 2 years later. Sperm extracted, pregnancy successful."}, source:"https://www.eshre.eu" }
+  ];
+
+  const defaultDoctors = [
+    { ar:{name:"د. أحمد التونسي", spec:"أخصائي مسالك ذكرية", addr:"شارع الحبيب بورقيبة، تونس", card:"خبير في جراحات الدوالي."}, fr:{name:"Dr. Ahmed", spec:"Urologue", addr:"Tunis", card:"Expert en varicocèle."}, en:{name:"Dr. Ahmed", spec:"Urologist", addr:"Tunis", card:"Varicocele expert."}, phone:"21671123456", email:"dr.ahmed@clinictunisia.tn" },
+    { ar:{name:"د. سارة المصري", spec:"استشاري خصوبة", addr:"مدينة نصر، القاهرة", card:"متخصصة في انعدام الحيوانات."}, fr:{name:"Dr. Sara", spec:"Fertilité", addr:"Le Caire", card:"Spécialiste azoospermie."}, en:{name:"Dr. Sara", spec:"Fertility", addr:"Cairo", card:"Azoospermia specialist."}, phone:"201012345678", email:"dr.sara@fertilitycairo.com" }
+  ];
+
+  const translations = {
+    ar: { 
+        chatWelcome:"مرحباً بك! كيف يمكنني مساعدتك اليوم؟", noData:"لا توجد بيانات.", needFields:"يرجى ملء الحقول المطلوبة.", shareCopied:"تم النسخ!", docSaved:"تم حفظ الطبيب!", needDoc:"أدخل اسم الطبيب ورقم الهاتف.",
+        chatFallback:"عذراً، لا أملك معلومات كافية. راجع الطبيب.", chatVaricocele:"دوالي الخصية هي توسع في الأوردة، تؤثر على الحرارة وإنتاج الحيوانات المنوية.", chatSemen:"للاستعداد لتحليل السائل المنوي، امتنع عن القذف 2-5 أيام.", chatTestosterone:"التستوستيرون الخارجي يثبط إنتاج الحيوانات المنوية.",
+        noDoctorSelected:"الرجاء اختيار طبيب أولاً.", pinCreate:"قم بإنشاء رمز PIN جديد", pinConfirm:"تأكيد الرمز", pinEnter:"أدخل رمز PIN", pinWrong:"الرمز غير صحيح!", pinMismatch:"الرموز غير متطابقة!", pinLength:"أدخل 4 أرقام.",
+        labDiag:"التشخيص:", labNoRisk:"لا توجد عوامل خطر مختارة. أنت في حالة ممتازة.", labAgeFactor:"عامل العمر: تم خصم 10% (لأن العمر فوق 40).", 
+        labWhatIf:"خبر جيد لك: 💡", labMaxRisk:"إذا تخلصت من أكبر عامل خطر لديك، سيرتفع مؤشرك إلى:",
+        labTimeline:"تذكر دائماً: ⏳", labTimelineText:"جسمك يحتاج 74 يوماً (شهرين ونصف) لتكوين حيوانات منوية جديدة. لا تستعجل النتائج، فقط استمر في العادات الصحية وسترى الفرق.",
+        labBenchmark:"مقارنة سريعة: 📊", labBenchmarkText:"مؤشرك الحالي أقل من المعدل المثالي لرجل في عمرك، لكن التغيير يبدأ بخطوة واحدة، وأنت قادر على ذلك.",
+        storySaved:"تم نشر قصتك!", needStory:"اكتب قصتك أولاً.", assessmentSaved:"تم حفظ التقييم في السجل الطبي.", noDoctorFound:"لم يتم العثور على طبيب في القائمة. يرجى إضافة طبيب من قسم (قائمة الأطباء).",
+        
+        solVaricocele:"نصيحة طبيبك: لا تقلق، الدوالي سبب شائع جداً وعلاجه فعال. توجد عملية جراحية دقيقة (ربط الأوردة بالمجهر) تضاعف من فرص الحمل الطبيعي. ناقشها مع طبيبك.",
+        solErection:"نصيحة طبيبك: ضعف الانتصاب قد يكون مرتبطاً بالتوتر أو هرمونات أو أدوية. لا تقلق، طبيبك سيقوم بفحص بسيط للتستوستيرون وسيوجهك للعلاج المناسب.",
+        solDesire:"نصيحة طبيبك: انخفاض الرغبة له أسباب كثيرة (نفسية أو هرمونية). تحدث مع طبيبك بصراحة، فالحل بسيط في كثير من الحالات.",
+        solMumps:"نصيحة طبيبك: النكاف بعد البلوغ قد يؤثر على الخصية. لكن لا تقلق، توجد تقنيات متقدمة لاستخراج الحيوانات المنوية (Micro-TESE) حققت نجاحات كبيرة.",
+        solUndescended:"نصيحة طبيبك: بما أنك أجريت عملية إنزال الخصية سابقاً، ننصحك بمتابعة دورية بسيطة لتقييم أي تأثير على الخصوبة. أنت في أيدٍ أمينة.",
+        solTestosterone:"نصيحة طبيبك: التستوستيرون الخارجي يوقف إنتاج الحيوانات المنوية. لا تقلق، بإشراف الطبيب يمكنك التوقف عنه واستخدام أدوية بديلة (مثل Clomiphene) لاستعادة الإنتاج الطبيعي.",
+        solPain:"نصيحة طبيبك: الألم المتكرر قد يكون بسبب دوالي أو التهاب. فحص بسيط بالموجات فوق الصوتية (Doppler) سيحدد السبب بدقة وسنعالجه.",
+        solLump:"نصيحة طبيبك: وجود كتلة يتطلب فحصاً فورياً. لا تيأس، معظم الكتل حميدة، لكن الفحص المبكر يضمن سلامتك.",
+        solFatigue:"نصيحة طبيبك: التعب المستمر قد يكون بسبب نقص التستوستيرون أو الغدة الدرقية. ننصحك بفحص شامل بسيط لمعرفة السبب.",
+        solPartnerPCOS:"نصيحة طبيبة الشريكة: تكيس المبايض سبب شائع جداً وقابل للعلاج. زيارة طبيبة النساء وتنظيم التبويض أو تعديل نمط الحياة كفيل بحدوث حمل بإذن الله.",
+        solPartnerTubes:"نصيحة طبيبة الشريكة: انسداد القنوات قد يحتاج تدخلاً بسيطاً بالمنظار أو أطفال الأنابيب. تحدثا معاً كفريق واحد مع الطبيب.",
+        solPartnerEndo:"نصيحة طبيبة الشريكة: بطانة الرحم المهاجرة تحتاج تقييماً متخصصاً. استشارة طبيبة خصوبة هي الخطوة الصحيحة والأولى.",
+        solPartnerIrregular:"نصيحة طبيبة الشريكة: الدورة غير المنتظمة تعني أن التبويض غير منتظم. فحص هرموني بسيط سيساعد في ضبطها وتحسين فرص الحمل."
+    },
+    fr: { 
+        chatWelcome:"Bienvenue ! Comment puis-je vous aider ?", noData:"Aucune donnée.", needFields:"Remplissez les champs.", shareCopied:"Copié!", docSaved:"Médecin enregistré!", needDoc:"Entrez le nom et le téléphone.",
+        chatFallback:"Désolé, pas assez d'infos.", chatVaricocele:"La varicocèle est une dilatation des veines.", chatSemen:"Abstenez-vous 2-5 jours pour l'analyse.", chatTestosterone:"La testostérone externe supprime les spermatozoïdes.",
+        noDoctorSelected:"Sélectionnez un médecin.", pinCreate:"Créez un code PIN", pinConfirm:"Confirmez le code", pinEnter:"Entrez le code PIN", pinWrong:"Code incorrect!", pinMismatch:"Les codes ne correspondent pas!", pinLength:"Entrez 4 chiffres.",
+        labDiag:"Diagnostic :", labNoRisk:"Aucun facteur sélectionné. Vous êtes au top !", labAgeFactor:"Âge : -10% (plus de 40 ans).", 
+        labWhatIf:"Bonne nouvelle : 💡", labMaxRisk:"Si vous éliminez votre plus grand risque, votre indice montera à :",
+        labTimeline:"Rappelez-vous : ⏳", labTimelineText:"Votre corps a besoin de 74 jours pour régénérer les spermatozoïdes. Ne soyez pas pressé, continuez vos bonnes habitudes.",
+        labBenchmark:"Comparaison : 📊", labBenchmarkText:"Votre score est inférieur à la moyenne idéale pour votre âge, mais le changement commence par une étape. Vous pouvez le faire !",
+        storySaved:"Histoire publiée!", needStory:"Écrivez votre histoire.", assessmentSaved:"Évaluation enregistrée.", noDoctorFound:"Aucun médecin trouvé. Ajoutez-en un dans l'annuaire.",
+        
+        solVaricocele:"Conseil de votre médecin : Ne vous inquiétez pas, la varicocèle est une cause fréquente et traitable. La microchirurgie double les chances de grossesse naturelle.",
+        solErection:"Conseil de votre médecin : L'absence d'érection peut être liée au stress, aux hormones ou aux médicaments. Ne vous inquiétez pas, un simple test de testostérone aidera.",
+        solDesire:"Conseil de votre médecin : La baisse de libido a plusieurs causes. Parlez-en ouvertement à votre médecin.",
+        solMumps:"Conseil de votre médecin : Les oreillons peuvent affecter les testicules. Ne vous inquiétez pas, la Micro-TESE offre d'excellents résultats.",
+        solUndescended:"Conseil de votre médecin : Un suivi régulier est recommandé pour évaluer la fertilité. Vous êtes entre de bonnes mains.",
+        solTestosterone:"Conseil de votre médecin : Sous surveillance médicale, vous pouvez arrêter la testostérone et utiliser des alternatives comme le Clomifène.",
+        solPain:"Conseil de votre médecin : Une échographie Doppler simple identifiera la cause de la douleur pour un traitement précis.",
+        solLump:"Conseil de votre médecin : Une masse nécessite un examen immédiat. Ne paniquez pas, la plupart sont bénignes, mais il faut vérifier.",
+        solFatigue:"Conseil de votre médecin : La fatigue peut être liée à la testostérone ou à la thyroïde. Un bilan simple est recommandé.",
+        solPartnerPCOS:"Conseil pour votre partenaire : Le SOPK est très courant et traitable. Consultez une gynécologue.",
+        solPartnerTubes:"Conseil pour votre partenaire : L'obstruction peut nécessiter une cœlioscopie ou une FIV.",
+        solPartnerEndo:"Conseil pour votre partenaire : L'endométriose nécessite un avis spécialisé en fertilité.",
+        solPartnerIrregular:"Conseil pour votre partenaire : Un bilan hormonal simple aidera à réguler l'ovulation."
+    },
+    en: { 
+        chatWelcome:"Welcome! How can I help you?", noData:"No data.", needFields:"Fill fields.", shareCopied:"Copied!", docSaved:"Doctor saved!", needDoc:"Enter name and phone.",
+        chatFallback:"Sorry, not enough info.", chatVaricocele:"Varicocele is a vein dilation affecting sperm.", chatSemen:"Abstain 2-5 days for semen analysis.", chatTestosterone:"External testosterone suppresses sperm.",
+        noDoctorSelected:"Select a doctor first.", pinCreate:"Create PIN", pinConfirm:"Confirm PIN", pinEnter:"Enter PIN", pinWrong:"Incorrect PIN!", pinMismatch:"PINs do not match!", pinLength:"Enter 4 digits.",
+        labDiag:"Diagnosis:", labNoRisk:"No risk factors selected. You are at your best!", labAgeFactor:"Age: -10% (over 40).", 
+        labWhatIf:"Good news: 💡", labMaxRisk:"If you eliminate your biggest risk, your score will rise to:",
+        labTimeline:"Always remember: ⏳", labTimelineText:"Your body needs 74 days to regenerate sperm. Don't rush the results, just keep up the healthy habits.",
+        labBenchmark:"Quick comparison: 📊", labBenchmarkText:"Your current score is below the ideal average for your age, but change starts with one step. You can do it!",
+        storySaved:"Story published!", needStory:"Write your story.", assessmentSaved:"Assessment saved.", noDoctorFound:"No doctor found in your list. Please add one in Doctors Directory.",
+        
+        solVaricocele:"Doctor's advice: Don't worry, varicocele is a very common and treatable cause. Microsurgery doubles natural pregnancy chances.",
+        solErection:"Doctor's advice: Erectile dysfunction can be linked to stress, hormones, or meds. A simple testosterone test will guide us.",
+        solDesire:"Doctor's advice: Low libido has many causes. Talk openly with your doctor, the solution is often simple.",
+        solMumps:"Doctor's advice: Mumps can affect testicles. Don't worry, advanced techniques like Micro-TESE offer great success.",
+        solUndescended:"Doctor's advice: Regular follow-up is recommended to assess fertility. You are in good hands.",
+        solTestosterone:"Doctor's advice: Under medical supervision, you can stop testosterone and use alternatives like Clomiphene.",
+        solPain:"Doctor's advice: A simple Doppler ultrasound will identify the cause of pain for precise treatment.",
+        solLump:"Doctor's advice: A mass requires immediate examination. Don't panic, most are benign, but early check is key.",
+        solFatigue:"Doctor's advice: Fatigue can be linked to low testosterone or thyroid. A simple check-up is recommended.",
+        solPartnerPCOS:"Partner's advice: PCOS is very common and treatable. Consult a gynecologist.",
+        solPartnerTubes:"Partner's advice: Tubal blockage may require laparoscopy or IVF.",
+        solPartnerEndo:"Partner's advice: Endometriosis needs a specialized fertility consultation.",
+        solPartnerIrregular:"Partner's advice: A simple hormonal panel will help regulate ovulation."
+    }
+  };
+
+  let lang = "ar";
+  let lastAssessmentData = null;
+
+  function t(k) { return translations[lang][k] || translations.ar[k]; }
+  function getData(key){ try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []} }
+  function setData(key,val){ localStorage.setItem(key,JSON.stringify(val)) }
+
+  // --- التنقل ---
+  function showTab(target, btnElement) {
+      document.querySelectorAll("main section").forEach(s => s.classList.add("hidden"));
+      document.getElementById(target).classList.remove("hidden");
+      document.querySelectorAll("#mainNav button").forEach(b => b.classList.remove("active"));
+      if(btnElement) btnElement.classList.add("active");
+      if(target === "digitalLab") calculateDigitalLab();
+  }
+  document.querySelectorAll('#mainNav button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if(this.getAttribute('data-target') === "askDoctor") openLockScreen();
+      else showTab(this.getAttribute('data-target'), this);
+    });
+  });
+
+  // --- تغيير اللغة ---
+  document.getElementById("language").addEventListener("change", function() {
+      lang = this.value;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.querySelectorAll("[data-ar]").forEach(el => {
+        if(el.dataset[lang]) el.textContent = el.dataset[lang];
+      });
+      document.querySelectorAll("[data-ar-placeholder]").forEach(el => {
+         const key = `data-${lang}-placeholder`;
+         if(el.getAttribute(key)) el.placeholder = el.getAttribute(key);
+      });
+      clearChat(); renderHopeStories(); renderDoctors(); renderRecords(); updateLockScreenText(); calculateDigitalLab(); renderUserStories();
+  });
+
+  // --- المختبر الرقمي ---
+  window.calculateDigitalLab = function() {
+      const env = [...document.querySelectorAll("#labEnv input:checked")].map(x => x.value);
+      const life = [...document.querySelectorAll("#labLife input:checked")].map(x => x.value);
+      const med = [...document.querySelectorAll("#labMed input:checked")].map(x => x.value);
+      
+      let score = 100, envD = 0, lifeD = 0, medD = 0, ageD = 0;
+
+      if(env.includes("heat")) envD += 15;
+      if(env.includes("welding")) envD += 15;
+      if(env.includes("chemicals")) envD += 10;
+      if(env.includes("driving")) envD += 5;
+
+      if(life.includes("laptop")) lifeD += 5;
+      if(life.includes("tightClothes")) lifeD += 10;
+      if(life.includes("smoking")) lifeD += 20;
+      if(life.includes("obesity")) lifeD += 10;
+      if(life.includes("psychological")) lifeD += 5;
+
+      if(med.includes("mumps")) medD += 15;
+      if(med.includes("varicocele")) medD += 20;
+      if(med.includes("hairMeds")) medD += 15; 
+      if(med.includes("testosterone")) medD += 20;
+
+      const ageRaw = document.getElementById("ageInputLab").value;
+      const age = parseInt(ageRaw);
+      
+      if(ageRaw !== "" && (isNaN(age) || age < 15 || age > 80)) {
+          document.getElementById("labDiag").innerHTML = `<strong style="color:var(--danger);">⚠️ ${lang==='ar'?'العمر يجب أن يكون بين 15 و 80.':(lang==='fr'?'L\'âge doit être entre 15 et 80.':'Age must be between 15 and 80.')}</strong>`;
+          return;
+      }
+      if(!isNaN(age) && age >= 40) ageD = 10;
+
+      score = Math.max(0, 100 - (envD + lifeD + medD + ageD));
+
+      document.getElementById("scoreText").textContent = score + "%";
+      const bar = document.getElementById("labBar");
+      bar.style.width = score + "%";
+      bar.style.backgroundColor = score >= 80 ? "#42BFA3" : (score >= 50 ? "#F4D99B" : "#B83232");
+
+      let diag = "";
+      if(envD) diag += `<br>• ${lang==='ar'?'بيئية':(lang==='fr'?'Env':'Env')}: -${envD}%`;
+      if(lifeD) diag += `<br>• ${lang==='ar'?'سلوكية':(lang==='fr'?'Habitudes':'Lifestyle')}: -${lifeD}%`;
+      if(medD) diag += `<br>• ${lang==='ar'?'طبية':(lang==='fr'?'Médical':'Medical')}: -${medD}%`;
+      if(ageD) diag += `<br>• ${t("labAgeFactor")}`;
+      
+      document.getElementById("labDiag").innerHTML = `<strong>${t("labDiag")}</strong> ${diag || t("labNoRisk")}`;
+
+      let maxD = Math.max(envD, lifeD, medD);
+      if(maxD > 0) {
+          let potential = Math.min(100, score + maxD);
+          document.getElementById("labWhatIf").innerHTML = `${t("labWhatIf")} ${t("labMaxRisk")} <strong>${potential}%</strong>.`;
+      } else {
+          document.getElementById("labWhatIf").innerHTML = `${t("labWhatIf")} ${lang==='ar'?'أنت في أفضل حالة!':(lang==='fr'?'Vous êtes au top !':'You are at your best!')}`;
+      }
+      document.getElementById("labTimeline").innerHTML = `<strong>${t("labTimeline")}</strong> ${t("labTimelineText")}`;
+      document.getElementById("labBenchmark").innerHTML = `<strong>${t("labBenchmark")}</strong> ${t("labBenchmarkText")}`;
+      
+      checkJourneyStatus();
+  }
+
+  window.showEvidence = function() {
+    alert(lang === 'ar' ? "الأوزان المستخدمة في هذا المؤشر مبنية على إرشادات منظمة الصحة العالمية (WHO) والجمعية الأوروبية لطب المسالك (EAU) لعام 2023. هذا التقييم استرشادي ولا يغني عن زيارة الطبيب." : 
+          lang === 'fr' ? "Les poids utilisés sont basés sur les directives de l'OMS et de l'EAU (2023)." : 
+          "The weights used are based on WHO and EAU (2023) guidelines.");
+  }
+
+  window.resetLab = function() {
+      document.querySelectorAll("#labEnv input, #labLife input, #labMed input").forEach(cb => cb.checked = false);
+      document.getElementById("ageInputLab").value = "";
+      calculateDigitalLab();
+  }
+
+  // --- رحلة الـ 74 يوماً ---
+  window.startJourney = function() {
+      const today = new Date().toISOString().slice(0, 10);
+      localStorage.setItem("sahapath_journey", today);
+      checkJourneyStatus();
+      alert(lang === 'ar' ? "بدأت رحلتك! سنتابع تقدمك يوماً بيوم." : "Journey started!");
+  }
+
+  window.checkJourneyStatus = function() {
+      const startDate = localStorage.getItem("sahapath_journey");
+      const statusText = document.getElementById("journeyStatus");
+      const startBtn = document.getElementById("startJourneyBtn");
+      
+      if(!statusText || !startBtn) return;
+
+      if(!startDate) {
+          startBtn.classList.remove("hidden");
+          return;
+      }
+      
+      startBtn.classList.add("hidden");
+      const start = new Date(startDate);
+      const now = new Date();
+      const diffTime = Math.abs(now - start);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if(diffDays >= 74) {
+          statusText.innerHTML = `<strong>🎉 ${lang==='ar'?'مبروك!':(lang==='fr'?'Félicitations!':'Congrats!')}</strong> ${lang==='ar'?'لقد أكملت دورة تكوين كاملة (74 يوماً). حان الوقت لإعادة التحليل ورؤية النتائج!':(lang==='fr'?'Vous avez terminé un cycle complet. Il est temps de refaire le test.':'You completed a full cycle. Time to retest!')}`;
+      } else {
+          const remaining = 74 - diffDays;
+          const progress = Math.floor((diffDays / 74) * 100);
+          statusText.innerHTML = `<strong>${lang==='ar'?'أنت في اليوم':(lang==='fr'?'Jour':'Day')} ${diffDays} ${lang==='ar'?'من رحلتك.':(lang==='fr'?'de votre parcours.':'of your journey.')}</strong><br>
+          ${lang==='ar'?'تبقى':(lang==='fr'?'Il reste':'Remaining')} ${remaining} ${lang==='ar'?'يوماً.':(lang==='fr'?'jours.':'days.')}<br>
+          <div style="background:#E4ECE6; border-radius:10px; height:10px; margin-top:8px; overflow:hidden;">
+              <div style="background:#F4D99B; height:100%; width:${progress}%;"></div>
+          </div>`;
+      }
+  }
+
+  // --- تقييم الأعراض ---
+  document.getElementById("analyzeBtn").addEventListener("click", function() {
+    const age = parseInt(document.getElementById("userAge").value);
+    
+    if(isNaN(age) || age < 15 || age > 80) {
+        document.getElementById("analysisResult").innerHTML = `<div class="warning"><strong>خطأ:</strong> ${lang==='ar'?'يرجى إدخال عمر منطقي (15 - 80).':(lang==='fr'?'Veuillez entrer un âge valide.':'Please enter a valid age.')}</div>`;
+        return;
+    }
+
+    const syms = [...document.querySelectorAll("#symptoms input:checked")].map(x => x.value);
+    const pSyms = [...document.querySelectorAll("#partnerSymptoms input:checked")].map(x => x.value);
+    const emergency = document.getElementById("emergency").value;
+    const result = document.getElementById("analysisResult");
+    
+    document.getElementById("saveAssessmentBtn").classList.add("hidden");
+
+    if(emergency === "yes") {
+      result.innerHTML = `<div class="warning"><strong>⚠️</strong> ${lang==='ar'?'ألم مفاجئ وشديد. توجه للطوارئ فوراً.':(lang==='fr'?'Douleur soudaine. Urgence.':'Sudden pain. Emergency.')}</div>`;
+      return;
+    }
+
+    let html = "";
+    let isHigh = false;
+
+    if(syms.includes("lump")) {
+        isHigh = true;
+        html += `<div class="warning"><strong>⚠️ ${lang==='ar'?'تنبيه:':(lang==='fr'?'Alerte:':'Alert:')}</strong> ${lang==='ar'?'توجد كتلة تستدعي زيارة طبيب مسالك.':(lang==='fr'?'Masse détectée.':'Lump detected.')}</div>`;
+        html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solLump")}</div>`;
+    }
+    if(syms.includes("erection")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solErection")}</div>`;
+    if(syms.includes("desire")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solDesire")}</div>`;
+    if(syms.includes("pain")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPain")}</div>`;
+    if(syms.includes("fatigue")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solFatigue")}</div>`;
+    
+    if(pSyms.length > 0) {
+        isHigh = true;
+        html += `<div class="warning"><strong>${lang==='ar'?'تنبيه:':(lang==='fr'?'Alerte:':'Alert:')}</strong> ${lang==='ar'?'المشكلة قد تكون لدى الشريكة.':(lang==='fr'?'Problème partenaire.':'Partner issue.')}</div>`;
+        if(pSyms.includes("pcos")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerPCOS")}</div>`;
+        if(pSyms.includes("tubes")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerTubes")}</div>`;
+        if(pSyms.includes("endo")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerEndo")}</div>`;
+        if(pSyms.includes("irregular")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerIrregular")}</div>`;
+    }
+    
+    if(!isHigh && syms.length === 0 && pSyms.length === 0) {
+        html += `<div class="result">${lang==='ar'?'لا توجد أعراض خطيرة حالياً.':(lang==='fr'?'Pas de symptômes graves.':'No severe symptoms.')}</div>`;
+    }
+    result.innerHTML = html;
+
+    document.getElementById("saveAssessmentBtn").classList.remove("hidden");
+    lastAssessmentData = { date: new Date().toISOString().slice(0,10), age, syms, pSyms };
+  });
+
+  window.saveAssessment = function() {
+      if(!lastAssessmentData) return;
+      let records = getData("sahapath_assessments");
+      records.push(lastAssessmentData);
+      setData("sahapath_assessments", records);
+      document.getElementById("saveAssessmentBtn").classList.add("hidden");
+      alert(t("assessmentSaved"));
+      renderRecords();
+  }
+
+  // --- حفظ البيانات ---
+  window.saveSemenData = function() {
+      const count = document.getElementById("semenCount").value;
+      const motility = document.getElementById("semenMotility").value;
+      const morph = document.getElementById("semenMorphology").value;
+      const date = document.getElementById("semenDate").value;
+      
+      if(!count && !motility && !morph) return;
+      if(!date) { document.getElementById("semenMessage").textContent = lang==='ar'?'أدخل التاريخ':(lang==='fr'?'Entrez la date':'Enter date'); return; }
+      
+      const history = getData("sahapath_semen");
+      history.push({ count, motility, morph, date });
+      setData("sahapath_semen", history);
+      
+      document.getElementById("semenMessage").textContent = lang==='ar'?'تم الحفظ!':(lang==='fr'?'Enregistré!':'Saved!');
+      setTimeout(()=>document.getElementById("semenMessage").textContent="", 3000);
+      renderRecords();
+  }
+
+  function getSemenData() {
+      const data = getData("sahapath_semen");
+      return data.length ? data[data.length - 1] : null; // آخر تحليل
+  }
+  function getSemenHistory() { return getData("sahapath_semen"); }
+
+  document.getElementById("saveLabBtn").addEventListener("click", function() {
+    const name = document.getElementById("testName").value;
+    const val = document.getElementById("testValue").value;
+    const date = document.getElementById("testDate").value;
+    if(!name || !val || !date) { document.getElementById("labMessage").textContent = t("needFields"); return; }
+    const labs = getData("sahapath_labs");
+    labs.push({name, val, date});
+    setData("sahapath_labs", labs);
+    document.getElementById("labMessage").textContent = lang==='ar'?'تم الحفظ!':(lang==='fr'?'Enregistré!':'Saved!');
+    setTimeout(()=>document.getElementById("labMessage").textContent="", 3000);
+    renderRecords();
+  });
+
+  function renderRecords() {
+    const box = document.getElementById("recordList");
+    const labs = getData("sahapath_labs");
+    const semenHist = getSemenHistory();
+    const assessments = getData("sahapath_assessments");
+    let html = "";
+    
+    if(semenHist.length) {
+        html += `<div class="item" style="border-right: 4px solid var(--gold);"><strong>${lang==='ar'?'تاريخ تحاليل السائل المنوي':(lang==='fr'?'Historique sperme':'Semen History')}</strong>`;
+        semenHist.forEach(s => {
+            html += `<div style="margin-top:6px; font-size:13px;">📅 ${s.date}: ${s.count||'-'} M/ml | ${s.motility||'-'}% | ${s.morph||'-'}%</div>`;
+        });
+        html += `</div>`;
+    }
+
+    if(labs.length) {
+        html += labs.map(l => `<div class="item"><strong>${l.name}</strong>: ${l.val} (${l.date})</div>`).join("");
+    }
+
+    if(assessments.length) {
+        html += `<div class="item" style="border-right: 4px solid var(--primary);"><strong>${lang==='ar'?'تقييم الأعراض':(lang==='fr'?'Évaluation clinique':'Clinical Assessment')} (${assessments[assessments.length-1].date})</strong><br>${lang==='ar'?'العمر':(lang==='fr'?'Âge':'Age')}: ${assessments[assessments.length-1].age}</div>`;
+    }
+
+    box.innerHTML = html || `<p class="small">${t("noData")}</p>`;
+  }
+
+  // --- واجهة الطبيب ---
+  window.openDoctorView = function() {
+      const age = document.getElementById("userAge").value || "N/A";
+      const semen = getSemenData();
+      const labs = getData("sahapath_labs");
+      
+      let html = `
+        <div class="clinical-row"><span class="clinical-label">Age:</span> <span>${age}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Semen Analysis (Latest):</span> <span>${semen ? `Count: ${semen.count}, Motility: ${semen.motility}%, Morph: ${semen.morph}%` : 'Not provided'}</span></div>
+      `;
+      
+      if(labs.length) {
+          html += `<div style="margin-top:15px; margin-bottom:5px; font-weight:bold; color:var(--primary);">Hormonal Labs:</div>`;
+          labs.forEach(l => {
+              html += `<div class="clinical-row"><span class="clinical-label">${l.name}:</span> <span>${l.val}</span></div>`;
+          });
+      }
+      
+      document.getElementById("doctorViewContent").innerHTML = html;
+      document.getElementById("doctorViewModal").classList.remove("hidden");
+  }
+  window.closeDoctorView = function() {
+      document.getElementById("doctorViewModal").classList.add("hidden");
+  }
+
+  // --- إرسال الملخص ---
+  window.sendToMyDoctor = function() {
+      const customDocs = getData("sahapath_custom_doctors");
+      const allDocs = [...defaultDoctors, ...customDocs];
+      
+      if(allDocs.length === 0) {
+          document.getElementById("shareMessage").textContent = t("noDoctorFound");
+          document.getElementById("shareMessage").style.color = "red";
+          return;
+      }
+
+      const targetDoc = allDocs[0];
+      const semen = getSemenData();
+      let text = "SahaPath Clinical Summary:\n";
+      if(semen) text += `Semen Analysis: Count ${semen.count}, Motility ${semen.motility}%, Morphology ${semen.morph}%\n`;
+      
+      if(targetDoc.phone) { window.open(`https://wa.me/${targetDoc.phone}?text=${encodeURIComponent(text)}`); }
+      else if(targetDoc.email) { window.location.href = `mailto:${targetDoc.email}?body=${encodeURIComponent(text)}`; }
+      
+      document.getElementById("shareMessage").textContent = lang==='ar'?'تم فتح المحادثة مع طبيبك.':(lang==='fr'?'Discussion ouverte avec votre médecin.':'Chat opened with your doctor.');
+      document.getElementById("shareMessage").style.color = "green";
+  }
+
+  // --- الأطباء ---
+  function renderDoctors() {
+    const box = document.getElementById("doctorsList");
+    const customDocs = getData("sahapath_custom_doctors");
+    const allDocs = [...defaultDoctors, ...customDocs];
+    
+    box.innerHTML = allDocs.map(doc => {
+      const d = doc[lang];
+      return `
+        <div class="doctor-card">
+          <h4>${d.name}</h4>
+          <span class="badge">${d.spec}</span>
+          <p>📍 ${d.addr}</p>
+          <p>📞 ${doc.phone}</p>
+          ${d.card ? `<div class="result" style="font-size:13px; padding:8px;">${d.card}</div>` : ''}
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.toggleAddDoctorForm = function() {
+      document.getElementById("addDocForm").classList.toggle("hidden");
+  }
+
+  window.addNewDoctor = function() {
+      const name = document.getElementById("newDocName").value.trim();
+      const spec = document.getElementById("newDocSpec").value.trim();
+      const phone = document.getElementById("newDocPhone").value.trim();
+      const email = document.getElementById("newDocEmail").value.trim();
+      const msg = document.getElementById("addDocMessage");
+
+      if(!name || !phone) { msg.textContent = t("needDoc"); msg.style.color = "red"; return; }
+
+      const newDoc = {
+          ar: { name: name, spec: spec || "طبيب", addr: "غير محدد", card: "" },
+          fr: { name: name, spec: spec || "Médecin", addr: "Non spécifié", card: "" },
+          en: { name: name, spec: spec || "Doctor", addr: "Not specified", card: "" },
+          phone: phone,
+          email: email
+      };
+
+      const customDocs = getData("sahapath_custom_doctors");
+      customDocs.push(newDoc);
+      setData("sahapath_custom_doctors", customDocs);
+      
+      msg.textContent = t("docSaved");
+      msg.style.color = "green";
+      document.getElementById("newDocName").value = "";
+      document.getElementById("newDocSpec").value = "";
+      document.getElementById("newDocPhone").value = "";
+      document.getElementById("newDocEmail").value = "";
+      renderDoctors();
+      toggleAddDoctorForm();
+  }
+
+  // --- قصص الأمل ---
+  function renderHopeStories() {
+    const box = document.getElementById("storiesContainer");
+    box.innerHTML = hopeStoriesData.map(s => {
+      const d = s[lang];
+      return `
+        <div class="item">
+          <div class="story-title">${d.title}</div>
+          <p><strong>${lang === 'ar' ? 'ما حدث' : (lang === 'fr' ? 'Ce qui s\'est passé' : 'What happened')}:</strong> ${d.problem}</p>
+          <p><strong>${lang === 'ar' ? 'العلاج والنتيجة' : (lang === 'fr' ? 'Traitement et résultat' : 'Treatment & Result')}:</strong> ${d.result}</p>
+          <a href="${s.source}" target="_blank" class="source-link">🔗 Source</a>
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.openStoryModal = function() {
+      document.getElementById("addStoryModal").classList.remove("hidden");
+  }
+  window.closeStoryModal = function() {
+      document.getElementById("addStoryModal").classList.add("hidden");
+  }
+
+  window.submitStory = function() {
+    const author = document.getElementById("storyAuthor").value.trim();
+    const text = document.getElementById("storyText").value.trim();
+    if(!text) { document.getElementById("storyMessage").textContent = t("needStory"); document.getElementById("storyMessage").style.color = "red"; return; }
+    
+    const stories = getData("sahapath_user_stories");
+    stories.unshift({author: author || (lang==='ar'?'مجهول':(lang==='fr'?'Anonyme':'Anonymous')), text, date: new Date().toISOString().slice(0,10)});
+    setData("sahapath_user_stories", stories);
+    
+    document.getElementById("storyMessage").textContent = t("storySaved");
+    document.getElementById("storyMessage").style.color = "green";
+    document.getElementById("storyText").value = "";
+    renderUserStories();
+    setTimeout(() => closeStoryModal(), 1500);
+  }
+
+  function renderUserStories() {
+    const box = document.getElementById("userStoriesContainer");
+    const stories = getData("sahapath_user_stories");
+    if(!stories.length) { box.innerHTML = `<p class="small">${t("noData")}</p>`; return; }
+    box.innerHTML = stories.map(s => `
+      <div class="item" style="border-right: 4px solid var(--gold);">
+        <strong>${s.author}</strong> <span class="small">- ${s.date}</span>
+        <p>${s.text}</p>
+      </div>
+    `).join("");
+  }
+
+  // --- الشات بوت ---
+  window.clearChat = function() {
+    document.getElementById("chatMessages").innerHTML = `<div class="chat-msg chat-bot">${t("chatWelcome")}</div>`;
+  }
+
+  window.handleChatEnter = function(e) { if(e.key === "Enter") sendChatMessage(); }
+  
+  window.sendQuickReply = function(btn) { 
+      const text = btn.getAttribute(`data-${lang}`) || btn.getAttribute("data-ar");
+      document.getElementById("chatInput").value = text; 
+      sendChatMessage(); 
+  }
+
+  window.sendChatMessage = function() {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if(!text) return;
+    const box = document.getElementById("chatMessages");
+    box.innerHTML += `<div class="chat-msg chat-user">${text}</div>`;
+    input.value = "";
+    box.scrollTop = box.scrollHeight;
+
+    setTimeout(() => {
+      let reply = t("chatFallback");
+      const lower = text.toLowerCase();
+      
+      if(lower.includes("دوالي") || lower.includes("varicocele")) reply = t("chatVaricocele");
+      else if(lower.includes("سائل") || lower.includes("semen")) reply = t("chatSemen");
+      else if(lower.includes("تستوستيرون") || lower.includes("testosterone")) reply = t("chatTestosterone");
+      
+      box.innerHTML += `<div class="chat-msg chat-bot">${reply}</div>`;
+      box.scrollTop = box.scrollHeight;
+    }, 800);
+  }
+
+  // --- نظام الحماية (PIN) والتشفير ---
+  let savedPinHash = localStorage.getItem("sahapath_pin_hash") || null;
+
+  // ترحيل تلقائي من النسخة القديمة النصية إذا وجدت
+  if (!savedPinHash && localStorage.getItem("sahapath_pin")) {
+      const oldPin = localStorage.getItem("sahapath_pin");
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(oldPin)).then(buf => {
+          const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+          localStorage.setItem("sahapath_pin_hash", hash);
+          localStorage.removeItem("sahapath_pin");
+          savedPinHash = hash;
+      });
+  }
+
+  async function hashPin(pin) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  let currentPinInput = "";
+  let isSettingPin = false;
+  let firstPinEntry = "";
+
+  window.openLockScreen = function() {
+      document.getElementById("lockScreen").classList.remove("hidden");
+      document.getElementById("pinDisplay").textContent = "••••";
+      document.getElementById("pinError").textContent = "";
+      currentPinInput = "";
+      updateLockScreenText();
+  }
+  window.closeLockScreen = function() { document.getElementById("lockScreen").classList.add("hidden"); }
+  
+  window.updateLockScreenText = function() {
+      const title = document.getElementById("lockTitle");
+      const desc = document.getElementById("lockDesc");
+      if(!savedPinHash) {
+          title.textContent = "🔒 " + (lang==='ar'?'حماية الملف':(lang==='fr'?'Protection':'Protect Profile'));
+          desc.textContent = isSettingPin ? t("pinConfirm") : t("pinCreate");
+      } else {
+          title.textContent = "🔒 " + (lang==='ar'?'الملف الشخصي محمي':(lang==='fr'?'Dossier protégé':'Protected Profile'));
+          desc.textContent = t("pinEnter");
+      }
+  }
+
+  window.cancelLock = function() {
+      closeLockScreen();
+      showTab("home", document.getElementById("navHome"));
+  }
+
+  window.inputPin = function(num) {
+      if(currentPinInput.length < 4) {
+          currentPinInput += num;
+          document.getElementById("pinDisplay").textContent = "•".repeat(currentPinInput.length);
+      }
+  }
+  window.submitPin = function() {
+      if(currentPinInput.length === 4) checkPin();
+      else document.getElementById("pinError").textContent = t("pinLength");
+  }
+  window.clearPin = function() {
+      currentPinInput = "";
+      document.getElementById("pinDisplay").textContent = "••••";
+  }
+  
+  async function checkPin() {
+      const errorMsg = document.getElementById("pinError");
+      if(!savedPinHash) {
+          if(!isSettingPin) {
+              firstPinEntry = currentPinInput;
+              isSettingPin = true;
+              clearPin();
+              updateLockScreenText();
+          } else {
+              if(firstPinEntry === currentPinInput) {
+                  savedPinHash = await hashPin(currentPinInput);
+                  localStorage.setItem("sahapath_pin_hash", savedPinHash);
+                  isSettingPin = false;
+                  closeLockScreen();
+                  showTab("askDoctor", document.getElementById("navAskDoctor"));
+              } else {
+                  errorMsg.textContent = t("pinMismatch");
+                  isSettingPin = false;
+                  clearPin();
+                  updateLockScreenText();
+              }
+          }
+      } else {
+          const enteredHash = await hashPin(currentPinInput);
+          if(enteredHash === savedPinHash) {
+              closeLockScreen();
+              showTab("askDoctor", document.getElementById("navAskDoctor"));
+          } else {
+              errorMsg.textContent = t("pinWrong");
+              clearPin();
+          }
+      }
+  }
+  window.lockProfile = function() {
+      closeLockScreen();
+      showTab("home", document.getElementById("navHome"));
+  }
+
+  // ==========================================
+  // التهيئة الأولية
+  // ==========================================
+  document.getElementById("testDate").value = new Date().toISOString().slice(0,10);
+  document.getElementById("semenDate").value = new Date().toISOString().slice(0,10);
+  
+  clearChat();
+  renderRecords();
+  renderDoctors();
+  renderHopeStories();
+  renderUserStories();
+  calculateDigitalLab();
+
+});
+</script>
+</body>
+</html>
