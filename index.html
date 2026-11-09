@@ -1,1369 +1,1178 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot"> 
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Chat-Core - Translator</title>
-<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#42BFA3">
+<title>SahaPath AI | صحة الرجل والخصوبة</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow: hidden; }
-  body { font-family: Tahoma, sans-serif; background: #0ea5e9; color: #fff; display: flex; flex-direction: column; padding: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom)); height: 100dvh; transition: opacity 0.3s; }
-  
-  /* Auth Screen Styles */
-  #authOverlay { position: fixed; inset: 0; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999999; padding: 20px; overflow-y: auto; }
-  .auth-lang-switch { position: absolute; top: 20px; right: 20px; display: flex; gap: 5px; }
-  .lang-btn { background: #334155; border: 1px solid #475569; color: #fff; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold; }
-  .lang-btn.active { background: #0ea5e9; border-color: #0ea5e9; }
-  
-  .auth-box { background: #1e293b; padding: 30px; border-radius: 15px; width: 100%; max-width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; margin: auto; }
-  .auth-box h2 { color: #0ea5e9; margin-bottom: 20px; font-size: 24px; }
-  .auth-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; outline: none; font-size: 14px; }
-  .auth-input:focus { border-color: #0ea5e9; }
-  .auth-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #10b981; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 14px;}
-  .auth-btn:hover { background: #059669; }
-  .auth-btn.outline { background: transparent; border: 1px solid #6366f1; color: #6366f1; }
-  .auth-btn.outline:hover { background: #6366f1; color: #fff; }
-  .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #334155; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 14px; }
-  .social-btn:hover { background: #475569; }
-  #authError { color: #ef4444; font-size: 12px; margin-bottom: 10px; min-height: 18px; word-wrap: break-word; }
-  .divider { display: flex; align-items: center; margin: 15px 0; color: #64748b; font-size: 12px; }
-  .divider::before, .divider::after { content: ""; flex: 1; border-bottom: 1px solid #334155; margin: 0 10px; }
+:root{
+  --primary:#42BFA3; --green:#A8DCC0; --cream:#F8FAF6; --gold:#F4D99B;
+  --ink:#243B35; --muted:#687A73; --white:#fff; --danger:#B83232; --border:#E4ECE6; --shadow:0 5px 20px rgba(40,90,70,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Tahoma",sans-serif;line-height:1.65;}
+header{background:linear-gradient(120deg,#DDF4E9,#F8FAF6);padding:22px 16px 18px;text-align:center;border-bottom:1px solid var(--border);}
+.logo{font-size:28px;font-weight:800;color:#237F68}
+.tagline{font-size:13px;color:var(--muted)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:900px;margin:12px auto 0;padding:0 12px;}
+select,button,input,textarea{font:inherit;}
+select{border:1px solid var(--border);border-radius:12px;padding:8px;background:white;color:var(--ink);}
+nav{display:flex;gap:7px;overflow-x:auto;padding:12px;max-width:900px;margin:auto;scrollbar-width: none;}
+nav::-webkit-scrollbar { display: none; }
+nav button{white-space:nowrap;border:1px solid var(--border);background:white;border-radius:13px;padding:9px 13px;color:var(--ink);cursor:pointer;}
+nav button.active{background:var(--primary);color:white;border-color:var(--primary)}
+main{max-width:900px;margin:auto;padding:10px 14px 40px}
+.card{background:white;border:1px solid var(--border);border-radius:18px;padding:17px;margin:12px 0;box-shadow:var(--shadow);}
+h2{font-size:20px;margin:0 0 10px;color:#287F68}
+h3{font-size:16px;margin:8px 0}
+p{margin:7px 0}
+.small{font-size:12px;color:var(--muted)}
+a{color:var(--primary);text-decoration:none;}
+a:hover{text-decoration:underline;}
+label{display:block;margin:12px 0 5px;font-weight:600}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:11px;background:#FCFEFC;color:var(--ink);}
+textarea{min-height:90px;resize:vertical}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.check{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);padding:9px;border-radius:11px;font-weight:400;margin:0;background:#FCFEFC;cursor:pointer; font-size:14px;}
+.check input{accent-color:var(--primary);width:17px;height:17px;margin-top:3px;}
+.btn{background:var(--primary);color:white;border:0;padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:700;margin-top:10px;}
+.btn.secondary{background:#E7F5ED;color:#26765F}
+.btn.gold{background:#F4D99B;color:#584719}
+.btn.danger{background:#B83232;color:white}
+.btn.full{width:100%}
+.result{background:#EDF8F1;border-right:4px solid var(--primary);border-radius:12px;padding:13px;margin-top:13px;}
+.warning{background:#FFF1F0;border-right:4px solid var(--danger);border-radius:12px;padding:13px;margin-top:13px;}
+.note{background:#FFF8E8;border-right:4px solid #D7AD4C;padding:12px;border-radius:10px;font-size:13px;}
+.hidden{display:none!important}
+.item{border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;background:#FCFEFC;}
+.item strong{color:#287F68}
+.story-title { color: var(--primary); margin-bottom: 5px; font-size:15px; font-weight:bold;}
+.source-link { font-size:11px; color:var(--muted); display:block; margin-top:5px; }
 
-  /* App Layout & Elements */
-  .top-header { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 10px; flex-shrink: 0; position: relative; z-index: 10001; }
-  .top-bar { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 6px 12px; border-radius: 10px; width: 95%; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-  .user-section { display: flex; align-items: center; gap: 4px; }
-  .lang-select { padding: 0 2px; border-radius: 4px; background: #0f172a; color: #ffffff; border: 1px solid #334155; font-size: 9px; outline: none; width: 75px !important; height: 24px; text-align: center; }
-  .mic-btn { width: 30px; height: 30px; border-radius: 50%; border: none; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
-  .mic-btn.blue { background: #6366f1; } .mic-btn.green { background: #10b981; } .mic-btn.recording { background: #ef4444 !important; animation: pulse 0.8s infinite; }
-  .mic-btn:disabled { background: #475569 !important; opacity: 0.5; }
-  @keyframes pulse { 50% { transform: scale(1.1); } }
-  .locked-ui { opacity: 0.4; pointer-events: none; filter: blur(1px); }
-  
-  #avatar-wrap { width: 100px; height: 100px; margin: 0 auto 10px; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: all 0.3s; }
-  #avatar-container { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0,0,0,0.3); z-index: 1; transition: all 0.3s; }
-  #avatar-logo, #avatar-video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #avatar-video { display: none; }
-  #avatar-wrap.fullscreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: #000; }
-  #avatar-wrap.fullscreen #avatar-container { width: 100vw; height: 100vh; border-radius: 0 !important; background: transparent; box-shadow: none; }
-  #avatar-wrap.fullscreen #avatar-logo, #avatar-wrap.fullscreen #avatar-video { object-fit: contain; width: 100vw; height: 100vh; }
-  #avatar-wrap.fullscreen #closeFullscreen { display: flex; }
-  #removeAvatarBtn { display: none; position: absolute; top: 50%; right: -15px; transform: translateY(-50%); width: 14px; height: 14px; border-radius: 50%; background: #000; border: none; cursor: pointer; z-index: 10; }
-  
-  /* Hide Avatar in Remote/Meeting modes */
-  body.remote-mode #avatar-wrap, body.meeting-mode #avatar-wrap { display: none !important; }
+/* Doctor Cards */
+.doctor-card {border:1px solid var(--border); border-radius:12px; padding:15px; margin:10px 0; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+.doctor-card h4 {margin:0 0 5px; color:#287F68; font-size:16px;}
+.doctor-card p {margin:4px 0; font-size:14px;}
+.doctor-card .badge {background:#E7F5ED; color:#26765F; padding:3px 8px; border-radius:8px; font-size:11px; font-weight:bold;}
 
-  #closeFullscreen, #closeVideoFullscreen { display: none; position: fixed; background: #e57373; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10000; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-  .inner-white-dot { width: 14px; height: 14px; background: #fff; border-radius: 50%; }
-  #closeFullscreen { top: 80px; right: 20px; } #closeVideoFullscreen { top: 20px; right: 20px; }
-  #videoContainer { display: none; position: relative; width: 100%; max-width: 400px; height: 200px; margin: 0 auto 10px; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; z-index: 500; }
-  #remoteVideo { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-  #localVideo { position: absolute; bottom: 10px; right: 10px; width: 80px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #fff; background: #1e293b; z-index: 2; pointer-events: auto; }
-  #videoStatus { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #10b981; z-index: 2; pointer-events: none; }
-  body.video-maximized #videoContainer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; max-width: 100vw; z-index: 99999; margin: 0; border-radius: 0; }
-  body.video-maximized #remoteVideo { object-fit: cover; }
-  body.video-maximized #localVideo { width: 90px; height: 130px; bottom: 20px; right: 20px; border-radius: 12px; }
-  body.video-maximized #closeVideoFullscreen { display: flex; }
-  body.video-maximized #topHeader, body.video-maximized #extraControls, body.video-maximized #chatContainer, body.video-maximized #inputRow, body.video-maximized #status, body.video-maximized #remoteBar { display: none !important; }
-  
-  #meetingGridContainer { display: none; position: relative; width: 100%; flex: 1; background: #0f172a; border-radius: 12px; padding: 10px; overflow-y: auto; margin-bottom: 10px; }
-  #videoGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; align-content: start; }
-  .participant-box { position: relative; background: #000; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; border: 2px solid #334155; }
-  .participant-box video { width: 100%; height: 100%; object-fit: cover; }
-  .participant-name { position: absolute; bottom: 5px; left: 5px; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; font-size: 10px; color: #fff; z-index: 2; }
-  body.meeting-mode .chat-container { max-height: 35vh; }
-  
-  #floatingMicBtn { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; border-radius: 50%; background: #10b981; color: white; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 100000; border: none; cursor: pointer; transition: all 0.3s; }
-  #floatingMicBtn.recording { background: #ef4444 !important; animation: pulse 0.8s infinite; }
-  body.video-maximized #floatingMicBtn { display: flex; }
-  
-  .chat-container { position: relative; flex: 1; display: flex; flex-direction: column; margin-bottom: 10px; min-height: 100px; }
-  #chat { flex: 1; background: #1e293b; border-radius: 12px; padding: 12px; overflow-y: auto; }
-  .msg { padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; max-width: 85%; line-height: 1.6; word-wrap: break-word; font-size: 15px; transition: opacity 0.2s; cursor: pointer; }
-  .msg:active { opacity: 0.7; }
-  .user-a { background: #4f46e5; margin-right: auto; border-bottom-right-radius: 4px; } 
-  .user-b { background: #10b981; margin-left: auto; border-bottom-left-radius: 4px; color: #000;} 
-  .bot { background: #334155; margin: 0 auto 8px auto; text-align: center; font-style: italic; font-size: 13px; cursor: default; }
-  .lang-tag { display: inline-block; font-size: 10px; padding: 2px 6px; background: rgba(255,255,255,0.15); border-radius: 6px; margin-right: 6px; opacity: 0.8; font-weight: bold; }
-  
-  #clearBtn { position: absolute; bottom: 2px; left: 10px; width: 30px; height: 30px; border-radius: 50%; background: #f6ad55; border: 2px solid #dd6b20; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
-  #clearBtn svg { fill: #2d3748; width: 16px; height: 16px; }
-  
-  #imagePreviewContainer { display: none; position: absolute; bottom: 50px; right: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 5px; align-items: center; gap: 8px; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-  #imagePreview { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
-  #cancelImageBtn { background: #dc2626; color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-  
-  .row { display: flex; gap: 6px; align-items: center; flex-shrink: 0; position: relative; }
-  input[type=text] { flex: 1; padding: 10px; padding-left: 35px; border-radius: 24px; border: 1px solid #1e293b; background: #ffffff; color: #000; font-size: 14px; order: 3; }
-  
-  button.btn { padding: 0; border: none; border-radius: 50%; font-weight: bold; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-  #musicBtn { background: #ffffff; color: #000000; order: 1; font-size: 16px; }
-  #mediaBtn { background: #1d4ed8; color: #ffffff; order: 2; font-size: 22px; width: 32px; height: 32px; padding-bottom: 2px; font-weight: normal; }
-  #remoteMicBtn { background: #10b981; color: #fff; order: 2; width: 42px; height: 42px; border-radius: 50%; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); display: none; transition: all 0.3s ease; }
-  #remoteMicBtn.recording { background: #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.8); animation: pulse 1s infinite; }
-  #toggleCamBtn { background: #475569; color: #fff; order: 2; width: 42px; height: 42px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); display: none; border: none; cursor: pointer; transition: all 0.3s ease; }
-  #toggleCamBtn.off { background: #ef4444; }
-  #sendBtn { background: #1d4ed8; order: 4; color: #fff; }
-  #sendBtn svg { width: 20px; height: 20px; fill: white; transform: translateX(-2px) translateY(2px); }
-  
-  #stopAudioBtn { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; background: #f6ad55; border: 2px solid #dd6b20; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; outline: none; }
-  #stopAudioBtn svg { fill: #2d3748; width: 14px; height: 14px; }
-  #status { text-align: center; font-size: 12px; color: #0f172a; margin-top: 6px; min-height: 18px; font-weight: bold; }
-  
-  .extra-controls { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; flex-wrap: nowrap; width: 100%; padding: 0 5px; align-items: center; }
-  .extra-controls button, .extra-controls select { padding: 6px 12px; border-radius: 15px; border: none; background: #475569; color: #fff; font-size: 10px; cursor: pointer; outline: none; white-space: nowrap; font-weight: bold; display: inline-flex; align-items: center; justify-content: center; }
-  .extra-controls button.active { background: #eab308; color: #000; }
-  .btn-back { background: #e57373 !important; color: white !important; }
-  body.remote-mode #extraControls, body.meeting-mode #extraControls { justify-content: space-between; padding: 0 10px; }
-  body.remote-mode #voiceSelect, body.meeting-mode #voiceSelect { width: 48% !important; max-width: 200px; height: 38px !important; text-align: center; }
-  body.remote-mode #backBtn, body.meeting-mode #backBtn { width: 48% !important; max-width: 200px; height: 32px !important; display: flex; align-items: center; justify-content: center; }
-  
-  #actionMenu { display: none; position: fixed; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 10px; z-index: 2000; flex-direction: column; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-  .action-btn { padding: 8px 12px; border-radius: 8px; border: none; background: #0f172a; color: #fff; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-  
-  #musicMenu { display: none; position: fixed; background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 10px; z-index: 2000; width: 200px; max-height: 250px; overflow-y: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-  #musicMenu h4 { font-size: 12px; margin-bottom: 8px; text-align: center; color: #94a3b8; }
-  .music-item { padding: 6px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-bottom: 4px; background: #0f172a; display: flex; justify-content: space-between; align-items: center; }
-  .music-item:hover { background: #334155; } .music-item.active { background: #0ea5e9; color: #fff; font-weight: bold; } 
-  .music-item.add-more, .music-item.stop-btn, .music-item.pause-btn { text-align: center; font-weight: bold; justify-content: center; }
-  .music-item.add-more { background: #22c55e; } .music-item.stop-btn { background: #991b1b; margin-bottom: 6px; } .music-item.pause-btn { background: #475569; margin-bottom: 6px; }
-  .song-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: left; direction: ltr; }
-  .delete-song { color: #ef4444; font-weight: bold; padding: 0 6px; font-size: 14px; }
-  
-  #remoteBar { display: none; background: #1e293b; padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; justify-content: space-between; align-items: center; color: #fff; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-  #remoteBar .room-info { display: flex; align-items: center; gap: 8px; }
-  #remoteBar strong { color: #fbbf24; letter-spacing: 2px; font-size: 14px; }
-  #copyRoomBtn { background: #6366f1; color: #fff; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: bold; }
-  #remoteLockBtn { background: #ef4444; border: none; color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; outline: none; }
-  
-  .overlay { position: fixed; inset: 0; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; color: #fff; padding: 20px; z-index: 99999; overflow-y: auto; }
-  .overlay h1 { font-size: 28px; color: #0ea5e9; margin-bottom: 10px; }
-  .overlay h2 { font-size: 20px; color: #10b981; margin-bottom: 5px; }
-  .overlay .mode-btn { padding: 15px 30px; font-size: 16px; border-radius: 12px; border: none; color: #fff; cursor: pointer; width: 260px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  #btnLocal { background: #6366f1; } #btnRemote { background: #10b981; } #btnMeeting { background: #1d4ed8; }
-  #btnMeeting .plus-icon { font-size: 24px; font-weight: bold; margin-bottom: 3px; }
-  .join-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 300px; background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-  .join-form input, .join-form select { padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; width: 100%; outline: none; }
-  .join-form input:focus { border-color: #0ea5e9; }
-  .join-form button { padding: 12px; border-radius: 8px; border: none; color: #fff; cursor: pointer; font-weight: bold; font-size: 14px; }
-  #createRoomBtn, #createMeetingBtn { background: #10b981; }
-  #joinRoomBtn, #joinMeetingBtn { background: #6366f1; }
-  #joinRow { display: flex; gap: 8px; }
-  #joinCodeInput, #joinMeetingCodeInput { flex: 1; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
-  #backToLandingBtn, #backToLandingFromMeetBtn { background: transparent; border: none; color: #94a3b8; cursor: pointer; margin-top: 5px; font-size: 13px; text-decoration: underline; }
+/* Chatbot UI */
+.chat-container {display:flex; flex-direction:column; height: 400px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:white;}
+.chat-header {display:flex; justify-content:space-between; align-items:center; padding:10px; background:#F8FAF6; border-bottom:1px solid var(--border);}
+.chat-messages {flex:1; overflow-y:auto; padding:15px; background:#FCFEFC;}
+.chat-msg {margin-bottom:10px; padding:10px; border-radius:12px; max-width:80%; font-size:14px;}
+.chat-bot {background:#E7F5ED; color:#243B35; border-bottom-right-radius:2px; align-self:flex-start;}
+.chat-user {background:var(--primary); color:white; border-bottom-left-radius:2px; align-self:flex-end; margin-left:auto;}
+.chat-input-area {display:flex; border-top:1px solid var(--border); padding:10px; background:white;}
+.chat-input-area input {flex:1; border-radius:20px; padding:10px 15px; border:1px solid var(--border);}
+.chat-input-area button {border-radius:50%; width:40px; height:40px; margin-left:8px; margin-top:0; padding:0; display:flex; align-items:center; justify-content:center;}
+.quick-replies {display:flex; gap:5px; overflow-x:auto; padding:5px 10px; background:white; border-top:1px solid var(--border);}
+.quick-reply {font-size:12px; padding:5px 10px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:15px; cursor:pointer; white-space:nowrap; margin:0;}
+
+/* Lock Screen UI */
+#lockScreen {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(248,250,246,0.98); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;}
+.lock-card {background:white; padding:30px 20px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); text-align:center; width:90%; max-width:350px; border:1px solid var(--border);}
+.pin-display {font-size:32px; letter-spacing:12px; margin:20px 0; color:var(--primary); height:45px; font-weight:bold; padding-right:12px;}
+.keypad {display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px;}
+.keypad button {font-size:22px; padding:15px 0; border-radius:50%; background:#F8FAF6; border:1px solid var(--border); cursor:pointer; font-weight:bold; color:var(--ink); transition:0.1s;}
+.keypad button:active {background:var(--primary); color:white;}
+.keypad button.enter-btn {background:#DDF4E9; color:#287F68; font-size:16px;}
+
+/* Digital Lab UI */
+.simulator-bar-container {width:100%; background:#E4ECE6; border-radius:10px; height:25px; margin:15px 0; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);}
+.simulator-bar {height:100%; background:var(--primary); width:100%; transition:width 0.5s ease-in-out, background-color 0.5s;}
+.simulator-score {font-size:42px; font-weight:bold; color:var(--primary); text-align:center; margin:10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;}
+.analytics-box {background:#F8FAF6; border:1px dashed var(--primary); border-radius:12px; padding:15px; margin-top:15px; font-size:14px;}
+.analytics-box h4 {margin:0 0 8px; color:var(--primary); font-size:15px;}
+
+/* Modals */
+.modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:10000; display:flex; align-items:center; justify-content:center;}
+.modal-content {background:white; width:90%; max-width:500px; border-radius:15px; padding:20px; max-height:80vh; overflow-y:auto; box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.modal-header {display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:15px;}
+.modal-header h3 {margin:0; color:var(--primary);}
+.close-modal {background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted);}
+.clinical-row {display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding:8px 0; font-size:14px;}
+.clinical-label {font-weight:bold; color:var(--muted);}
+
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+hr{border:0;border-top:1px solid var(--border);margin:15px 0}
+@media(max-width:480px){.checks{grid-template-columns:1fr}.card{padding:14px}}
+
+/* --- إعدادات الطباعة لتقرير الطبيب --- */
+@media print {
+    body * { visibility: hidden; }
+    #doctorViewModal, #doctorViewModal * { visibility: visible; }
+    #doctorViewModal { position: absolute; left: 0; top: 0; width: 100%; background: white; }
+    .modal-content { box-shadow: none; border: none; max-width: 100%; width: 100%; padding: 0; }
+    .close-modal, .print-btn { display: none !important; }
+    .modal-header h3 { font-size: 24px; color: black; border-bottom: 2px solid black; padding-bottom: 10px; }
+    .clinical-row { font-size: 16px; padding: 10px 0; border-bottom: 1px solid #ccc; }
+}
 </style>
 </head>
 <body>
 
-<!-- Auth Screen Overlay -->
-<div id="authOverlay">
-  <div class="auth-lang-switch">
-    <button class="lang-btn active" onclick="changeAuthLang('ar')">AR</button>
-    <button class="lang-btn" onclick="changeAuthLang('fr')">FR</button>
-    <button class="lang-btn" onclick="changeAuthLang('en')">EN</button>
-  </div>
-  
-  <div class="auth-box">
-    <h1 style="color:#0ea5e9; margin-bottom:10px;">🌐 Chat-Core</h1>
-    <h2 id="authTitle">تسجيل الدخول</h2>
-    <div id="authError"></div>
-    
-    <input type="email" id="authEmail" class="auth-input" placeholder="البريد الإلكتروني">
-    <input type="password" id="authPassword" class="auth-input" placeholder="كلمة المرور">
-    
-    <button id="authSubmitBtn" class="auth-btn" onclick="handleEmailAuth()">دخول</button>
-    <button id="authToggleBtn" class="auth-btn outline" onclick="toggleAuthMode()">إنشاء حساب جديد</button>
-    
-    <div class="divider" id="authDivider">أو</div>
-    
-    <button class="social-btn" onclick="loginWithGoogle()" id="btnAuthGoogle">🌐 Google</button>
-    <button class="social-btn" onclick="loginWithGithub()" id="btnAuthGithub">🐙 GitHub</button>
-    <button class="social-btn" onclick="loginWithTwitter()" id="btnAuthTwitter">🐦 X</button>
-  </div>
+<!-- شاشة القفل -->
+<div id="lockScreen" class="hidden">
+    <div class="lock-card">
+        <h2 id="lockTitle" style="text-align:center;" data-ar="🔒 الملف الشخصي محمي" data-fr="🔒 Dossier protégé" data-en="🔒 Protected Profile">🔒 الملف الشخصي محمي</h2>
+        <p class="small" id="lockDesc" data-ar="أدخل رمز PIN المكون من 4 أرقام للوصول إلى بياناتك." data-fr="Entrez votre code PIN à 4 chiffres." data-en="Enter your 4-digit PIN to access data.">أدخل رمز PIN المكون من 4 أرقام للوصول إلى بياناتك.</p>
+        <div class="pin-display" id="pinDisplay">••••</div>
+        <div class="keypad" id="keypad">
+            <button onclick="inputPin('1')">1</button><button onclick="inputPin('2')">2</button><button onclick="inputPin('3')">3</button>
+            <button onclick="inputPin('4')">4</button><button onclick="inputPin('5')">5</button><button onclick="inputPin('6')">6</button>
+            <button onclick="inputPin('7')">7</button><button onclick="inputPin('8')">8</button><button onclick="inputPin('9')">9</button>
+            <button onclick="submitPin()" class="enter-btn" data-ar="دخول" data-fr="Entrer" data-en="Enter">دخول</button>
+            <button onclick="inputPin('0')">0</button><button onclick="clearPin()" style="font-size:16px;" data-ar="مسح" data-fr="Effacer" data-en="Clear">مسح</button>
+        </div>
+        <div id="pinError" class="small" style="color:var(--danger); margin-top:15px; height:15px;"></div>
+        <button class="btn secondary full" style="margin-top:10px;" onclick="cancelLock()" data-ar="إلغاء" data-fr="Annuler" data-en="Cancel">إلغاء</button>
+    </div>
 </div>
 
-<button id="floatingMicBtn" title="Talk">
-  <svg viewBox="0 0 24 24" width="30" height="30" fill="white"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-</button>
-
-<!-- Landing Page (Option Selection) -->
-<div class="overlay" id="landingOverlay" style="display:none;">
-  <h1>🌐 Chat-Core</h1>
-  <p style="color:#94a3b8; font-size:13px; margin-bottom:10px;">اختر وضع التشغيل</p>
-  <button class="mode-btn" id="btnLocal">🌐 Face-to-Face</button>
-  <button class="mode-btn" id="btnRemote">💬 Remote Mode</button>
-  <button class="mode-btn" id="btnMeeting"><span class="plus-icon">+</span> Meeting Room</button>
-  
-  <!-- زر تسجيل الخروج الأحمر الجديد -->
-  <button class="mode-btn" id="btnLogout" style="background: #ef4444; margin-top: 20px;">🚪 تسجيل الخروج</button>
+<!-- واجهة الطبيب (Modal) -->
+<div id="doctorViewModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 data-ar="تقرير طبي (SahaPath AI)" data-fr="Rapport Médical" data-en="Medical Report">تقرير طبي (SahaPath AI)</h3>
+            <div>
+                <button class="btn secondary print-btn" onclick="window.print()" style="margin:0; padding:5px 10px; font-size:12px; margin-left:5px;">🖨️ طباعة</button>
+                <button class="close-modal" onclick="closeDoctorView()">×</button>
+            </div>
+        </div>
+        <p class="small print-btn" data-ar="يمكنك الآن طباعة هذا التقرير كملف PDF وإرساله للطبيب." data-fr="Imprimez ce rapport en PDF." data-en="Print this report as PDF.">يمكنك الآن طباعة هذا التقرير كملف PDF وإرساله للطبيب.</p>
+        <div id="doctorViewContent"></div>
+    </div>
 </div>
 
-<div class="overlay" id="remoteJoinOverlay" style="display:none;">
-  <h2>💬 Remote Mode</h2>
-  <div class="join-form">
-    <input type="text" id="playerName" placeholder="Your Name" maxlength="30">
-    <select id="playerLang">
-      <option value="ar">🇹🇳 العربية</option><option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option>
-      <option value="de">🇩🇪 Deutsch</option><option value="tr">🇹🇷 Türkçe</option><option value="it">🇮🇹 Italiano</option>
-      <option value="zh">🇨🇳 中文</option><option value="ru">🇷🇺 Русский</option><option value="es">🇪🇸 Español</option>
-      <option value="pt">🇵🇹 Português</option><option value="nl">🇳🇱 Nederlands</option><option value="no">🇳🇴 Norsk</option>
+<!-- نموذج إضافة قصة (Modal) -->
+<div id="addStoryModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 data-ar="شاركنا قصتك" data-fr="Partagez votre histoire" data-en="Share your story">شاركنا قصتك</h3>
+            <button class="close-modal" onclick="closeStoryModal()">×</button>
+        </div>
+        <label data-ar="اسمك (اختياري)" data-fr="Votre nom (optionnel)" data-en="Your name (optional)">اسمك (اختياري)</label>
+        <input type="text" id="storyAuthor" placeholder="مثال: أحمد">
+        <label data-ar="قصتك" data-fr="Votre histoire" data-en="Your story">قصتك</label>
+        <textarea id="storyText" placeholder="اكتب تجربتك هنا..."></textarea>
+        <button class="btn gold full" onclick="submitStory()" data-ar="نشر القصة" data-fr="Publier" data-en="Publish">نشر القصة</button>
+        <div id="storyMessage" class="small" style="text-align:center; margin-top:10px; color:green;"></div>
+    </div>
+</div>
+
+<header>
+  <div class="logo">SahaPath AI</div>
+  <div class="tagline" id="tagline" data-ar="رفيقك لفهم صحة الرجل والخصوبة" data-fr="Votre allié pour la santé masculine et la fertilité" data-en="Your ally for men's health and fertility">رفيقك لفهم صحة الرجل والخصوبة</div>
+  <div class="top">
+    <span class="small" id="privacyLabel" data-ar="نسخة تجريبية محلية" data-fr="Démo locale" data-en="Local demo">نسخة تجريبية محلية</span>
+    <select id="language">
+      <option value="ar">العربية</option>
+      <option value="fr">Français</option>
+      <option value="en">English</option>
     </select>
-    <button id="createRoomBtn">➕ Create Room</button>
-    <div id="orText" style="text-align:center; color:#94a3b8; font-size:12px; margin:5px 0;">Or</div>
-    <div id="joinRow">
-      <input type="text" id="joinCodeInput" placeholder="Room Code" maxlength="6">
-      <button id="joinRoomBtn">Join</button>
-    </div>
-    <button id="backToLandingBtn">← Back</button>
   </div>
-</div>
+</header>
 
-<div class="overlay" id="meetingJoinOverlay" style="display:none;">
-  <h2><span style="font-size:24px; font-weight:bold;">+</span> Meeting Room</h2>
-  <div class="join-form">
-    <input type="text" id="meetPlayerName" placeholder="Your Name" maxlength="30">
-    <select id="meetPlayerLang">
-      <option value="ar">🇹🇳 العربية</option><option value="fr">🇫🇷 Français</option><option value="en">🇬🇧 English</option>
-      <option value="de">🇩🇪 Deutsch</option><option value="tr">🇹🇷 Türkçe</option><option value="it">🇮🇹 Italiano</option>
-      <option value="zh">🇨🇳 中文</option><option value="ru">🇷🇺 Русский</option><option value="es">🇪🇸 Español</option>
-      <option value="pt">🇵🇹 Português</option><option value="nl">🇳🇱 Nederlands</option><option value="no">🇳🇴 Norsk</option>
+<nav id="mainNav">
+  <button class="active" data-target="home" id="navHome" data-ar="الرئيسية" data-fr="Accueil" data-en="Home">الرئيسية</button>
+  <button data-target="evaluate" id="navEvaluate" data-ar="قيم حالتك" data-fr="Évaluer" data-en="Evaluate">قيم حالتك</button>
+  <button data-target="digitalLab" id="navDigitalLab" data-ar="المختبر الرقمي" data-fr="Labo Numérique" data-en="Digital Lab">المختبر الرقمي</button>
+  <button data-target="askDoctor" id="navAskDoctor" data-ar="اسأل طبيبك" data-fr="Médecin" data-en="Ask Doctor">اسأل طبيبك</button>
+  <button data-target="doctorsDirectory" id="navDoctorsDirectory" data-ar="قائمة الأطباء" data-fr="Annuaire" data-en="Doctors">قائمة الأطباء</button>
+  <button data-target="chatbot" id="navChatbot" data-ar="المساعد الذكي" data-fr="Chatbot" data-en="AI Assistant">المساعد الذكي</button>
+  <button data-target="hopeStories" id="navHopeStories" data-ar="قصص أمل" data-fr="Histoires" data-en="Hope Stories">قصص أمل</button>
+</nav>
+
+<main>
+<section id="home">
+  <div class="card">
+    <h2 id="welcome" data-ar="أهلاً بك في SahaPath AI" data-fr="Bienvenue sur SahaPath AI" data-en="Welcome to SahaPath AI">أهلاً بك في SahaPath AI</h2>
+    <p id="welcomeText" data-ar="منصة مخصصة لمساعدة الرجال على فهم مؤشرات صحتهم الإنجابية، وتنظيم الفحوصات، ومتابعة التغيرات بمرور الوقت." data-fr="Une plateforme dédiée aux hommes pour comprendre leur santé reproductive." data-en="A platform dedicated to helping men understand their reproductive health.">منصة مخصصة لمساعدة الرجال على فهم مؤشرات صحتهم الإنجابية، وتنظيم الفحوصات، ومتابعة التغيرات بمرور الوقت.</p>
+    <div class="result">
+      <strong id="missionTitle" data-ar="هدفنا" data-fr="Notre objectif" data-en="Our goal">هدفنا</strong>
+      <p id="missionText" data-ar="كسر حاجز الصمت حول صحة الرجل، وتقديم معلومات دقيقة، وتحضير أكثر فاعلية للحوار مع الطبيب." data-fr="Briser le silence sur la santé masculine." data-en="Break the silence on men's health.">كسر حاجز الصمت حول صحة الرجل، وتقديم معلومات دقيقة، وتحضير أكثر فاعلية للحوار مع الطبيب.</p>
+    </div>
+  </div>
+</section>
+
+<section id="evaluate" class="hidden">
+  <div class="card">
+    <h2 id="evalTitle" data-ar="تقييم الأعراض الطبية" data-fr="Évaluation Clinique" data-en="Clinical Evaluation">تقييم الأعراض الطبية</h2>
+    
+    <div class="warning" style="margin-top:0; margin-bottom:15px;">
+        <label id="emergencyLabel" style="margin-top:0; color:var(--danger);" data-ar="هل تعاني الآن من ألم مفاجئ وشديد في الخصية؟" data-fr="Douleur soudaine et intense ?" data-en="Sudden, severe testicular pain?">هل تعاني الآن من ألم مفاجئ وشديد في الخصية؟</label>
+        <select id="emergency" style="border-color:var(--danger);">
+          <option value="no" data-ar="لا" data-fr="Non" data-en="No">لا</option>
+          <option value="yes" data-ar="نعم" data-fr="Oui" data-en="Yes">نعم</option>
+        </select>
+    </div>
+
+    <div class="checks" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
+      <div>
+        <label id="ageLabel" data-ar="عمرك" data-fr="Votre âge" data-en="Your age">عمرك</label>
+        <input type="number" id="userAge" min="15" max="80" data-ar-placeholder="15 - 80" data-fr-placeholder="15 - 80" data-en-placeholder="15 - 80" placeholder="15 - 80">
+      </div>
+      <div>
+        <label id="partnerAgeLabel" data-ar="عمر الشريكة" data-fr="Âge de la partenaire" data-en="Partner's age">عمر الشريكة</label>
+        <input type="number" id="partnerAge" min="15" max="60" data-ar-placeholder="15 - 60" data-fr-placeholder="15 - 60" data-en-placeholder="15 - 60" placeholder="15 - 60">
+      </div>
+    </div>
+
+    <label id="tryingDurationLabel" data-ar="منذ متى تحاولان الإنجاب؟" data-fr="Depuis combien de temps essayez-vous ?" data-en="How long have you been trying?">منذ متى تحاولان الإنجاب؟</label>
+    <select id="tryingDuration">
+      <option value="less6" data-ar="أقل من 6 أشهر" data-fr="Moins de 6 mois" data-en="Less than 6 months">أقل من 6 أشهر</option>
+      <option value="6to12" data-ar="من 6 إلى 12 شهراً" data-fr="De 6 à 12 mois" data-en="6 to 12 months">من 6 إلى 12 شهراً</option>
+      <option value="over1" data-ar="أكثر من سنة" data-fr="Plus d'un an" data-en="Over 1 year">أكثر من سنة</option>
+      <option value="over2" data-ar="أكثر من سنتين" data-fr="Plus de 2 ans" data-en="Over 2 years">أكثر من سنتين</option>
     </select>
-    <button id="createMeetingBtn">➕ Create Meeting</button>
-    <div style="text-align:center; color:#94a3b8; font-size:12px; margin:5px 0;">Or</div>
-    <div id="joinRow">
-      <input type="text" id="joinMeetingCodeInput" placeholder="Meeting Code" maxlength="12">
-      <button id="joinMeetingBtn">Join</button>
+
+    <hr>
+    <h3 data-ar="أعراضك الحالية" data-fr="Vos symptômes" data-en="Your symptoms">أعراضك الحالية</h3>
+    <div class="checks" id="symptoms">
+      <label class="check"><input type="checkbox" value="erection"> <span data-ar="صعوبة متكررة في الحفاظ على الانتصاب" data-fr="Difficulté à maintenir une érection" data-en="Difficulty maintaining erection">صعوبة متكررة في الحفاظ على الانتصاب</span></label>
+      <label class="check"><input type="checkbox" value="desire"> <span data-ar="انخفاض ملحوظ في الرغبة الجنسية (خلال 3 أشهر)" data-fr="Baisse de la libido (3 mois)" data-en="Decreased libido (3 months)">انخفاض ملحوظ في الرغبة الجنسية (خلال 3 أشهر)</span></label>
+      <label class="check"><input type="checkbox" value="pain"> <span data-ar="ألم أو ثقل متكرر في كيس الصفن (> أسبوعين)" data-fr="Douleur scrotale (> 2 semaines)" data-en="Scrotal pain (> 2 weeks)">ألم أو ثقل متكرر في كيس الصفن (> أسبوعين)</span></label>
+      <label class="check"><input type="checkbox" value="lump"> <span data-ar="وجود كتلة صلبة أو تورم غير مؤلم في الخصية" data-fr="Masse dure ou gonflement indolore" data-en="Hard mass or painless swelling">وجود كتلة صلبة أو تورم غير مؤلم في الخصية</span></label>
+      <label class="check"><input type="checkbox" value="fatigue"> <span data-ar="تعب مستمر وفقدان للطاقة" data-fr="Fatigue persistante" data-en="Persistent fatigue">تعب مستمر وفقدان للطاقة</span></label>
     </div>
-    <button id="backToLandingFromMeetBtn">← Back</button>
-  </div>
-</div>
 
-<div id="remoteBar">
-  <div class="room-info">
-    <span>Room: <strong id="roomCodeLabel">------</strong></span>
-    <button id="copyRoomBtn">📋 Copy</button>
-  </div>
-  <span id="onlineCount">1/4</span>
-  <button id="remoteLockBtn">Lock</button>
-</div>
-
-<div class="top-header" id="topHeader" style="display:none;">
-  <div class="top-bar" id="topBar">
-    <div class="user-section" id="friendSection">
-      <span style="font-size:8px; color:#94a3b8;">Friend</span>
-      <select id="langB" class="lang-select">
-        <option value="fr">French</option><option value="ar">Arabic</option><option value="en">English</option>
-        <option value="de">German</option><option value="tr">Turkish</option><option value="it">Italian</option>
-        <option value="zh">Chinese</option><option value="ru">Russian</option><option value="es">Spanish</option>
-        <option value="pt">Portuguese</option><option value="nl">Dutch</option><option value="no">Norwegian</option>
-      </select>
-      <button id="micB" class="mic-btn green" title="Talk">🎤</button>
+    <hr>
+    <h3 data-ar="تقييم الشريكة (لإعطاء نتيجة أدق)" data-fr="Évaluation de la partenaire" data-en="Partner Evaluation">تقييم الشريكة (لإعطاء نتيجة أدق)</h3>
+    <div class="checks" id="partnerSymptoms">
+      <label class="check"><input type="checkbox" value="irregular"><span data-ar="دورة غير منتظمة (> 35 يوماً) أو انقطاع" data-fr="Cycle irrégulier (> 35 jours)" data-en="Irregular cycle (> 35 days)">دورة غير منتظمة (> 35 يوماً) أو انقطاع</span></label>
+      <label class="check"><input type="checkbox" value="pcos"><span data-ar="تشخيص مؤكد لمتلازمة تكيس المبايض (PCOS)" data-fr="Diagnostic confirmé de SOPK" data-en="Confirmed PCOS diagnosis">تشخيص مؤكد لمتلازمة تكيس المبايض (PCOS)</span></label>
+      <label class="check"><input type="checkbox" value="endo"><span data-ar="تاريخ طبي لبطانة الرحم المهاجرة" data-fr="Antécédent d'endométriose" data-en="History of endometriosis">تاريخ طبي لبطانة الرحم المهاجرة</span></label>
+      <label class="check"><input type="checkbox" value="tubes"><span data-ar="انسداد قنوات فالوب (مؤكد بالأشعة)" data-fr="Trompes bouchées (confirmé)" data-en="Blocked tubes (confirmed)">انسداد قنوات فالوب (مؤكد بالأشعة)</span></label>
+      <label class="check"><input type="checkbox" value="prevPreg"><span data-ar="وجود حمل سابق (حتى لو انتهى بإجهاض)" data-fr="Grossesse antérieure" data-en="Previous pregnancy">وجود حمل سابق (حتى لو انتهى بإجهاض)</span></label>
     </div>
-    <div class="user-section" id="youSection">
-      <span style="font-size:8px; color:#94a3b8;">You</span>
-      <select id="langA" class="lang-select">
-        <option value="ar">Arabic</option><option value="fr">French</option><option value="en">English</option>
-        <option value="de">German</option><option value="tr">Turkish</option><option value="it">Italian</option>
-        <option value="zh">Chinese</option><option value="ru">Russian</option><option value="es">Spanish</option>
-        <option value="pt">Portuguese</option><option value="nl">Dutch</option><option value="no">Norwegian</option>
-      </select>
-      <button id="micA" class="mic-btn blue" title="Talk">🎤</button>
+
+    <button class="btn full" id="analyzeBtn" data-ar="حلّل المؤشرات" data-fr="Analyser" data-en="Analyze">حلّل المؤشرات</button>
+    <div id="analysisResult"></div>
+    <button class="btn gold full hidden" id="saveAssessmentBtn" onclick="saveAssessment()" data-ar="حفظ التقييم في سجلي" data-fr="Enregistrer l'évaluation" data-en="Save Assessment">حفظ التقييم في سجلي</button>
+  </div>
+</section>
+
+<section id="digitalLab" class="hidden">
+  <div class="card">
+    <h2 data-ar="المختبر الرقمي للتنبؤ بالخصوبة" data-fr="Labo Numérique de Prédiction" data-en="Digital Fertility Lab">المختبر الرقمي للتنبؤ بالخصوبة</h2>
+    
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+        <div style="flex:1; margin-left:10px;">
+            <label data-ar="عمرك (لحساب عامل العمر)" data-fr="Votre âge (facteur d'âge)" data-en="Your age (age factor)">عمرك (لحساب عامل العمر)</label>
+            <input type="number" id="ageInputLab" onchange="calculateDigitalLab()" placeholder="أدخل عمرك">
+        </div>
+        <button class="btn secondary" style="margin-bottom:0;" onclick="resetLab()" data-ar="مسح الكل" data-fr="Réinitialiser" data-en="Reset">مسح الكل</button>
+    </div>
+
+    <div class="simulator-score" id="labScoreDisplay">
+        <span id="scoreText">100%</span>
+        <span onclick="showEvidence()" style="font-size: 20px; cursor: pointer; color: var(--primary);" title="المرجع العلمي">ℹ️</span>
+    </div>
+    
+    <div class="simulator-bar-container"><div class="simulator-bar" id="labBar" style="width:100%;"></div></div>
+    <p class="small" style="text-align:center;" data-ar="مؤشر الخصوبة التنبؤي" data-fr="Indice de fertilité prédictif" data-en="Predictive Fertility Score">مؤشر الخصوبة التنبؤي</p>
+    
+    <hr>
+    <h3 data-ar="1. البيئة والمهنة (Occupational)" data-fr="1. Environnement" data-en="1. Environment">1. البيئة والمهنة (Occupational)</h3>
+    <div class="checks" id="labEnv">
+      <label class="check"><input type="checkbox" value="heat" onchange="calculateDigitalLab()"> <span data-ar="العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات" data-fr="Travail à >35°C > 4h/jour" data-en="Work >35°C > 4h/day">العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات</span></label>
+      <label class="check"><input type="checkbox" value="welding" onchange="calculateDigitalLab()"> <span data-ar="لحام TIG/MIG أو صهر معادن" data-fr="Soudure TIG/MIG" data-en="TIG/MIG welding">لحام TIG/MIG أو صهر معادن</span></label>
+      <label class="check"><input type="checkbox" value="chemicals" onchange="calculateDigitalLab()"> <span data-ar="التعرض للمبيدات أو المذيبات" data-fr="Pesticides ou solvants" data-en="Pesticides or solvents">التعرض للمبيدات أو المذيبات</span></label>
+      <label class="check"><input type="checkbox" value="driving" onchange="calculateDigitalLab()"> <span data-ar="قيادة سيارة بدون تكييف > ساعتين يومياً" data-fr="Conduite sans climatisation > 2h/jour" data-en="Driving without AC > 2h/day">قيادة سيارة بدون تكييف > ساعتين يومياً</span></label>
+    </div>
+
+    <h3 data-ar="2. العادات اليومية (Micro-Habits)" data-fr="2. Habitudes quotidiennes" data-en="2. Daily Habits">2. العادات اليومية (Micro-Habits)</h3>
+    <div class="checks" id="labLife">
+      <label class="check"><input type="checkbox" value="laptop" onchange="calculateDigitalLab()"> <span data-ar="وضع اللابتوب على الحضن > ساعتين يومياً" data-fr="Ordinateur sur genoux > 2h/jour" data-en="Laptop on lap > 2h/day">وضع اللابتوب على الحضن > ساعتين يومياً</span></label>
+      <label class="check"><input type="checkbox" value="tightClothes" onchange="calculateDigitalLab()"> <span data-ar="ارتداء ملابس داخلية ضيقة (Briefs) أو حمامات ساخنة متكررة" data-fr="Sous-vêtements serrés ou bains chauds" data-en="Tight underwear or hot baths">ارتداء ملابس داخلية ضيقة (Briefs) أو حمامات ساخنة متكررة</span></label>
+      <label class="check"><input type="checkbox" value="smoking" onchange="calculateDigitalLab()"> <span data-ar="تدخين مكثف (> 10 سجائر) أو فيب" data-fr="Tabagisme intensif ou vape" data-en="Heavy smoking or vape">تدخين مكثف (> 10 سجائر) أو فيب</span></label>
+      <label class="check"><input type="checkbox" value="obesity" onchange="calculateDigitalLab()"> <span data-ar="سمنة (محيط الخصر > 102 سم)" data-fr="Obésité (taille > 102 cm)" data-en="Obesity (waist > 102 cm)">سمنة (محيط الخصر > 102 سم)</span></label>
+      <label class="check"><input type="checkbox" value="psychological" onchange="calculateDigitalLab()"> <span data-ar="ضغط نفسي شديد أو خوف من الفحص الطبي" data-fr="Stress intense ou peur de l'examen" data-en="Severe stress or fear of medical exam">ضغط نفسي شديد أو خوف من الفحص الطبي</span></label>
+    </div>
+
+    <h3 data-ar="3. التاريخ الطبي والأدوية (Medical)" data-fr="3. Médical" data-en="3. Medical">3. التاريخ الطبي والأدوية (Medical)</h3>
+    <div class="checks" id="labMed">
+      <label class="check"><input type="checkbox" value="mumps" onchange="calculateDigitalLab()"> <span data-ar="إصابة بالنكاف بعد البلوغ" data-fr="Oreillons après puberté" data-en="Mumps after puberty">إصابة بالنكاف بعد البلوغ</span></label>
+      <label class="check"><input type="checkbox" value="varicocele" onchange="calculateDigitalLab()"> <span data-ar="تشخيص مؤكد لدوالي الخصية" data-fr="Varicocèle confirmée" data-en="Confirmed varicocele">تشخيص مؤكد لدوالي الخصية</span></label>
+      <label class="check"><input type="checkbox" value="hairMeds" onchange="calculateDigitalLab()"> <span data-ar="تناول أدوية تساقط الشعر (Finasteride) أو حب الشباب" data-fr="Finastéride ou médicaments contre l'acné" data-en="Finasteride or acne meds">تناول أدوية تساقط الشعر (Finasteride) أو حب الشباب</span></label>
+      <label class="check"><input type="checkbox" value="testosterone" onchange="calculateDigitalLab()"> <span data-ar="استخدام ستيرويدات أو تستوستيرون" data-fr="Stéroïdes ou testostérone" data-en="Steroids or testosterone">استخدام ستيرويدات أو تستوستيرون</span></label>
+    </div>
+
+    <div class="analytics-box" id="labAnalytics">
+      <h4 data-ar="تحليل طبيبك:" data-fr="Analyse de votre médecin :" data-en="Your doctor's analysis:">تحليل طبيبك:</h4>
+      <p id="labDiag"></p>
+      <p id="labWhatIf" style="color:var(--primary); font-weight:bold;"></p>
+      <p id="labTimeline"></p>
+      <p id="labBenchmark"></p>
+    </div>
+
+    <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: #FFF8E8;">
+        <h3 style="margin-top:0; color:#8A6D2A;">⏳ رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</h3>
+        <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
+        <button class="btn gold full hidden" id="startJourneyBtn" onclick="startJourney()">ابدأ رحلة الـ 74 يوماً الآن</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="askDoctor" class="hidden">
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h2 data-ar="سجلي الطبي والتواصل" data-fr="Mon Dossier" data-en="My Record">سجلي الطبي والتواصل</h2>
+        <button onclick="lockProfile()" style="margin:0; padding:5px 10px; font-size:14px; background:var(--danger); color:white; border:0; border-radius:8px; cursor:pointer;">🔒 <span data-ar="قفل" data-fr="Verrouiller" data-en="Lock">قفل</span></button>
+    </div>
+
+    <!-- النسخ الاحتياطي والاستيراد -->
+    <div class="note" style="margin-bottom:15px;">
+        <strong>💾 حماية بياناتك:</strong> يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً.
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn secondary" style="margin:0; flex:1; font-size:12px;" onclick="exportData()">تصدير البيانات</button>
+            <label class="btn secondary" style="margin:0; flex:1; font-size:12px; text-align:center; cursor:pointer;">
+                استيراد البيانات
+                <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+            </label>
+        </div>
+    </div>
+    
+    <h3 data-ar="بيانات تحليل السائل المنوي (إن وجدت)" data-fr="Analyse du sperme (si disponible)" data-en="Semen Analysis (if available)">بيانات تحليل السائل المنوي (إن وجدت)</h3>
+    <div class="checks" style="grid-template-columns: 1fr 1fr;">
+      <div>
+        <label data-ar="العدد (مليون/مل)" data-fr="Numération (M/ml)" data-en="Count (M/ml)">العدد (مليون/مل)</label>
+        <input type="number" id="semenCount" placeholder="15">
+      </div>
+      <div>
+        <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
+        <input type="number" id="semenMotility" placeholder="40">
+      </div>
+    </div>
+    <div class="checks" style="grid-template-columns: 1fr 1fr;">
+        <div>
+            <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
+            <input type="number" id="semenMorphology" placeholder="4">
+        </div>
+        <div>
+            <label data-ar="تاريخ التحليل" data-fr="Date" data-en="Date">تاريخ التحليل</label>
+            <input type="date" id="semenDate">
+        </div>
+    </div>
+    <button class="btn secondary full" onclick="saveSemenData()" data-ar="حفظ بيانات التحليل" data-fr="Enregistrer" data-en="Save">حفظ بيانات التحليل</button>
+    <div id="semenMessage" class="small" style="color:green; margin-top:5px;"></div>
+
+    <h3 style="margin-top:20px;" data-ar="التحاليل الهرمونية (اختياري)" data-fr="Hormones (Optionnel)" data-en="Hormones (Optional)">التحاليل الهرمونية (اختياري)</h3>
+    <label data-ar="اسم التحليل" data-fr="Nom de l'analyse" data-en="Test name">اسم التحليل</label>
+    <input id="testName" type="text" placeholder="Testosterone">
+    <label data-ar="القيمة" data-fr="Valeur" data-en="Value">القيمة</label>
+    <input id="testValue" type="text" placeholder="450">
+    <label data-ar="تاريخ التحليل" data-fr="Date" data-en="Date">تاريخ التحليل</label>
+    <input id="testDate" type="date">
+    <button class="btn full" id="saveLabBtn" data-ar="حفظ النتيجة" data-fr="Enregistrer" data-en="Save">حفظ النتيجة</button>
+    <div id="labMessage" class="small" style="color:green; margin-top:5px;"></div>
+
+    <h3 style="margin-top:20px;" data-ar="نتائجك المحفوظة" data-fr="Résultats" data-en="Saved Results">نتائجك المحفوظة</h3>
+    <div id="recordList"></div>
+    
+    <hr>
+    <button class="btn gold full" onclick="openDoctorView()" data-ar="معاينة وطباعة تقرير الطبيب" data-fr="Aperçu et impression du rapport" data-en="Preview & Print Doctor's Report">معاينة وطباعة تقرير الطبيب</button>
+    
+    <hr>
+    <h3 data-ar="إرسال الملخص" data-fr="Envoyer le résumé" data-en="Send Summary">إرسال الملخص</h3>
+    <p class="small" data-ar="سيتم إرسال الملخص تلقائياً إلى الطبيب الأول في قائمتك. (يمكنك إضافة طبيبك من قائمة الأطباء)." data-fr="Le résumé sera envoyé automatiquement au premier médecin de votre liste." data-en="The summary will be automatically sent to the first doctor in your list.">سيتم إرسال الملخص تلقائياً إلى الطبيب الأول في قائمتك. (يمكنك إضافة طبيبك من قائمة الأطباء).</p>
+    <button class="btn full" id="sendToMyDoctorBtn" onclick="sendToMyDoctor()" data-ar="إرسال لطبيبي الآن" data-fr="Envoyer à mon médecin" data-en="Send to my Doctor">إرسال لطبيبي الآن</button>
+    <div id="shareMessage" class="small" style="text-align:center; margin-top:5px;"></div>
+  </div>
+</section>
+
+<section id="doctorsDirectory" class="hidden">
+  <div class="card">
+    <h2 data-ar="دليل الأطباء المتخصصين" data-fr="Annuaire des médecins" data-en="Doctors Directory">دليل الأطباء المتخصصين</h2>
+    <div id="doctorsList"></div>
+    
+    <hr>
+    <button class="btn secondary full" id="toggleAddDocBtn" onclick="toggleAddDoctorForm()" data-ar="إضافة طبيب جديد للقائمة" data-fr="Ajouter un nouveau médecin" data-en="Add New Doctor to List">إضافة طبيب جديد للقائمة</button>
+    
+    <div id="addDocForm" class="hidden" style="margin-top:15px;">
+        <h3 data-ar="بيانات الطبيب" data-fr="Détails du médecin" data-en="Doctor Details">بيانات الطبيب</h3>
+        <input type="text" id="newDocName" placeholder="اسم الطبيب">
+        <input type="text" id="newDocSpec" placeholder="التخصص">
+        <input type="text" id="newDocPhone" placeholder="رقم الهاتف">
+        <input type="text" id="newDocEmail" placeholder="البريد الإلكتروني (اختياري)">
+        <button class="btn full" onclick="addNewDoctor()" data-ar="حفظ الطبيب" data-fr="Enregistrer" data-en="Save Doctor">حفظ الطبيب</button>
+        <div id="addDocMessage" class="small" style="text-align:center; margin-top:5px;"></div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="extra-controls" id="extraControls" style="display:none;">
-    <button id="translateModeBtn" class="active">Translator Mode ON</button>
-    <select id="voiceSelect">
-      <option value="man">👨 Men</option><option value="woman">👩 Woman</option><option value="girl">👧 Girl</option><option value="child">🧒 Child</option>
-    </select>
-    <button id="uploadBtn">📁 Avatar</button>
-    <button id="backBtn" class="btn-back">Back</button>
-</div>
-
-<div id="videoContainer">
-  <video id="remoteVideo" autoplay playsinline></video>
-  <video id="localVideo" autoplay playsinline muted></video>
-  <div id="videoStatus">📡 متصل بالكاميرا</div>
-  <button id="closeVideoFullscreen" title="إغلاق"><div class="inner-white-dot"></div></button>
-</div>
-
-<div id="meetingGridContainer">
-  <div id="videoGrid"></div>
-</div>
-
-<div id="avatar-wrap" style="display:none;">
-  <div id="avatar-container">
-    <img id="avatar-logo" src="https://cdn.jsdelivr.net/gh/bobo333med-alt/vibe-core@main/image_718b1365.jpg" alt="Logo" onerror="this.src='https://cdn.jsdelivr.net/gh/bobo333med-alt/vibe-core@main/image_bb189f9b%20%281%29.jpg'">
-    <video id="avatar-video" autoplay loop muted playsinline></video>
+<section id="chatbot" class="hidden">
+  <div class="card">
+    <h2 data-ar="المساعد الطبي الذكي" data-fr="Assistant Médical" data-en="AI Medical Assistant">المساعد الطبي الذكي</h2>
+    <div class="chat-container">
+      <div class="chat-header">
+        <span class="small">SahaPath AI</span>
+        <button class="btn secondary" style="margin:0; padding:5px 10px; font-size:12px;" onclick="clearChat()" data-ar="مسح الشاشة" data-fr="Effacer" data-en="Clear Screen">مسح الشاشة</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="quick-replies">
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="ما هي دوالي الخصية؟" data-fr="Qu'est-ce qu'une varicocèle ?" data-en="What is varicocele?">ما هي دوالي الخصية؟</button>
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="تحليل السائل المنوي" data-fr="Analyse du sperme" data-en="Semen analysis">تحليل السائل المنوي</button>
+        <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="التستوستيرون والخصوبة" data-fr="Testostérone et fertilité" data-en="Testosterone and fertility">التستوستيرون والخصوبة</button>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="handleChatEnter(event)">
+        <button class="btn" onclick="sendChatMessage()">➤</button>
+      </div>
+    </div>
   </div>
-  <button id="removeAvatarBtn" title="Reset Avatar"></button>
-  <button id="closeFullscreen" title="Close"><div class="inner-white-dot"></div></button>
-</div>
+</section>
 
-<div class="chat-container" id="chatContainer" style="display:none;">
-  <div id="chat"></div>
-  <button id="clearBtn" title="Clear Chat"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
-</div>
-
-<div id="imagePreviewContainer">
-  <img id="imagePreview" src="" alt="Preview">
-  <button id="cancelImageBtn">✕</button>
-</div>
-
-<div class="row" id="inputRow" style="display:none;">
-  <button class="btn" id="musicBtn" title="Music">🎵</button>
-  <button class="btn" id="mediaBtn" title="Media">+</button>
-  
-  <button class="btn" id="toggleCamBtn" title="Toggle Camera">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM14 13H6v-2h8v2z"/></svg>
-  </button>
-
-  <button class="btn" id="remoteMicBtn" title="Talk">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-  </button>
-
-  <div style="flex: 1; position: relative; display: flex; align-items: center; order: 3;">
-    <input type="text" id="textInput" placeholder="Type..." style="width: 100%; order: 0;" />
-    <button id="stopAudioBtn" title="Stop Audio"><svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg></button>
+<section id="hopeStories" class="hidden">
+  <div class="card">
+    <h2 data-ar="قصص أمل حقيقية" data-fr="Histoires d'espoir" data-en="Real Stories of Hope">قصص أمل حقيقية</h2>
+    <p class="small" data-ar="حالات سريرية موثقة، نرويها بأسلوب طبي مبسط ليمنحك الأمل." data-fr="Cas cliniques documentés, racontés de manière simple." data-en="Documented clinical cases, told in a simple medical way.">حالات سريرية موثقة، نرويها بأسلوب طبي مبسط ليمنحك الأمل.</p>
+    
+    <button class="btn gold full" onclick="openStoryModal()" data-ar="أضف قصتك" data-fr="Ajouter votre histoire" data-en="Add Your Story">أضف قصتك</button>
+    
+    <div id="storiesContainer" style="margin-top:15px;"></div>
+    <h3 style="margin-top:20px;" data-ar="قصص المستخدمين" data-fr="Histoires des utilisateurs" data-en="User Stories">قصص المستخدمين</h3>
+    <div id="userStoriesContainer"></div>
   </div>
+</section>
 
-  <button class="btn" id="sendBtn" title="Send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-</div>
-<div id="status" class="status-text" style="display:none;">Ready</div>
+</main>
 
-<div id="actionMenu">
-  <button class="action-btn" id="menuCamera">📸 Camera</button>
-  <button class="action-btn" id="menuGallery">🖼️ Gallery</button>
-  <button class="action-btn" id="menuVideo">🎬 Video</button>
-</div>
-<input type="file" id="cameraUpload" accept="image/*" capture="environment" style="display: none;">
-<input type="file" id="galleryUpload" accept="image/*" style="display: none;">
-<input type="file" id="videoUpload" accept="video/*,audio/*" style="display: none;">
-<input type="file" id="audioUpload" accept="audio/*" multiple style="display: none;">
-<input type="file" id="videoAvatarUpload" accept="video/*" style="display: none;">
-<audio id="bgAudio"></audio>
-<div id="musicMenu"><h4>🎵 Playlist</h4><div id="musicList"></div></div>
+<footer id="footerText" data-ar="SahaPath AI – نسخة تعليمية. لا تستبدل الاستشارة الطبية." data-fr="SahaPath AI – Démo éducative." data-en="SahaPath AI – Educational demo.">SahaPath AI – نسخة تعليمية. لا تستبدل الاستشارة الطبية.</footer>
 
 <script>
-'use strict';
+document.addEventListener("DOMContentLoaded", function() {
+  
+  const hopeStoriesData = [
+    { id:1, ar:{title:"قصة أمل: شاب استعاد حيواناته المنوية من الصفر", problem:"شاب في الـ 26 اكتشف مؤخراً انعدام الحيوانات المنوية بسبب دوالي الخصية، وشعر باليأس الشديد.", result:"أجرى عملية دقيقة جداً لربط الأوردة مع علاج هرموني. النتيجة: استعاد جسمه إنتاجه الطبيعي (26 مليون/مل)، واليوم هو أب لطفل سليم."}, fr:{title:"Histoire d'espoir: De zéro à la paternité", problem:"Un jeune homme de 26 ans a découvert une absence de spermatozoïdes due à une varicocèle.", result:"Après une microchirurgie et un traitement hormonal, sa production est revenue à la normale (26M/ml). Il est aujourd'hui père."}, en:{title:"Hope Story: From Zero to Fatherhood", problem:"A 26-year-old discovered he had zero sperm due to a varicocele, feeling deep despair.", result:"After precise microsurgery and hormonal therapy, his natural production returned (26M/ml). Today, he is a father to a healthy child."}, source:"https://www.medicoverhospitals.in" },
+    { id:2, ar:{title:"قصة إسلام: الأمل بعد جراحة غير دقيقة", problem:"انخفض عدد الحيوانات المنوية إلى صفر بعد عملية سابقة، ونُصح بعملية استخراج مؤلمة جداً.", result:"لجأ لمركز متخصص، وأجرى عملية دقيقة لإصلاح انسداد ثانوي. عاد العدد إلى 10 ملايين ورُزق بمولود بعد حمل طبيعي."}, fr:{title:"L'histoire d'Islam: L'espoir après une erreur", problem:"Sa numération est tombée à zéro après une opération. On lui a conseillé une extraction douloureuse.", result:"Dans un centre spécialisé, une microchirurgie a réparé l'obstruction. La numération est remontée à 10 millions, et il a eu un bébé."}, en:{title:"Islam's Story: Hope After Surgery", problem:"His sperm count dropped to zero after a previous operation. He was advised to undergo a painful extraction.", result:"At a specialized center, microsurgery repaired a secondary obstruction. Count returned to 10M, and he had a baby naturally."}, source:"https://misrandrology.com" },
+    { id:3, ar:{title:"بعد 20 عاماً من اليأس... معجزة طبية", problem:"رجل (39 عاماً) عانى من العقم 20 عاماً، ونُصح باستخدام أجنة متبرع بها.", result:"تم إصلاح انسداد القنوات المنوية بجراحة دقيقة. عاد التحليل طبيعياً بعد 3 أشهر، وأنجب طفلاً يحمل جيناته."}, fr:{title:"Après 20 ans de désespoir... un miracle", problem:"Un homme (39 ans) a souffert d'infertilité pendant 20 ans. On lui a conseillé des embryons de donneur.", result:"Une microchirurgie a rétabli les canaux. L'analyse est redevenue normale en 3 mois, et il a eu un enfant biologique."}, en:{title:"After 20 Years of Despair... A Miracle", problem:"A 39-year-old suffered from infertility for 20 years. He was advised to use donor embryos.", result:"Microsurgery restored the ducts. Test became normal after 3 months, and he had his biological child."}, source:"https://tums.ac.ir" },
+    { id:4, ar:{title:"الحمل العفوي بعد جراحة معقدة", problem:"انخفاض شديد في السائل المنوي وضعف حركة الحيوانات المنوية بعد جراحة قديمة.", result:"تم استئصال كيس في البروستاتا وإصلاح دوالي الخصية. حدث حمل عفوي بعد شهرين فقط وعادت التحاليل طبيعية."}, fr:{title:"Grossesse naturelle après une chirurgie", problem:"Faible volume séminal et mauvaise motilité après une ancienne chirurgie.", result:"Excision d'un kyste prostatique et cure de varicocèle. Grossesse naturelle après 2 mois."}, en:{title:"Natural Pregnancy After Complex Surgery", problem:"Low semen volume and poor motility after old surgery.", result:"Prostatic cyst excision and varicocele repair. Natural pregnancy after 2 months."}, source:"https://pubmed.ncbi.nlm.nih.gov" },
+    { id:5, ar:{title:"التغلب على انعدام الحيوانات المنوية", problem:"فشل محاولات حقن مجهري سابقة في مراكز أخرى، مما أصاب الزوجين بالإحباط.", result:"تم استخراج حيوانات منوية نادرة بالمجهر (Micro-TESE). نجحت محاولة الحقن المجهري ووُلدت طفلة سليمة."}, fr:{title:"Vaincre l'azoospermie", problem:"Échec des tentatives de FIV dans d'autres centres.", result:"Extraction de spermatozoïdes rares par Micro-TESE. FIV-ICSI réussie, naissance d'une fille."}, en:{title:"Overcoming Azoospermia", problem:"Failed IVF attempts at other clinics, causing frustration.", result:"Rare sperm found via Micro-TESE. Successful ICSI, healthy girl born."}, source:"https://www.ivf-tunisia.com" },
+    { id:6, ar:{title:"الأمل بعد تشخيص متلازمة كلاينفلتر", problem:"مريض (45 عاماً) بمتلازمة كلاينفلتر الفسيفسائية مع انخفاض شديد في الحيوانات.", result:"استخدام حيوانات منوية من القذف في دورة حقن مجهري ناجحة. وُلد طفل سليم."}, fr:{title:"Klinefelter", problem:"Patient (45 ans) avec KS mosaïque.", result:"ICSI réussie avec sperme éjaculé, naissance d'un enfant sain."}, en:{title:"Hope After Klinefelter Syndrome", problem:"45yo male with mosaic KS.", result:"Successful ICSI with ejaculated sperm, healthy child born."}, source:"https://www.fertstert.org" },
+    { id:7, ar:{title:"طفل سليم رغم حذف الكروموسوم Y", problem:"انعدام حيوانات منوية بسبب حذف جيني في الكروموسوم Y.", result:"تم استخراج حيوانات منوية بالمجهر (Micro-TESE) ونجح الحمل. الطفل يحمل نفس الحذف الجيني لكنه سليم."}, fr:{title:"Délétion Y", problem:"Azoospermie due à une microdélétion.", result:"Micro-TESE réussie. L'enfant porte la même délétion mais est en bonne santé."}, en:{title:"Healthy Child Despite Y Deletion", problem:"Azoospermia due to genetic deletion.", result:"Successful Micro-TESE. The child carries the same deletion but is healthy."}, source:"https://www.ncbi.nlm.nih.gov" },
+    { id:8, ar:{title:"التغلب على انعدام النطف بسبب النكاف", problem:"التهاب خصية بسبب النكاف في سن 19 أدى إلى ضمور وانعدام تام للنطف.", result:"تم اللجوء لـ Micro-TESE لاستخراج نطف حية. نجح الحقن المجهري ورُزق بطفل."}, fr:{title:"Azoospermie post-oreillons", problem:"Orchite ourlienne à 19 ans causant une atrophie.", result:"Micro-TESE. Spermatozoïdes vivants extraits, ICSI réussie."}, en:{title:"Overcoming Mumps-Induced Azoospermia", problem:"Mumps orchitis at 19 causing atrophy.", result:"Micro-TESE. Viable sperm extracted, successful ICSI."}, source:"https://academic.oup.com" },
+    { id:9, ar:{title:"علاج الانسداد يعيد الأمل", problem:"انعدام حيوانات منوية انسدادي بسبب كيس في البروستاتا.", result:"تم استئصال الكيس بالمنظار. عاد السائل المنوي طبيعياً وحدث حمل عفوي."}, fr:{title:"Traitement de l'obstruction", problem:"Azoospermie obstructive due à un kyste prostatique.", result:"Excision du kyste par coelioscopie. Retour à la normale et grossesse naturelle."}, en:{title:"Obstruction Treatment Restores Hope", problem:"Obstructive azoospermia due to prostatic cyst.", result:"Laparoscopic cyst excision. Normal semen and natural pregnancy."}, source:"https://www.mayoclinic.org" },
+    { id:10, ar:{title:"طفل بعد رحلة علاج السرطان", problem:"انعدام حيوانات منوية بعد جلسات علاج كيميائي لسرطان الغدد الليمفاوية.", result:"تم إجراء Micro-TESE بعد سنتين. تم استخراج نطف ونجح الحمل."}, fr:{title:"Bébé après un cancer", problem:"Azoospermie après chimiothérapie pour lymphome.", result:"Micro-TESE réalisée 2 ans après. Spermatozoïdes extraits, grossesse réussie."}, en:{title:"Child After Cancer Treatment", problem:"Azoospermia after lymphoma chemotherapy.", result:"Micro-TESE performed 2 years later. Sperm extracted, pregnancy successful."}, source:"https://www.eshre.eu" }
+  ];
 
-// ==========================================
-// Firebase Configuration & Auth Logic
-// ==========================================
-const firebaseConfig = {
-  apiKey: "AIzaSyCCp08HOuP4vpXlvBkzjOgGAwQoeTsOKJ8",
-  authDomain: "chat-core-app.firebaseapp.com",
-  projectId: "chat-core-app",
-  storageBucket: "chat-core-app.firebasestorage.app",
-  messagingSenderId: "216958872856",
-  appId: "1:216958872856:web:f03d559611b327c91b426d",
-  measurementId: "G-DHB0S6TW96"
-};
+  const defaultDoctors = [
+    { ar:{name:"د. أحمد التونسي", spec:"أخصائي مسالك ذكرية", addr:"شارع الحبيب بورقيبة، تونس", card:"خبير في جراحات الدوالي."}, fr:{name:"Dr. Ahmed", spec:"Urologue", addr:"Tunis", card:"Expert en varicocèle."}, en:{name:"Dr. Ahmed", spec:"Urologist", addr:"Tunis", card:"Varicocele expert."}, phone:"21671123456", email:"dr.ahmed@clinictunisia.tn" },
+    { ar:{name:"د. سارة المصري", spec:"استشاري خصوبة", addr:"مدينة نصر، القاهرة", card:"متخصصة في انعدام الحيوانات."}, fr:{name:"Dr. Sara", spec:"Fertilité", addr:"Le Caire", card:"Spécialiste azoospermie."}, en:{name:"Dr. Sara", spec:"Fertility", addr:"Cairo", card:"Azoospermia specialist."}, phone:"201012345678", email:"dr.sara@fertilitycairo.com" }
+  ];
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-let isLoginMode = true;
-let currentUser = null;
-let currentAuthLang = 'ar';
-
-const AUTH_TRANS = {
-    'ar': {
-        loginTitle: 'تسجيل الدخول', registerTitle: 'إنشاء حساب جديد',
-        email: 'البريد الإلكتروني', pass: 'كلمة المرور',
-        btnLogin: 'دخول', btnRegister: 'تسجيل',
-        toggleToReg: 'إنشاء حساب جديد', toggleToLogin: 'لديك حساب بالفعل؟ سجل دخولك',
-        or: 'أو', google: 'تسجيل الدخول بواسطة Google', github: 'تسجيل الدخول بواسطة GitHub', twitter: 'تسجيل الدخول بواسطة X'
-    },
-    'fr': {
-        loginTitle: 'Connexion', registerTitle: 'Créer un compte',
-        email: 'Adresse e-mail', pass: 'Mot de passe',
-        btnLogin: 'Se connecter', btnRegister: "S'inscrire",
-        toggleToReg: 'Créer un compte', toggleToLogin: 'Déjà un compte ? Connectez-vous',
-        or: 'Ou', google: 'Continuer avec Google', github: 'Continuer avec GitHub', twitter: 'Continuer avec X'
-    },
-    'en': {
-        loginTitle: 'Login', registerTitle: 'Create Account',
-        email: 'Email Address', pass: 'Password',
-        btnLogin: 'Login', btnRegister: 'Register',
-        toggleToReg: 'Create Account', toggleToLogin: 'Already have an account? Login',
-        or: 'Or', google: 'Continue with Google', github: 'Continue with GitHub', twitter: 'Continue with X'
-    }
-};
-
-function changeAuthLang(lang) {
-    currentAuthLang = lang;
-    localStorage.setItem('authLang', lang);
-    
-    const htmlRoot = document.getElementById('htmlRoot');
-    htmlRoot.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-    htmlRoot.setAttribute('lang', lang);
-    
-    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    Array.from(document.querySelectorAll('.lang-btn')).find(b => b.textContent.toLowerCase() === lang.toLowerCase()).classList.add('active');
-
-    const t = AUTH_TRANS[lang];
-    document.getElementById('authTitle').textContent = isLoginMode ? t.loginTitle : t.registerTitle;
-    document.getElementById('authEmail').placeholder = t.email;
-    document.getElementById('authPassword').placeholder = t.pass;
-    document.getElementById('authSubmitBtn').textContent = isLoginMode ? t.btnLogin : t.btnRegister;
-    document.getElementById('authToggleBtn').textContent = isLoginMode ? t.toggleToReg : t.toggleToLogin;
-    document.getElementById('authDivider').textContent = t.or;
-    document.getElementById('btnAuthGoogle').textContent = '🌐 ' + t.google;
-    document.getElementById('btnAuthGithub').textContent = '🐙 ' + t.github;
-    document.getElementById('btnAuthTwitter').textContent = '🐦 ' + t.twitter;
-}
-
-function toggleAuthMode() {
-    isLoginMode = !isLoginMode;
-    changeAuthLang(currentAuthLang); 
-    document.getElementById('authError').textContent = '';
-}
-
-function showAuthError(msg) {
-    document.getElementById('authError').textContent = msg;
-}
-
-function handleEmailAuth() {
-    const email = document.getElementById('authEmail').value;
-    const password = document.getElementById('authPassword').value;
-    if(!email || !password) return showAuthError("Please fill all fields");
-    
-    showAuthError("");
-    document.getElementById('authSubmitBtn').textContent = "...";
-
-    if(isLoginMode) {
-        auth.signInWithEmailAndPassword(email, password).catch(err => {
-            showAuthError(err.message);
-            changeAuthLang(currentAuthLang);
-        });
-    } else {
-        auth.createUserWithEmailAndPassword(email, password).catch(err => {
-            showAuthError(err.message);
-            changeAuthLang(currentAuthLang);
-        });
-    }
-}
-
-function loginWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithRedirect(provider).catch(err => showAuthError(err.message));
-}
-
-function loginWithGithub() {
-    const provider = new firebase.auth.GithubAuthProvider();
-    auth.signInWithRedirect(provider).catch(err => showAuthError(err.message));
-}
-
-function loginWithTwitter() {
-    const provider = new firebase.auth.TwitterAuthProvider();
-    auth.signInWithRedirect(provider).catch(err => showAuthError(err.message));
-}
-
-function logoutUser() {
-    auth.signOut().then(() => { 
-        // عند تسجيل الخروج، سيتم إعادة تحميل الصفحة وإظهار صفحة الدخول
-        window.location.reload(); 
-    });
-}
-
-auth.getRedirectResult().then((result) => {
-    if (result.credential) { console.log("Logged in via redirect"); }
-}).catch((error) => { showAuthError(error.message); });
-
-auth.onAuthStateChanged(user => {
-    const authOverlay = document.getElementById('authOverlay');
-    const landingOverlay = document.getElementById('landingOverlay');
-    
-    if (user) {
-        currentUser = user;
-        authOverlay.style.display = 'none';
-        landingOverlay.style.display = 'flex';
+  const translations = {
+    ar: { 
+        chatWelcome:"مرحباً بك! كيف يمكنني مساعدتك اليوم؟", noData:"لا توجد بيانات.", needFields:"يرجى ملء الحقول المطلوبة.", shareCopied:"تم النسخ!", docSaved:"تم حفظ الطبيب!", needDoc:"أدخل اسم الطبيب ورقم الهاتف.",
+        chatFallback:"عذراً، لا أملك معلومات كافية. راجع الطبيب.", chatVaricocele:"دوالي الخصية هي توسع في الأوردة، تؤثر على الحرارة وإنتاج الحيوانات المنوية.", chatSemen:"للاستعداد لتحليل السائل المنوي، امتنع عن القذف 2-5 أيام.", chatTestosterone:"التستوستيرون الخارجي يثبط إنتاج الحيوانات المنوية.",
+        noDoctorSelected:"الرجاء اختيار طبيب أولاً.", pinCreate:"قم بإنشاء رمز PIN جديد", pinConfirm:"تأكيد الرمز", pinEnter:"أدخل رمز PIN", pinWrong:"الرمز غير صحيح!", pinMismatch:"الرموز غير متطابقة!", pinLength:"أدخل 4 أرقام.",
+        labDiag:"التشخيص:", labNoRisk:"لا توجد عوامل خطر مختارة. أنت في حالة ممتازة.", labAgeFactor:"عامل العمر: تم خصم 10% (لأن العمر فوق 40).", 
+        labWhatIf:"خبر جيد لك: 💡", labMaxRisk:"إذا تخلصت من أكبر عامل خطر لديك، سيرتفع مؤشرك إلى:",
+        labTimeline:"تذكر دائماً: ⏳", labTimelineText:"جسمك يحتاج 74 يوماً (شهرين ونصف) لتكوين حيوانات منوية جديدة. لا تستعجل النتائج، فقط استمر في العادات الصحية وسترى الفرق.",
+        labBenchmark:"مقارنة سريعة: 📊", labBenchmarkText:"مؤشرك الحالي أقل من المعدل المثالي لرجل في عمرك، لكن التغيير يبدأ بخطوة واحدة، وأنت قادر على ذلك.",
+        storySaved:"تم نشر قصتك!", needStory:"اكتب قصتك أولاً.", assessmentSaved:"تم حفظ التقييم في السجل الطبي.", noDoctorFound:"لم يتم العثور على طبيب في القائمة. يرجى إضافة طبيب من قسم (قائمة الأطباء).",
+        exportSuccess:"تم تصدير البيانات بنجاح!", importSuccess:"تم استيراد البيانات بنجاح! سيتم إعادة تحميل الصفحة.", importError:"ملف غير صالح!",
         
-        // تعبئة اسم المستخدم في خانات الغرف والاجتماعات
-        const displayName = user.displayName || user.email.split('@')[0];
-        document.getElementById('playerName').value = displayName;
-        document.getElementById('meetPlayerName').value = displayName;
+        solVaricocele:"نصيحة طبيبك: لا تقلق، الدوالي سبب شائع جداً وعلاجه فعال. توجد عملية جراحية دقيقة (ربط الأوردة بالمجهر) تضاعف من فرص الحمل الطبيعي. ناقشها مع طبيبك.",
+        solErection:"نصيحة طبيبك: ضعف الانتصاب قد يكون مرتبطاً بالتوتر أو هرمونات أو أدوية. لا تقلق، طبيبك سيقوم بفحص بسيط للتستوستيرون وسيوجهك للعلاج المناسب.",
+        solDesire:"نصيحة طبيبك: انخفاض الرغبة له أسباب كثيرة (نفسية أو هرمونية). تحدث مع طبيبك بصراحة، فالحل بسيط في كثير من الحالات.",
+        solMumps:"نصيحة طبيبك: النكاف بعد البلوغ قد يؤثر على الخصية. لكن لا تقلق، توجد تقنيات متقدمة لاستخراج الحيوانات المنوية (Micro-TESE) حققت نجاحات كبيرة.",
+        solUndescended:"نصيحة طبيبك: بما أنك أجريت عملية إنزال الخصية سابقاً، ننصحك بمتابعة دورية بسيطة لتقييم أي تأثير على الخصوبة. أنت في أيدٍ أمينة.",
+        solTestosterone:"نصيحة طبيبك: التستوستيرون الخارجي يوقف إنتاج الحيوانات المنوية. لا تقلق، بإشراف الطبيب يمكنك التوقف عنه واستخدام أدوية بديلة (مثل Clomiphene) لاستعادة الإنتاج الطبيعي.",
+        solPain:"نصيحة طبيبك: الألم المتكرر قد يكون بسبب دوالي أو التهاب. فحص بسيط بالموجات فوق الصوتية (Doppler) سيحدد السبب بدقة وسنعالجه.",
+        solLump:"نصيحة طبيبك: وجود كتلة يتطلب فحصاً فورياً. لا تيأس، معظم الكتل حميدة، لكن الفحص المبكر يضمن سلامتك.",
+        solFatigue:"نصيحة طبيبك: التعب المستمر قد يكون بسبب نقص التستوستيرون أو الغدة الدرقية. ننصحك بفحص شامل بسيط لمعرفة السبب.",
+        solPartnerPCOS:"نصيحة طبيبة الشريكة: تكيس المبايض سبب شائع جداً وقابل للعلاج. زيارة طبيبة النساء وتنظيم التبويض أو تعديل نمط الحياة كفيل بحدوث حمل بإذن الله.",
+        solPartnerTubes:"نصيحة طبيبة الشريكة: انسداد القنوات قد يحتاج تدخلاً بسيطاً بالمنظار أو أطفال الأنابيب. تحدثا معاً كفريق واحد مع الطبيب.",
+        solPartnerEndo:"نصيحة طبيبة الشريكة: بطانة الرحم المهاجرة تحتاج تقييماً متخصصاً. استشارة طبيبة خصوبة هي الخطوة الصحيحة والأولى.",
+        solPartnerIrregular:"نصيحة طبيبة الشريكة: الدورة غير المنتظمة تعني أن التبويض غير منتظم. فحص هرموني بسيط سيساعد في ضبطها وتحسين فرص الحمل."
+    },
+    fr: { 
+        chatWelcome:"Bienvenue ! Comment puis-je vous aider ?", noData:"Aucune donnée.", needFields:"Remplissez les champs.", shareCopied:"Copié!", docSaved:"Médecin enregistré!", needDoc:"Entrez le nom et le téléphone.",
+        chatFallback:"Désolé, pas assez d'infos.", chatVaricocele:"La varicocèle est une dilatation des veines.", chatSemen:"Abstenez-vous 2-5 jours pour l'analyse.", chatTestosterone:"La testostérone externe supprime les spermatozoïdes.",
+        noDoctorSelected:"Sélectionnez un médecin.", pinCreate:"Créez un code PIN", pinConfirm:"Confirmez le code", pinEnter:"Entrez le code PIN", pinWrong:"Code incorrect!", pinMismatch:"Les codes ne correspondent pas!", pinLength:"Entrez 4 chiffres.",
+        labDiag:"Diagnostic :", labNoRisk:"Aucun facteur sélectionné. Vous êtes au top !", labAgeFactor:"Âge : -10% (plus de 40 ans).", 
+        labWhatIf:"Bonne nouvelle : 💡", labMaxRisk:"Si vous éliminez votre plus grand risque, votre indice montera à :",
+        labTimeline:"Rappelez-vous : ⏳", labTimelineText:"Votre corps a besoin de 74 jours pour régénérer les spermatozoïdes. Ne soyez pas pressé, continuez vos bonnes habitudes.",
+        labBenchmark:"Comparaison : 📊", labBenchmarkText:"Votre score est inférieur à la moyenne idéale pour votre âge, mais le changement commence par une étape. Vous pouvez le faire !",
+        storySaved:"Histoire publiée!", needStory:"Écrivez votre histoire.", assessmentSaved:"Évaluation enregistrée.", noDoctorFound:"Aucun médecin trouvé. Ajoutez-en un dans l'annuaire.",
+        exportSuccess:"Données exportées!", importSuccess:"Données importées!", importError:"Fichier invalide!",
         
-    } else {
-        currentUser = null;
-        authOverlay.style.display = 'flex';
-        landingOverlay.style.display = 'none';
+        solVaricocele:"Conseil de votre médecin : Ne vous inquiétez pas, la varicocèle est une cause fréquente et traitable. La microchirurgie double les chances de grossesse naturelle.",
+        solErection:"Conseil de votre médecin : L'absence d'érection peut être liée au stress, aux hormones ou aux médicaments. Ne vous inquiétez pas, un simple test de testostérone aidera.",
+        solDesire:"Conseil de votre médecin : La baisse de libido a plusieurs causes. Parlez-en ouvertement à votre médecin.",
+        solMumps:"Conseil de votre médecin : Les oreillons peuvent affecter les testicules. Ne vous inquiétez pas, la Micro-TESE offre d'excellents résultats.",
+        solUndescended:"Conseil de votre médecin : Un suivi régulier est recommandé pour évaluer la fertilité. Vous êtes entre de bonnes mains.",
+        solTestosterone:"Conseil de votre médecin : Sous surveillance médicale, vous pouvez arrêter la testostérone et utiliser des alternatives comme le Clomifène.",
+        solPain:"Conseil de votre médecin : Une échographie Doppler simple identifiera la cause de la douleur pour un traitement précis.",
+        solLump:"Conseil de votre médecin : Une masse nécessite un examen immédiat. Ne paniquez pas, la plupart sont bénignes, mais il faut vérifier.",
+        solFatigue:"Conseil de votre médecin : La fatigue peut être liée à la testostérone ou à la thyroïde. Un bilan simple est recommandé.",
+        solPartnerPCOS:"Conseil pour votre partenaire : Le SOPK est très courant et traitable. Consultez une gynécologue.",
+        solPartnerTubes:"Conseil pour votre partenaire : L'obstruction peut nécessiter une cœlioscopie ou une FIV.",
+        solPartnerEndo:"Conseil pour votre partenaire : L'endométriose nécessite un avis spécialisé en fertilité.",
+        solPartnerIrregular:"Conseil pour votre partenaire : Un bilan hormonal simple aidera à réguler l'ovulation."
+    },
+    en: { 
+        chatWelcome:"Welcome! How can I help you?", noData:"No data.", needFields:"Fill fields.", shareCopied:"Copied!", docSaved:"Doctor saved!", needDoc:"Enter name and phone.",
+        chatFallback:"Sorry, not enough info.", chatVaricocele:"Varicocele is a vein dilation affecting sperm.", chatSemen:"Abstain 2-5 days for semen analysis.", chatTestosterone:"External testosterone suppresses sperm.",
+        noDoctorSelected:"Select a doctor first.", pinCreate:"Create PIN", pinConfirm:"Confirm PIN", pinEnter:"Enter PIN", pinWrong:"Incorrect PIN!", pinMismatch:"PINs do not match!", pinLength:"Enter 4 digits.",
+        labDiag:"Diagnosis:", labNoRisk:"No risk factors selected. You are at your best!", labAgeFactor:"Age: -10% (over 40).", 
+        labWhatIf:"Good news: 💡", labMaxRisk:"If you eliminate your biggest risk, your score will rise to:",
+        labTimeline:"Always remember: ⏳", labTimelineText:"Your body needs 74 days to regenerate sperm. Don't rush the results, just keep up the healthy habits.",
+        labBenchmark:"Quick comparison: 📊", labBenchmarkText:"Your current score is below the ideal average for your age, but change starts with one step. You can do it!",
+        storySaved:"Story published!", needStory:"Write your story.", assessmentSaved:"Assessment saved.", noDoctorFound:"No doctor found in your list. Please add one in Doctors Directory.",
+        exportSuccess:"Data exported successfully!", importSuccess:"Data imported successfully! Page will reload.", importError:"Invalid file!",
+        
+        solVaricocele:"Doctor's advice: Don't worry, varicocele is a very common and treatable cause. Microsurgery doubles natural pregnancy chances.",
+        solErection:"Doctor's advice: Erectile dysfunction can be linked to stress, hormones, or meds. A simple testosterone test will guide us.",
+        solDesire:"Doctor's advice: Low libido has many causes. Talk openly with your doctor, the solution is often simple.",
+        solMumps:"Doctor's advice: Mumps can affect testicles. Don't worry, advanced techniques like Micro-TESE offer great success.",
+        solUndescended:"Doctor's advice: Regular follow-up is recommended to assess fertility. You are in good hands.",
+        solTestosterone:"Doctor's advice: Under medical supervision, you can stop testosterone and use alternatives like Clomiphene.",
+        solPain:"Doctor's advice: A simple Doppler ultrasound will identify the cause of pain for precise treatment.",
+        solLump:"Doctor's advice: A mass requires immediate examination. Don't panic, most are benign, but early check is key.",
+        solFatigue:"Doctor's advice: Fatigue can be linked to low testosterone or thyroid. A simple check-up is recommended.",
+        solPartnerPCOS:"Partner's advice: PCOS is very common and treatable. Consult a gynecologist.",
+        solPartnerTubes:"Partner's advice: Tubal blockage may require laparoscopy or IVF.",
+        solPartnerEndo:"Partner's advice: Endometriosis needs a specialized fertility consultation.",
+        solPartnerIrregular:"Partner's advice: A simple hormonal panel will help regulate ovulation."
     }
-});
+  };
 
-const savedLang = localStorage.getItem('authLang') || 'ar';
-changeAuthLang(savedLang);
+  let lang = "ar";
+  let lastAssessmentData = null;
 
-// ==========================================
-// App Logic
-// ==========================================
-const SERVER_URL = "https://vibe-core-0m1r.onrender.com/chat";
-const TTS_URL = "https://vibe-core-0m1r.onrender.com/tts";
-const ROOM_CREATE_URL = "https://vibe-core-0m1r.onrender.com/rooms/create";
-const TOKEN_URL = "https://vibe-core-0m1r.onrender.com/get-token";
-const TRANSCRIBE_URL = "https://vibe-core-0m1r.onrender.com/transcribe";
-const WS_BASE = SERVER_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/chat', '');
-const REQUEST_TIMEOUT_MS = 60000; 
-const SESSION_ID = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()));
+  function t(k) { return translations[lang][k] || translations.ar[k]; }
+  function getData(key){ try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []} }
+  function setData(key,val){ localStorage.setItem(key,JSON.stringify(val)) }
 
-const $ = id => document.getElementById(id);
-const chatEl = $('chat'), inputEl = $('textInput'), sendBtn = $('sendBtn'), stopAudioBtn = $('stopAudioBtn');
-const micA = $('micA'), micB = $('micB'), remoteMicBtn = $('remoteMicBtn'), floatingMicBtn = $('floatingMicBtn'), toggleCamBtn = $('toggleCamBtn');
-const langA = $('langA'), langB = $('langB');
-const clearBtn = $('clearBtn'), statusEl = $('status');
-const avatarWrap = $('avatar-wrap'), avatarLogo = $('avatar-logo'), avatarVideo = $('avatar-video');
-const translateModeBtn = $('translateModeBtn'), voiceSelect = $('voiceSelect'), backBtn = $('backBtn');
-const topHeader = $('topHeader'), remoteBar = $('remoteBar'), roomCodeLabel = $('roomCodeLabel'), onlineCount = $('onlineCount'), remoteLockBtn = $('remoteLockBtn');
-const videoContainer = $('videoContainer'), remoteVideo = $('remoteVideo'), localVideo = $('localVideo'), closeVideoFullscreen = $('closeVideoFullscreen');
-const imagePreviewContainer = $('imagePreviewContainer'), imagePreview = $('imagePreview'), cancelImageBtn = $('cancelImageBtn');
-const mediaBtn = $('mediaBtn'), actionMenu = $('actionMenu'), menuCamera = $('menuCamera'), menuGallery = $('menuGallery'), menuVideo = $('menuVideo');
-const cameraUpload = $('cameraUpload'), galleryUpload = $('galleryUpload'), videoUpload = $('videoUpload'), audioUpload = $('audioUpload');
-const musicBtn = $('musicBtn'), musicMenu = $('musicMenu'), musicList = $('musicList'), bgAudio = $('bgAudio');
-const uploadBtn = $('uploadBtn'), videoAvatarUpload = $('videoAvatarUpload'), removeAvatarBtn = $('removeAvatarBtn'), closeFullscreen = $('closeFullscreen');
-const meetingGridContainer = $('meetingGridContainer'), videoGrid = $('videoGrid');
-
-// Logout Button Event
-$('btnLogout').addEventListener('click', logoutUser);
-
-let appMode = 'none';
-let chatHistory = [], isTranslatorMode = true, activeSpeaker = null, isSending = false, isCompressing = false;
-let currentAudio = null, attachedImageBase64 = null, attachedFileText = null, currentSpeechId = 0, isBotTalking = false;
-let ws = null, wsReconnectTimer = null, pingInterval = null, myName = 'User', myLang = 'ar', currentRoomCode = '', shouldReconnect = false, hasJoinedOnce = false;
-let pc = null, localStream = null;
-let playlist = [], currentSongIndex = -1, currentAvatarObjectUrl = null;
-let isLocked = false;
-let iceCandidatesQueue = []; 
-let isCameraOn = true;
-
-let livekitRoom = null;
-
-let isMicIntendedOn = false;
-let isRecording = false;
-let silenceTimer = null;
-let finalTranscriptBuffer = "";
-let isProcessingAudio = false;
-let lastSentText = "";
-let lastSentTime = 0;
-
-const UI_ELEMENTS = ['topHeader', 'extraControls', 'chatContainer', 'inputRow', 'status', 'avatar-wrap'];
-
-function showAppUI() {
-    UI_ELEMENTS.forEach(id => { 
-        const el = document.getElementById(id);
-        if(el) el.style.display = (id === 'inputRow' || id === 'chatContainer' || id === 'topHeader' || id === 'extraControls' || id === 'avatar-wrap') ? 'flex' : 'block';
+  // --- التنقل ---
+  function showTab(target, btnElement) {
+      document.querySelectorAll("main section").forEach(s => s.classList.add("hidden"));
+      document.getElementById(target).classList.remove("hidden");
+      document.querySelectorAll("#mainNav button").forEach(b => b.classList.remove("active"));
+      if(btnElement) btnElement.classList.add("active");
+      if(target === "digitalLab") calculateDigitalLab();
+  }
+  document.querySelectorAll('#mainNav button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if(this.getAttribute('data-target') === "askDoctor") openLockScreen();
+      else showTab(this.getAttribute('data-target'), this);
     });
-    document.getElementById('inputRow').style.display = 'flex';
-    document.getElementById('topHeader').style.display = 'flex';
-    document.getElementById('extraControls').style.display = 'flex';
-    document.getElementById('avatar-wrap').style.display = 'flex';
-    document.getElementById('chatContainer').style.display = 'flex';
-}
-
-const UI_TEXT = {
-    'ar': { name: 'اسمك', create: '➕ إنشاء غرفة', createMeet: '➕ إنشاء اجتماع', or: 'أو', code: 'كود الغرفة', codeMeet: 'كود الاجتماع', join: 'انضمام', back: '← رجوع' },
-    'fr': { name: 'Votre Nom', create: '➕ Créer un salon', createMeet: '➕ Créer une réunion', or: 'Ou', code: 'Code du salon', codeMeet: 'Code de réunion', join: 'Rejoindre', back: '← Retour' },
-    'en': { name: 'Your Name', create: '➕ Create Room', createMeet: '➕ Create Meeting', or: 'Or', code: 'Room Code', codeMeet: 'Meeting Code', join: 'Join', back: '← Back' }
-};
-
-$('playerLang').addEventListener('change', (e) => {
-    const lang = e.target.value;
-    const t = UI_TEXT[lang] || UI_TEXT['en'];
-    $('playerName').placeholder = t.name;
-    $('createRoomBtn').textContent = t.create;
-    $('orText').textContent = t.or;
-    $('joinCodeInput').placeholder = t.code;
-    $('joinRoomBtn').textContent = t.join;
-    $('backToLandingBtn').textContent = t.back;
-});
-
-const updateMeetForm = () => {
-    const lang = $('meetPlayerLang').value;
-    const t = UI_TEXT[lang] || UI_TEXT['en'];
-    $('meetPlayerName').placeholder = t.name;
-    $('createMeetingBtn').textContent = t.createMeet;
-    $('joinMeetingCodeInput').placeholder = t.codeMeet;
-    $('joinMeetingBtn').textContent = t.join;
-    $('backToLandingFromMeetBtn').textContent = t.back;
-};
-$('meetPlayerLang').addEventListener('change', updateMeetForm);
-updateMeetForm();
-
-function setStatus(s) { statusEl.textContent = s; }
-function resetStatus() { setStatus(appMode === 'remote' ? `Room ${currentRoomCode}` : (appMode === 'meeting' ? `Meeting ${currentRoomCode}` : (isTranslatorMode ? 'Translator Mode ON 🌐' : 'Chat Mode ON 💬'))); }
-resetStatus();
-
-function setBusy(busy) { isSending = busy; sendBtn.disabled = busy || isCompressing; }
-function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-function addMsg(text, className, lang, imageBase64 = null) {
-  const div = document.createElement('div');
-  div.className = 'msg ' + className;
-  div.setAttribute('dir', 'auto');
-  
-  const displayLang = lang ? String(lang).toUpperCase() : 'AUTO';
-  if (displayLang !== 'AUTO' || className === 'user-b' || className === 'user-a') {
-    const tag = document.createElement('span'); tag.className = 'lang-tag'; tag.textContent = displayLang;
-    div.appendChild(tag);
-  }
-  
-  if (imageBase64) {
-      const img = document.createElement('img');
-      img.src = imageBase64; img.style.maxWidth = '150px'; img.style.borderRadius = '8px'; img.style.display = 'block'; img.style.marginTop = '5px'; img.style.border = '2px solid #475569'; img.style.cursor = 'pointer';
-      img.onclick = (e) => { e.stopPropagation(); window.open(imageBase64, '_blank'); };
-      div.appendChild(img);
-  }
-  
-  if (text) {
-      div.insertAdjacentHTML('beforeend', escapeHtml(text).replace(/\n/g, '<br>'));
-      div.addEventListener('click', () => {
-          if (isLocked || isSending || appMode === 'remote' || appMode === 'meeting') return;
-          div.style.opacity = '0.5'; setTimeout(() => div.style.opacity = '1', 200);
-          speak(text, lang || langA.value);
-      });
-  }
-  
-  chatEl.appendChild(div);
-  chatEl.scrollTop = chatEl.scrollHeight;
-}
-
-function unlockAudio() {
-  if ('speechSynthesis' in window) { try { speechSynthesis.speak(new SpeechSynthesisUtterance('')); } catch (e) {} }
-  try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch (e) {}
-}
-document.body.addEventListener('click', unlockAudio, { once: true });
-
-function fetchWithTimeout(url, options, timeoutMs) {
-  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs);
-  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
-}
-
-function langNameFor(code) { return { 'ar': 'Arabic', 'en': 'English', 'fr': 'French', 'de': 'German', 'tr': 'Turkish', 'it': 'Italian', 'zh': 'Chinese', 'ru': 'Russian', 'es': 'Spanish', 'pt': 'Portuguese', 'nl': 'Dutch', 'no': 'Norwegian' }[code] || 'English'; }
-function localeFor(code) { return { 'ar': 'ar-SA', 'en': 'en-US', 'fr': 'fr-FR', 'de': 'de-DE', 'tr': 'tr-TR', 'it': 'it-IT', 'zh': 'zh-CN', 'ru': 'ru-RU', 'es': 'es-ES', 'pt': 'pt-PT', 'nl': 'nl-NL', 'no': 'no-NO' }[code] || 'en-US'; }
-
-function cleanTextForTTS(text) {
-  if (!text) return "";
-  return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F018}-\u{1F270}\u{238C}-\u{2454}\u{20D0}-\u{20FF}\u{FE0F}]/gu, '').replace(/[*_#`~|\\\/<>()\[\]{}«»"']/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
-function removeRepeatedWords(text) {
-  if (!text) return "";
-  let cleaned = text;
-  cleaned = cleaned.replace(/\b(\w+)(?:\s+\1\b)+/gi, '$1');
-  cleaned = cleaned.replace(/\b(\w+)[,.]?\s+\1\b/gi, '$1');
-  return cleaned.trim();
-}
-
-function compressImage(base64Str, maxWidth = 800, quality = 0.7) {
-  return new Promise((resolve) => {
-    const img = new Image(); img.src = base64Str;
-    img.onload = () => {
-      const canvas = document.createElement('canvas'); let width = img.width, height = img.height;
-      if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; }
-      canvas.width = width; canvas.height = height;
-      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', quality));
-    };
-    img.onerror = () => resolve(base64Str);
   });
-}
 
-function setModeUI(mode) {
-  appMode = mode;
-  UI_ELEMENTS.forEach(id => document.getElementById(id).style.display = 'none');
-  remoteBar.style.display = 'none'; remoteMicBtn.style.display = 'none'; toggleCamBtn.style.display = 'none';
-  mediaBtn.style.display = 'none'; musicBtn.style.display = 'none'; translateModeBtn.style.display = 'none';
-  uploadBtn.style.display = 'none'; voiceSelect.style.display = 'none';
-  videoContainer.style.display = 'none'; meetingGridContainer.style.display = 'none';
-  $('friendSection').style.display = 'none'; micA.style.display = 'none'; micB.style.display = 'none';
-
-  if (mode === 'local') {
-    document.body.classList.remove('remote-mode', 'meeting-mode');
-    showAppUI();
-    mediaBtn.style.display = 'flex'; musicBtn.style.display = 'flex'; translateModeBtn.style.display = 'inline-block';
-    uploadBtn.style.display = 'inline-block'; voiceSelect.style.display = 'inline-block';
-    $('friendSection').style.display = 'flex'; micA.style.display = 'flex'; micB.style.display = 'flex';
-  } else if (mode === 'remote') {
-    document.body.classList.remove('meeting-mode'); document.body.classList.add('remote-mode');
-    showAppUI();
-    remoteBar.style.display = 'flex'; remoteMicBtn.style.display = 'flex'; toggleCamBtn.style.display = 'flex';
-    mediaBtn.style.display = 'flex'; voiceSelect.style.display = 'inline-block';
-  } else if (mode === 'meeting') {
-    document.body.classList.remove('remote-mode'); document.body.classList.add('meeting-mode');
-    showAppUI();
-    remoteBar.style.display = 'flex'; remoteMicBtn.style.display = 'flex'; toggleCamBtn.style.display = 'flex';
-    mediaBtn.style.display = 'flex'; meetingGridContainer.style.display = 'block'; voiceSelect.style.display = 'inline-block';
-  }
-}
-
-$('btnLocal').addEventListener('click', () => { $('landingOverlay').style.display = 'none'; setModeUI('local'); resetStatus(); });
-$('btnRemote').addEventListener('click', () => { $('landingOverlay').style.display = 'none'; $('remoteJoinOverlay').style.display = 'flex'; });
-$('btnMeeting').addEventListener('click', () => { $('landingOverlay').style.display = 'none'; $('meetingJoinOverlay').style.display = 'flex'; });
-
-$('backToLandingBtn').addEventListener('click', () => { $('remoteJoinOverlay').style.display = 'none'; $('landingOverlay').style.display = 'flex'; });
-$('backToLandingFromMeetBtn').addEventListener('click', () => { $('meetingJoinOverlay').style.display = 'none'; $('landingOverlay').style.display = 'flex'; });
-
-remoteLockBtn.addEventListener('click', () => {
-  if (!isLocked) {
-    isLocked = true; remoteLockBtn.textContent = 'Unlock';
-    $('chatContainer').classList.add('locked-ui'); $('inputRow').classList.add('locked-ui'); $('topBar').classList.add('locked-ui'); $('extraControls').classList.add('locked-ui');
-    if (appMode === 'remote') $('videoContainer').classList.add('locked-ui');
-    if (appMode === 'meeting') $('meetingGridContainer').classList.add('locked-ui');
-    stopAudio();
-    if (isRecording) { isMicIntendedOn = false; isRecording = false; try { recognition.stop(); } catch(e){} unlockMics(); }
-    setStatus('App is locked 🔒');
-  } else {
-    isLocked = false; remoteLockBtn.textContent = 'Lock';
-    $('chatContainer').classList.remove('locked-ui'); $('inputRow').classList.remove('locked-ui'); $('topBar').classList.remove('locked-ui'); $('extraControls').classList.remove('locked-ui');
-    $('videoContainer').classList.remove('locked-ui'); $('meetingGridContainer').classList.remove('locked-ui');
-    resetStatus();
-  }
-});
-
-backBtn.addEventListener('click', async () => {
-  if (isMicIntendedOn) { isMicIntendedOn = false; isRecording = false; try { recognition.stop(); } catch(e){} }
-  stopAudio();
-
-  if (appMode === 'remote' || appMode === 'meeting') {
-    shouldReconnect = false; if (wsReconnectTimer) clearTimeout(wsReconnectTimer); stopPing(); if (ws) ws.close();
-    if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
-    if (pc) { pc.close(); pc = null; }
-    if (livekitRoom) { await livekitRoom.disconnect(); livekitRoom = null; }
-    
-    iceCandidatesQueue = []; videoContainer.style.display = 'none'; document.body.classList.remove('video-maximized'); remoteVideo.srcObject = null; localVideo.srcObject = null;
-    videoGrid.innerHTML = ''; appMode = 'none'; setModeUI('none'); remoteBar.style.display = 'none'; 
-    UI_ELEMENTS.forEach(id => document.getElementById(id).style.display = 'none');
-    chatEl.innerHTML = ''; currentRoomCode = ''; $('landingOverlay').style.display = 'flex';
-    
-    if (isLocked) {
-        isLocked = false; remoteLockBtn.textContent = 'Lock';
-        $('chatContainer').classList.remove('locked-ui'); $('inputRow').classList.remove('locked-ui'); $('topBar').classList.remove('locked-ui'); $('extraControls').classList.remove('locked-ui'); $('videoContainer').classList.remove('locked-ui'); $('meetingGridContainer').classList.remove('locked-ui');
-    }
-  } else {
-    chatEl.innerHTML = ''; chatHistory = []; appMode = 'none'; setModeUI('none'); 
-    UI_ELEMENTS.forEach(id => document.getElementById(id).style.display = 'none');
-    $('landingOverlay').style.display = 'flex';
-  }
-});
-
-videoContainer.addEventListener('click', (e) => { if (e.target === closeVideoFullscreen || closeVideoFullscreen.contains(e.target)) return; document.body.classList.toggle('video-maximized'); });
-localVideo.addEventListener('click', (e) => { e.stopPropagation(); });
-closeVideoFullscreen.addEventListener('click', (e) => { e.stopPropagation(); document.body.classList.remove('video-maximized'); });
-
-langA.addEventListener('change', () => {
-  if (appMode === 'remote' || appMode === 'meeting') {
-    myLang = langA.value;
-    if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'change_lang', lang: myLang }));
-    addMsg(`تم تغيير لغتك إلى ${langA.options[langA.selectedIndex].text}`, 'bot');
-  }
-});
-
-$('copyRoomBtn').addEventListener('click', () => {
-  if (!currentRoomCode) return;
-  navigator.clipboard.writeText(currentRoomCode).then(() => { setStatus('Code copied!'); setTimeout(resetStatus, 2000); }).catch(() => alert('Room Code: ' + currentRoomCode));
-});
-
-avatarWrap.addEventListener('click', (e) => { if (isLocked) return; if (e.target === closeFullscreen || closeFullscreen.contains(e.target) || e.target === removeAvatarBtn) return; avatarWrap.classList.toggle('fullscreen'); });
-closeFullscreen.addEventListener('click', (e) => { e.stopPropagation(); avatarWrap.classList.remove('fullscreen'); });
-
-translateModeBtn.addEventListener('click', () => {
-  isTranslatorMode = !isTranslatorMode;
-  translateModeBtn.classList.toggle('active', isTranslatorMode);
-  translateModeBtn.textContent = isTranslatorMode ? 'Translator Mode ON' : 'Chat Mode ON';
-  resetStatus();
-});
-
-clearBtn.addEventListener('click', () => { chatEl.innerHTML = ''; chatHistory = []; stopAudio(); addMsg('Chat cleared.', 'bot'); });
-stopAudioBtn.addEventListener('click', () => { 
-    stopAudio(); 
-    if (isRecording) { isMicIntendedOn = false; isRecording = false; try { recognition.stop(); } catch(e){} unlockMics(); } 
-});
-
-toggleCamBtn.addEventListener('click', async () => {
-    isCameraOn = !isCameraOn;
-    toggleCamBtn.classList.toggle('off', !isCameraOn);
-    toggleCamBtn.innerHTML = isCameraOn 
-        ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM14 13H6v-2h8v2z"/></svg>'
-        : '<svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM10 16H6v-2h4v2zm4-4H6v-2h8v2z"/></svg>';
-    
-    if (localStream) { 
-        const videoTrack = localStream.getVideoTracks()[0]; 
-        if (videoTrack) { videoTrack.enabled = isCameraOn; }
-    }
-    
-    if (livekitRoom) { 
-        try { await livekitRoom.localParticipant.setCameraEnabled(isCameraOn); } 
-        catch (e) { console.warn(e); if (isCameraOn) addMsg("⚠️ تعذر تشغيل الكاميرا. قد تكون مستخدمة من تطبيق آخر.", "bot"); } 
-    }
-});
-
-function handleTrackSubscribed(track, publication, participant) {
-    if (track.kind === 'video' || track.kind === 'audio') {
-        let boxId = 'participant-' + participant.identity;
-        let box = document.getElementById(boxId);
-        if (!box) {
-            box = document.createElement('div'); box.id = boxId; box.className = 'participant-box';
-            let nameLabel = document.createElement('div'); nameLabel.className = 'participant-name'; nameLabel.textContent = participant.name || participant.identity;
-            box.appendChild(nameLabel); videoGrid.appendChild(box);
-        }
-        if (track.kind === 'video') {
-            const videoEl = track.attach(); videoEl.autoplay = true; videoEl.playsInline = true;
-            videoEl.style.width = '100%'; videoEl.style.height = '100%'; videoEl.style.objectFit = 'cover';
-            const oldVideo = box.querySelector('video'); if (oldVideo) oldVideo.remove();
-            box.insertBefore(videoEl, box.firstChild);
-        } else if (track.kind === 'audio') {
-            const audioEl = track.attach(); audioEl.autoplay = true; box.appendChild(audioEl);
-        }
-    }
-}
-
-function handleTrackUnsubscribed(track, publication, participant) { track.detach().forEach(el => el.remove()); }
-function handleParticipantDisconnected(participant) { let box = document.getElementById('participant-' + participant.identity); if (box) box.remove(); }
-
-async function connectLiveKit(roomCode, participantName) {
-    try {
-        setStatus("Getting token...");
-        const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 25000);
-        const res = await fetch(TOKEN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ room_name: roomCode, participant_name: participantName }), signal: controller.signal });
-        clearTimeout(timeout);
-        if (!res.ok) { let errMsg = "Token fetch failed"; try { const errData = await res.json(); if (errData.detail) errMsg = errData.detail; } catch(e){} throw new Error(errMsg); }
-        const { token, url } = await res.json();
-
-        setStatus("Connecting to LiveKit...");
-        if (livekitRoom) { await livekitRoom.disconnect(); livekitRoom = null; }
-        videoGrid.innerHTML = '';
-        livekitRoom = new LivekitClient.Room();
-        
-        livekitRoom.on(LivekitClient.RoomEvent.TrackSubscribed, handleTrackSubscribed);
-        livekitRoom.on(LivekitClient.RoomEvent.TrackUnsubscribed, handleTrackUnsubscribed);
-        livekitRoom.on(LivekitClient.RoomEvent.ParticipantDisconnected, handleParticipantDisconnected);
-        
-        livekitRoom.on(LivekitClient.RoomEvent.Connected, async () => {
-            setStatus("✅ Connected to Meeting");
-            try { 
-                await livekitRoom.localParticipant.setCameraEnabled(true); 
-                await livekitRoom.localParticipant.setMicrophoneEnabled(true); 
-            } 
-            catch (err) { 
-                console.warn("Camera/Mic permission denied.", err); 
-                addMsg("⚠️ يرجى السماح بالوصول للكاميرا والمايك من إعدادات المتصفح.", 'bot'); 
-            }
-            try { await livekitRoom.startAudio(); } catch(e) {}
-        });
-
-        livekitRoom.on(LivekitClient.RoomEvent.Disconnected, () => { setStatus("Disconnected"); addMsg("⚠️ تم قطع الاتصال بالاجتماع.", "bot"); });
-        livekitRoom.on(LivekitClient.RoomEvent.Reconnecting, () => setStatus("Reconnecting..."));
-        livekitRoom.on(LivekitClient.RoomEvent.Reconnected, () => setStatus("✅ Reconnected"));
-        livekitRoom.on(LivekitClient.RoomEvent.MediaDevicesError, (e) => { console.error(e); addMsg("⚠️ خطأ في أجهزة الوسائط (كاميرا/مايك).", "bot"); });
-
-        livekitRoom.on(LivekitClient.RoomEvent.LocalTrackPublished, (publication, participant) => {
-             if (publication.track.kind === 'video') {
-                 let boxId = 'participant-' + participant.identity; let box = document.getElementById(boxId);
-                 if (!box) {
-                     box = document.createElement('div'); box.id = boxId; box.className = 'participant-box';
-                     let nameLabel = document.createElement('div'); nameLabel.className = 'participant-name'; nameLabel.textContent = (participant.name || participant.identity) + " (You)";
-                     box.appendChild(nameLabel); videoGrid.appendChild(box);
-                 }
-                 const oldVideo = box.querySelector('video'); if (oldVideo) oldVideo.remove();
-                 const videoEl = publication.track.attach(); videoEl.autoplay = true; videoEl.playsInline = true; videoEl.muted = true; 
-                 videoEl.style.width = '100%'; videoEl.style.height = '100%'; videoEl.style.objectFit = 'cover';
-                 box.insertBefore(videoEl, box.firstChild);
-             }
-        });
-
-        livekitRoom.on(LivekitClient.RoomEvent.LocalTrackUnpublished, (publication, participant) => {
-             if (publication.track && publication.track.kind === 'video') {
-                 let box = document.getElementById('participant-' + participant.identity);
-                 if (box) { const videoEl = box.querySelector('video'); if (videoEl) videoEl.remove(); }
-             }
-        });
-
-        await livekitRoom.connect(url, token);
-    } catch (e) {
-        console.error(e);
-        if (e.name === 'AbortError') { addMsg("⚠️ الخادم يستغرق وقتاً طويلاً للاستجابة. يرجى المحاولة مرة أخرى.", 'bot'); setStatus("Connection timeout"); } 
-        else { addMsg("⚠️ Failed to join meeting: " + e.message, 'bot'); setStatus("Meeting Error"); }
-    }
-}
-
-$('createMeetingBtn').addEventListener('click', async () => {
-    const name = $('meetPlayerName').value.trim(); if (!name) return alert("Enter your name");
-    const code = "MTG" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    myName = name; myLang = $('meetPlayerLang').value; langA.value = myLang;
-    $('meetingJoinOverlay').style.display = 'none'; setModeUI('meeting'); roomCodeLabel.textContent = code; onlineCount.textContent = "Meeting"; chatEl.innerHTML = '';
-    connectWebSocket(code); connectLiveKit(code, name); 
-});
-
-$('joinMeetingBtn').addEventListener('click', () => {
-    const name = $('meetPlayerName').value.trim(); const code = $('joinMeetingCodeInput').value.trim().toUpperCase();
-    if (!name) return alert("Enter your name"); if (!code) return alert("Enter meeting code");
-    myName = name; myLang = $('meetPlayerLang').value; langA.value = myLang;
-    $('meetingJoinOverlay').style.display = 'none'; setModeUI('meeting'); roomCodeLabel.textContent = code; onlineCount.textContent = "Meeting"; chatEl.innerHTML = '';
-    connectWebSocket(code); connectLiveKit(code, name);
-});
-
-$('createRoomBtn').addEventListener('click', async () => {
-  const name = $('playerName').value.trim(), lang = $('playerLang').value; if (!name) return alert('Please enter your name');
-  myName = name; myLang = lang; langA.value = lang; 
-  const btn = $('createRoomBtn'); btn.textContent = '⏳ Connecting...'; btn.disabled = true;
-  try {
-    const res = await fetch(ROOM_CREATE_URL, { method: 'POST' }); const data = await res.json();
-    if (!data.code) throw new Error('لم يتم استلام الكود'); enterRemoteRoom(data.code);
-  } catch (e) { alert('Failed to create room: ' + e.message); } 
-  finally { btn.textContent = '➕ Create Room'; btn.disabled = false; }
-});
-$('joinRoomBtn').addEventListener('click', () => {
-  const name = $('playerName').value.trim(), lang = $('playerLang').value, code = $('joinCodeInput').value.trim().toUpperCase();
-  if (!name) return alert('Please enter your name'); if (code.length !== 6) return alert('Invalid code');
-  myName = name; myLang = lang; langA.value = lang; enterRemoteRoom(code);
-});
-
-function enterRemoteRoom(code) {
-  currentRoomCode = code; hasJoinedOnce = false; shouldReconnect = true;
-  $('remoteJoinOverlay').style.display = 'none'; setModeUI('remote'); roomCodeLabel.textContent = code; onlineCount.textContent = '1/4'; chatEl.innerHTML = '';
-  setStatus(`Connecting to ${code}...`); connectWebSocket(code);
-}
-
-function connectWebSocket(code) {
-  if (ws) { try { ws.close(); } catch(e){} }
-  ws = new WebSocket(WS_BASE + '/ws/' + code);
-  ws.onopen = () => { ws.send(JSON.stringify({ type: 'join', name: myName, lang: myLang })); startPing(); };
-  ws.onmessage = handleWsMessage;
-  ws.onerror = (e) => { console.error('WS Error', e); addMsg('⚠️ WebSocket Error.', 'bot'); };
-  ws.onclose = (ev) => {
-    stopPing();
-    if (!hasJoinedOnce) { addMsg(`⚠️ Failed to join. Error code: ${ev.code}`, 'bot'); setStatus('Connection failed'); return; }
-    if (shouldReconnect && (appMode === 'remote' || appMode === 'meeting')) { setStatus(`Disconnected. Retrying...`); wsReconnectTimer = setTimeout(() => connectWebSocket(code), 3000); }
-  };
-}
-
-function handleWsMessage(ev) {
-  const data = JSON.parse(ev.data);
-  switch (data.type) {
-    case 'joined':
-      hasJoinedOnce = true; 
-      if (appMode === 'remote') onlineCount.textContent = `${data.users.length}/4`;
-      if (appMode === 'meeting') onlineCount.textContent = `${data.users.length} online`;
-      addMsg(`✅ Joined room ${currentRoomCode}`, 'bot');
-      if (appMode === 'remote' && data.users.length > 1) { startVideoCall(true); }
-      else if (appMode === 'remote') { addMsg('⏳ Waiting for other user to join...', 'bot'); }
-      break;
-    case 'user_joined':
-      addMsg(`👤 ${data.name} joined`, 'bot');
-      if (appMode === 'meeting') { onlineCount.textContent = `${data.users.length} online`; } 
-      else if (appMode === 'remote') { startVideoCall(false); }
-      break;
-    case 'translated':
-      if (data.is_mine) return;
-      addMsg(`${data.from_name}: ${data.original}`, 'user-b', data.from_lang);
-      if (data.translated && data.translated !== data.original) { addMsg(`→ ${data.translated}`, 'bot', myLang); speak(data.translated, myLang); } 
-      else { speak(data.original, myLang); }
-      break;
-    case 'chat_media':
-      if (data.media_type === 'image') { addMsg('', 'user-b', data.from_lang, data.data); }
-      break;
-    case 'rtc-offer':
-      if (appMode === 'meeting') break;
-      startVideoCall(false).then(async () => {
-        if (!pc) return;
-        await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
-        while (iceCandidatesQueue.length > 0) { await pc.addIceCandidate(new RTCIceCandidate(iceCandidatesQueue.shift())).catch(e => {}); }
-        const answer = await pc.createAnswer(); await pc.setLocalDescription(answer);
-        ws.send(JSON.stringify({ type: 'rtc-answer', answer: answer }));
-      });
-      break;
-    case 'rtc-answer':
-      if (appMode === 'meeting') break;
-      if (pc) {
-        pc.setRemoteDescription(new RTCSessionDescription(data.answer)).then(() => {
-            while (iceCandidatesQueue.length > 0) { pc.addIceCandidate(new RTCIceCandidate(iceCandidatesQueue.shift())).catch(e => {}); }
-        });
+  // --- تصدير واستيراد البيانات ---
+  window.exportData = function() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith('sahapath_')) {
+              data[key] = localStorage.getItem(key);
+          }
       }
-      break;
-    case 'rtc-ice':
-      if (appMode === 'meeting') break;
-      if (pc && pc.remoteDescription && pc.remoteDescription.type) { pc.addIceCandidate(new RTCIceCandidate(data.candidate)).catch(e => {}); } 
-      else { iceCandidatesQueue.push(data.candidate); }
-      break;
-    case 'error': addMsg(`⚠️ ${data.message}`, 'bot'); break;
-  }
-}
-
-function sendRemoteMessage(text) { if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'message', text })); }
-function startPing() { stopPing(); pingInterval = setInterval(() => { if (ws?.readyState === WebSocket.OPEN) ws.send(JSON.stringify({type:'ping'})); }, 30000); }
-function stopPing() { if (pingInterval) clearInterval(pingInterval); }
-
-function setAvatarState(playing) {
-  if (avatarVideo.src && avatarVideo.style.display !== 'none') {
-    if (playing) avatarVideo.play().catch(()=>{});
-    else avatarVideo.pause();
-  }
-}
-
-function unlockMics() {
-  activeSpeaker = null; isRecording = false; isMicIntendedOn = false;
-  micA.disabled = false; micB.disabled = false; 
-  if (remoteMicBtn) remoteMicBtn.disabled = false;
-  if (floatingMicBtn) floatingMicBtn.disabled = false;
-  micA.classList.remove('recording'); micB.classList.remove('recording'); 
-  if (remoteMicBtn) remoteMicBtn.classList.remove('recording'); 
-  if (floatingMicBtn) floatingMicBtn.classList.remove('recording'); 
-  if (!isBotTalking) resetStatus();
-}
-
-function stopAudio() {
-  currentSpeechId++;
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
-  isBotTalking = false;
-  setAvatarState(false);
-}
-
-async function speak(text, lang) {
-  if (isLocked) return; 
-  stopAudio(); isBotTalking = true;
-
-  if (isRecording) { try { recognition.stop(); } catch(e){} isRecording = false; }
-
-  const cleanText = cleanTextForTTS(text);
-  if (!cleanText) { 
-      isBotTalking = false;
-      if (isMicIntendedOn) { isRecording = true; try { recognition.start(); } catch(e){} }
-      else unlockMics(); 
-      return; 
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SahaPath_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      alert(t("exportSuccess"));
   }
 
-  const myId = ++currentSpeechId; setStatus('Speaking...');
-  setAvatarState(true);
-  
-  const resumeMic = () => {
-      isBotTalking = false; setAvatarState(false);
-      if (isMicIntendedOn) {
-          setTimeout(() => {
-              if (isMicIntendedOn && !isBotTalking) { isRecording = true; try { recognition.start(); } catch(e){} }
-          }, 800); 
-      } else { unlockMics(); }
-  };
-
-  try {
-    const res = await fetch(TTS_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: cleanText, lang, voice: voiceSelect.value, session_id: SESSION_ID }) });
-    if (res.ok) {
-      const blob = await res.blob(); if (myId !== currentSpeechId) return;
-      currentAudio = new Audio(URL.createObjectURL(blob));
-      currentAudio.onended = resumeMic;
-      currentAudio.onerror = () => { speakBrowser(cleanText, lang, myId); };
-      await currentAudio.play(); return;
-    }
-  } catch (e) { console.warn('Server TTS failed'); }
-  
-  speakBrowser(cleanText, lang, myId);
-}
-
-function speakBrowser(text, lang, myId) {
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text); 
-  u.lang = localeFor(lang);
-  
-  const voiceType = voiceSelect.value;
-  if (voiceType === 'man') { u.pitch = 0.5; u.rate = 0.9; } 
-  else if (voiceType === 'woman') { u.pitch = 1.0; u.rate = 1.0; } 
-  else if (voiceType === 'girl') { u.pitch = 1.3; u.rate = 1.05; } 
-  else if (voiceType === 'child') { u.pitch = 1.5; u.rate = 1.1; }
-
-  const resumeMic = () => {
-      if (myId === currentSpeechId) { 
-          isBotTalking = false; setAvatarState(false); 
-          if (isMicIntendedOn) { 
-              setTimeout(() => {
-                  if (isMicIntendedOn && !isBotTalking) { isRecording = true; try { recognition.start(); } catch(e){} }
-              }, 800);
-          } else unlockMics(); 
-      } 
-  };
-
-  u.onend = resumeMic; u.onerror = resumeMic; speechSynthesis.speak(u);
-}
-
-async function startVideoCall(isCaller = false) {
-  if (!localStream) {
-    try {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      localVideo.srcObject = localStream; videoContainer.style.display = 'block';
-      isCameraOn = true; toggleCamBtn.classList.remove('off');
-    } catch (err) { addMsg('⚠️ تعذر الوصول إلى الكاميرا. يرجى السماح بالوصول.', 'bot'); return; }
+  window.importData = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          try {
+              const data = JSON.parse(e.target.result);
+              for (const key in data) {
+                  if (key.startsWith('sahapath_')) {
+                      localStorage.setItem(key, data[key]);
+                  }
+              }
+              alert(t("importSuccess"));
+              location.reload();
+          } catch (err) {
+              alert(t("importError"));
+          }
+      };
+      reader.readAsText(file);
   }
-  if (!pc) {
-    const iceServers = [
-      { urls: 'stun:stun.relay.metered.ca:80' },
-      { urls: 'turn:global.relay.metered.ca:80', username: '4201486c5fb862688f36878e', credential: 'r55gTJrk5t/MiLew' },
-      { urls: 'turn:global.relay.metered.ca:80?transport=tcp', username: '4201486c5fb862688f36878e', credential: 'r55gTJrk5t/MiLew' },
-      { urls: 'turn:global.relay.metered.ca:443', username: '4201486c5fb862688f36878e', credential: 'r55gTJrk5t/MiLew' },
-      { urls: 'turns:global.relay.metered.ca:443?transport=tcp', username: '4201486c5fb862688f36878e', credential: 'r55gTJrk5t/MiLew' }
-    ];
-    pc = new RTCPeerConnection({ iceServers: iceServers });
-    localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-    pc.ontrack = (event) => { remoteVideo.srcObject = event.streams[0]; remoteVideo.play().catch(e => console.log("Autoplay blocked:", e)); setStatus('✅ تم الاتصال بالكاميرا بنجاح!'); };
-    pc.onicecandidate = (event) => { if (event.candidate && ws && ws.readyState === WebSocket.OPEN) { ws.send(JSON.stringify({ type: 'rtc-ice', candidate: event.candidate })); } };
-    pc.oniceconnectionstatechange = () => { if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected') { setStatus('⚠️ انقطع اتصال الفيديو.'); } };
-  }
-  if (isCaller) {
-    const offer = await pc.createOffer(); await pc.setLocalDescription(offer);
-    ws.send(JSON.stringify({ type: 'rtc-offer', offer: offer })); setStatus('📡 جاري طلب الاتصال بالكاميرا...');
-  }
-}
 
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
+  // --- تغيير اللغة ---
+  document.getElementById("language").addEventListener("change", function() {
+      lang = this.value;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.querySelectorAll("[data-ar]").forEach(el => {
+        if(el.dataset[lang]) el.textContent = el.dataset[lang];
+      });
+      document.querySelectorAll("[data-ar-placeholder]").forEach(el => {
+         const key = `data-${lang}-placeholder`;
+         if(el.getAttribute(key)) el.placeholder = el.getAttribute(key);
+      });
+      clearChat(); renderHopeStories(); renderDoctors(); renderRecords(); updateLockScreenText(); calculateDigitalLab(); renderUserStories();
+  });
 
-if (SR) {
-  recognition = new SR();
-  recognition.continuous = true; 
-  recognition.interimResults = true; 
+  // --- المختبر الرقمي ---
+  window.calculateDigitalLab = function() {
+      const env = [...document.querySelectorAll("#labEnv input:checked")].map(x => x.value);
+      const life = [...document.querySelectorAll("#labLife input:checked")].map(x => x.value);
+      const med = [...document.querySelectorAll("#labMed input:checked")].map(x => x.value);
+      
+      let score = 100, envD = 0, lifeD = 0, medD = 0, ageD = 0;
 
-  const processVoice = (text) => {
-    const clean = removeRepeatedWords(text).trim();
-    if (!clean) return;
+      if(env.includes("heat")) envD += 15;
+      if(env.includes("welding")) envD += 15;
+      if(env.includes("chemicals")) envD += 10;
+      if(env.includes("driving")) envD += 5;
 
-    const now = Date.now();
-    if (clean === lastSentText && (now - lastSentTime) < 3000) return; 
-    lastSentText = clean;
-    lastSentTime = now;
+      if(life.includes("laptop")) lifeD += 5;
+      if(life.includes("tightClothes")) lifeD += 10;
+      if(life.includes("smoking")) lifeD += 20;
+      if(life.includes("obesity")) lifeD += 10;
+      if(life.includes("psychological")) lifeD += 5;
 
-    const isA = activeSpeaker === 'A';
-    if (appMode === 'remote' || appMode === 'meeting') {
-        addMsg(`You: ${clean}`, 'user-a', myLang);
-        sendRemoteMessage(clean);
-    } else {
-        addMsg(clean, isA ? 'user-a' : 'user-b', isA ? langA.value : langB.value);
-        ask(clean, isA ? langA.value : langB.value, isA ? langB.value : langA.value, activeSpeaker);
-    }
-  };
+      if(med.includes("mumps")) medD += 15;
+      if(med.includes("varicocele")) medD += 20;
+      if(med.includes("hairMeds")) medD += 15; 
+      if(med.includes("testosterone")) medD += 20;
 
-  recognition.onresult = (e) => {
-    if (isProcessingAudio) return; 
-    
-    let interim = "";
-    for (let i = e.resultIndex; i < e.results.length; ++i) {
-      if (e.results[i].isFinal) {
-        let newPart = e.results[i][0].transcript.trim();
-        if (newPart) {
-            let cleanBuffer = finalTranscriptBuffer.toLowerCase().replace(/[.,?!]/g, '').trim();
-            let cleanNewPart = newPart.toLowerCase().replace(/[.,?!]/g, '').trim();
-            if (cleanNewPart.length > 0) {
-                if (cleanBuffer.endsWith(cleanNewPart) || finalTranscriptBuffer.includes(newPart + " ")) {
-                    // تجاهل
-                } else if (cleanNewPart.startsWith(cleanBuffer) && cleanBuffer.length > 0) {
-                    finalTranscriptBuffer = newPart + " ";
-                } else {
-                    finalTranscriptBuffer += newPart + " ";
-                }
-            }
-        }
+      const ageRaw = document.getElementById("ageInputLab").value;
+      const age = parseInt(ageRaw);
+      
+      if(ageRaw !== "" && (isNaN(age) || age < 15 || age > 80)) {
+          document.getElementById("labDiag").innerHTML = `<strong style="color:var(--danger);">⚠️ ${lang==='ar'?'العمر يجب أن يكون بين 15 و 80.':(lang==='fr'?'L\'âge doit être entre 15 et 80.':'Age must be between 15 and 80.')}</strong>`;
+          return;
+      }
+      if(!isNaN(age) && age >= 40) ageD = 10;
+
+      score = Math.max(0, 100 - (envD + lifeD + medD + ageD));
+
+      document.getElementById("scoreText").textContent = score + "%";
+      const bar = document.getElementById("labBar");
+      bar.style.width = score + "%";
+      bar.style.backgroundColor = score >= 80 ? "#42BFA3" : (score >= 50 ? "#F4D99B" : "#B83232");
+
+      let diag = "";
+      if(envD) diag += `<br>• ${lang==='ar'?'بيئية':(lang==='fr'?'Env':'Env')}: -${envD}%`;
+      if(lifeD) diag += `<br>• ${lang==='ar'?'سلوكية':(lang==='fr'?'Habitudes':'Lifestyle')}: -${lifeD}%`;
+      if(medD) diag += `<br>• ${lang==='ar'?'طبية':(lang==='fr'?'Médical':'Medical')}: -${medD}%`;
+      if(ageD) diag += `<br>• ${t("labAgeFactor")}`;
+      
+      document.getElementById("labDiag").innerHTML = `<strong>${t("labDiag")}</strong> ${diag || t("labNoRisk")}`;
+
+      let maxD = Math.max(envD, lifeD, medD);
+      if(maxD > 0) {
+          let potential = Math.min(100, score + maxD);
+          document.getElementById("labWhatIf").innerHTML = `${t("labWhatIf")} ${t("labMaxRisk")} <strong>${potential}%</strong>.`;
       } else {
-        interim += e.results[i][0].transcript;
+          document.getElementById("labWhatIf").innerHTML = `${t("labWhatIf")} ${lang==='ar'?'أنت في أفضل حالة!':(lang==='fr'?'Vous êtes au top !':'You are at your best!')}`;
       }
-    }
-    
-    setStatus(`🎤 Listening... ${finalTranscriptBuffer.slice(-30)}${interim}`);
-
-    clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(() => {
-      if (finalTranscriptBuffer.trim()) {
-        const textToSend = finalTranscriptBuffer.trim();
-        finalTranscriptBuffer = ""; 
-        isProcessingAudio = true; 
-        try { recognition.stop(); } catch(e){} 
-        processVoice(textToSend);
-        resetStatus();
-      }
-    }, 2500); 
-  };
-
-  recognition.onerror = (e) => {
-    if (e.error === 'no-speech') return;
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { isMicIntendedOn = false; unlockMics(); setStatus('Mic permission denied.'); return; }
-    setStatus('Mic Error: ' + e.error);
-  };
-
-  recognition.onend = () => {
-    isProcessingAudio = false;
-    if (isMicIntendedOn && !isBotTalking) {
-        setTimeout(() => { if (isMicIntendedOn && !isBotTalking) { try { recognition.start(); } catch(e) {} } }, 500); 
-    } else if (!isMicIntendedOn) { unlockMics(); }
-  };
-
-  const startMic = (speaker) => {
-    if (isLocked) return;
-    unlockAudio();
-    
-    if (isMicIntendedOn && activeSpeaker === speaker) {
-        isMicIntendedOn = false; isRecording = false; clearTimeout(silenceTimer); try { recognition.stop(); } catch(e){}
-        if (finalTranscriptBuffer.trim()) { processVoice(finalTranscriptBuffer.trim()); finalTranscriptBuffer = ""; }
-        unlockMics(); return;
-    }
-
-    if (isMicIntendedOn) { try { recognition.stop(); } catch(e){} }
-    stopAudio(); activeSpeaker = speaker; setAvatarState(true); isMicIntendedOn = true; isRecording = true; finalTranscriptBuffer = "";
-    
-    if (speaker === 'A') { recognition.lang = localeFor(langA.value); micA.classList.add('recording'); micB.disabled = true; setStatus('🎤 Listening (You)...'); } 
-    else if (speaker === 'B') { recognition.lang = localeFor(langB.value); micB.classList.add('recording'); micA.disabled = true; setStatus('🎤 Listening (Friend)...'); } 
-    else { recognition.lang = localeFor(myLang); if (remoteMicBtn) remoteMicBtn.classList.add('recording'); if (floatingMicBtn) floatingMicBtn.classList.add('recording'); setStatus('🎤 Listening...'); }
-    try { recognition.start(); } catch (e) {}
-  };
-  
-  micA.addEventListener('click', () => startMic('A'));
-  micB.addEventListener('click', () => startMic('B'));
-  if (remoteMicBtn) remoteMicBtn.addEventListener('click', () => startMic('R'));
-  if (floatingMicBtn) floatingMicBtn.addEventListener('click', () => startMic('R'));
-}
-
-sendBtn.addEventListener('click', () => {
-  if (isLocked) return;
-  const t = inputEl.value.trim();
-  if (appMode === 'remote' || appMode === 'meeting') { if (t) { addMsg(`You: ${t}`, 'user-a', myLang); sendRemoteMessage(t); inputEl.value = ''; } } 
-  else { if (t || attachedImageBase64) { addMsg(t || '📷 Image', 'user-a', langA.value); ask(t, langA.value, langB.value, 'A'); inputEl.value = ''; } }
-});
-
-inputEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); if (!sendBtn.disabled) sendBtn.click(); }
-});
-
-function buildSystemPrompt(targetLang, sourceLang) {
-  if (isTranslatorMode) {
-    return `You are a professional translator. Translate the user's text naturally from ${langNameFor(sourceLang)} to ${langNameFor(targetLang)}. If the input contains repeated words or stuttering (e.g., "fruits fruits fruits" or "hello hello"), ignore the repetition and translate the meaning only once. Output ONLY the translated text. DO NOT add conversational words, explanations, or quotes.`;
+      document.getElementById("labTimeline").innerHTML = `<strong>${t("labTimeline")}</strong> ${t("labTimelineText")}`;
+      document.getElementById("labBenchmark").innerHTML = `<strong>${t("labBenchmark")}</strong> ${t("labBenchmarkText")}`;
+      
+      checkJourneyStatus();
   }
-  return `You are Chat-Core, a wise human friend. Reply in ${langNameFor(targetLang)}. DO NOT use markdown or bold text like **.`;
-}
 
-async function ask(text, sourceLang, targetLang, speaker) {
-  if (isSending || isLocked) return;
-  setBusy(true); setStatus('Processing...');
-  const messages = [{ role: 'system', content: buildSystemPrompt(targetLang, sourceLang) }];
-  let finalText = text || '';
-  if (attachedFileText) finalText += "\n\nFile Content:\n" + attachedFileText;
-  let userContent = attachedImageBase64 ? [{ type: "text", text: finalText || "Analyze this image." }, { type: "image_url", image_url: { url: attachedImageBase64 } }] : finalText;
-  messages.push({ role: 'user', content: userContent });
+  window.showEvidence = function() {
+    alert(lang === 'ar' ? "الأوزان المستخدمة في هذا المؤشر مبنية على إرشادات منظمة الصحة العالمية (WHO) والجمعية الأوروبية لطب المسالك (EAU) لعام 2023. هذا التقييم استرشادي ولا يغني عن زيارة الطبيب." : 
+          lang === 'fr' ? "Les poids utilisés sont basés sur les directives de l'OMS et de l'EAU (2023)." : 
+          "The weights used are based on WHO and EAU (2023) guidelines.");
+  }
 
-  try {
-    const res = await fetchWithTimeout(SERVER_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages, is_vision: attachedImageBase64 != null, is_translation: isTranslatorMode, session_id: SESSION_ID })
-    }, REQUEST_TIMEOUT_MS);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail);
-    addMsg(data.reply.trim(), isTranslatorMode ? (speaker === 'A' ? 'user-b' : 'user-a') : 'user-b', targetLang || 'AUTO');
-    resetStatus(); speak(data.reply.trim(), targetLang || langA.value);
-    attachedImageBase64 = null; attachedFileText = null; imagePreviewContainer.style.display = 'none';
-  } catch (e) { addMsg('Error: ' + e.message, 'bot'); } finally { setBusy(false); }
-}
+  window.resetLab = function() {
+      document.querySelectorAll("#labEnv input, #labLife input, #labMed input").forEach(cb => cb.checked = false);
+      document.getElementById("ageInputLab").value = "";
+      calculateDigitalLab();
+  }
 
-uploadBtn.addEventListener('click', () => { videoAvatarUpload.value = ''; videoAvatarUpload.click(); });
-videoAvatarUpload.addEventListener('change', (e) => {
-  const file = e.target.files[0]; if (!file) return;
-  if (currentAvatarObjectUrl) URL.revokeObjectURL(currentAvatarObjectUrl);
-  currentAvatarObjectUrl = URL.createObjectURL(file);
-  avatarLogo.style.display = 'none'; avatarVideo.style.display = 'block'; avatarVideo.src = currentAvatarObjectUrl; 
-  if (isBotTalking || isRecording) avatarVideo.play().catch(()=>{});
-  removeAvatarBtn.style.display = 'block';
-});
-removeAvatarBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); avatarVideo.pause(); avatarVideo.removeAttribute('src'); avatarVideo.load();
-  avatarVideo.style.display = 'none'; avatarLogo.style.display = 'block'; removeAvatarBtn.style.display = 'none';
-  if (currentAvatarObjectUrl) { URL.revokeObjectURL(currentAvatarObjectUrl); currentAvatarObjectUrl = null; }
-});
+  // --- رحلة الـ 74 يوماً ---
+  window.startJourney = function() {
+      const today = new Date().toISOString().slice(0, 10);
+      localStorage.setItem("sahapath_journey", today);
+      checkJourneyStatus();
+      alert(lang === 'ar' ? "بدأت رحلتك! سنتابع تقدمك يوماً بيوم." : "Journey started!");
+  }
 
-mediaBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); musicMenu.style.display = 'none';
-  if (actionMenu.style.display === 'flex') actionMenu.style.display = 'none';
-  else { const rect = mediaBtn.getBoundingClientRect(); actionMenu.style.display = 'flex'; actionMenu.style.bottom = (window.innerHeight - rect.top + 10) + 'px'; actionMenu.style.left = Math.max(10, rect.left - 50) + 'px'; }
-});
-musicBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); actionMenu.style.display = 'none';
-  if (musicMenu.style.display === 'block') musicMenu.style.display = 'none';
-  else { const rect = musicBtn.getBoundingClientRect(); musicMenu.style.display = 'block'; musicMenu.style.bottom = (window.innerHeight - rect.top + 10) + 'px'; musicMenu.style.left = Math.max(10, rect.left - 80) + 'px'; }
-});
-document.addEventListener('click', (e) => {
-  if (!actionMenu.contains(e.target) && e.target !== mediaBtn) actionMenu.style.display = 'none';
-  if (!musicMenu.contains(e.target) && e.target !== musicBtn) musicMenu.style.display = 'none';
-});
+  window.checkJourneyStatus = function() {
+      const startDate = localStorage.getItem("sahapath_journey");
+      const statusText = document.getElementById("journeyStatus");
+      const startBtn = document.getElementById("startJourneyBtn");
+      
+      if(!statusText || !startBtn) return;
 
-menuCamera.addEventListener('click', () => { actionMenu.style.display = 'none'; cameraUpload.value = ''; cameraUpload.click(); });
-menuGallery.addEventListener('click', () => { actionMenu.style.display = 'none'; galleryUpload.value = ''; galleryUpload.click(); });
-menuVideo.addEventListener('click', () => { actionMenu.style.display = 'none'; videoUpload.value = ''; videoUpload.click(); });
+      if(!startDate) {
+          startBtn.classList.remove("hidden");
+          return;
+      }
+      
+      startBtn.classList.add("hidden");
+      const start = new Date(startDate);
+      const now = new Date();
+      const diffTime = Math.abs(now - start);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if(diffDays >= 74) {
+          statusText.innerHTML = `<strong>🎉 ${lang==='ar'?'مبروك!':(lang==='fr'?'Félicitations!':'Congrats!')}</strong> ${lang==='ar'?'لقد أكملت دورة تكوين كاملة (74 يوماً). حان الوقت لإعادة التحليل ورؤية النتائج!':(lang==='fr'?'Vous avez terminé un cycle complet. Il est temps de refaire le test.':'You completed a full cycle. Time to retest!')}`;
+      } else {
+          const remaining = 74 - diffDays;
+          const progress = Math.floor((diffDays / 74) * 100);
+          statusText.innerHTML = `<strong>${lang==='ar'?'أنت في اليوم':(lang==='fr'?'Jour':'Day')} ${diffDays} ${lang==='ar'?'من رحلتك.':(lang==='fr'?'de votre parcours.':'of your journey.')}</strong><br>
+          ${lang==='ar'?'تبقى':(lang==='fr'?'Il reste':'Remaining')} ${remaining} ${lang==='ar'?'يوماً.':(lang==='fr'?'jours.':'days.')}<br>
+          <div style="background:#E4ECE6; border-radius:10px; height:10px; margin-top:8px; overflow:hidden;">
+              <div style="background:#F4D99B; height:100%; width:${progress}%;"></div>
+          </div>`;
+      }
+  }
 
-videoUpload.addEventListener('change', async (e) => {
-  const file = e.target.files[0]; if (!file) return;
-  if (appMode === 'remote' || appMode === 'meeting') return alert('عذراً، إرسال الفيديوهات غير مدعوم حالياً. يرجى استخدام الصور.');
-  if (file.size > 25 * 1024 * 1024) return alert('حجم الملف كبير جداً! يجب أن يكون أقل من 25 ميجابايت.');
-  const targetLang = langB.value;
-  addMsg(`🎬 جاري تحليل وترجمة: ${file.name}`, 'user-a', 'AUTO');
-  setStatus('⏳ جاري استخراج النص وترجمته...'); setBusy(true);
-  const formData = new FormData(); formData.append('file', file); formData.append('target_lang', targetLang);
-  try {
-    const res = await fetch(TRANSCRIBE_URL, { method: 'POST', body: formData });
-    if (!res.ok) throw new Error('Server error');
-    const data = await res.json();
-    addMsg(data.original, 'user-b', 'AUTO'); addMsg(data.translated, 'bot', targetLang);
-    speak(data.translated, targetLang); setStatus('✅ تمت الترجمة بنجاح!');
-  } catch (err) { addMsg(`⚠️ فشل استخراج الفيديو: ${err.message}`, 'bot'); setStatus('Error'); } 
-  finally { setBusy(false); e.target.value = ''; }
-});
-
-async function handleImage(e) {
-  const file = e.target.files[0]; if (!file) return;
-  isCompressing = true; sendBtn.disabled = true; setStatus('Compressing...');
-  const reader = new FileReader();
-  reader.onload = async ev => {
-    const compressed = await compressImage(ev.target.result);
-    if (appMode === 'remote' || appMode === 'meeting') {
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'chat_media', media_type: 'image', data: compressed }));
-            addMsg('', 'user-a', myLang, compressed); 
-        }
-        isCompressing = false; sendBtn.disabled = isSending; setStatus('');
-    } else {
-        attachedFileText = null; attachedImageBase64 = compressed;
-        imagePreview.src = attachedImageBase64; imagePreviewContainer.style.display = 'flex';
-        isCompressing = false; sendBtn.disabled = isSending; setStatus('Image attached.');
+  // --- تقييم الأعراض ---
+  document.getElementById("analyzeBtn").addEventListener("click", function() {
+    const age = parseInt(document.getElementById("userAge").value);
+    
+    if(isNaN(age) || age < 15 || age > 80) {
+        document.getElementById("analysisResult").innerHTML = `<div class="warning"><strong>خطأ:</strong> ${lang==='ar'?'يرجى إدخال عمر منطقي (15 - 80).':(lang==='fr'?'Veuillez entrer un âge valide.':'Please enter a valid age.')}</div>`;
+        return;
     }
-  };
-  reader.readAsDataURL(file);
-}
-galleryUpload.addEventListener('change', handleImage);
-cameraUpload.addEventListener('change', handleImage);
-cancelImageBtn.addEventListener('click', (e) => { e.stopPropagation(); attachedImageBase64 = null; attachedFileText = null; imagePreviewContainer.style.display = 'none'; setStatus('Attachment removed.'); });
 
-audioUpload.addEventListener('change', (e) => {
-  const files = e.target.files;
-  for (let i = 0; i < files.length; i++) playlist.push({ name: files[i].name, url: URL.createObjectURL(files[i]) });
-  renderPlaylist(); e.target.value = '';
-});
-function renderPlaylist() {
-  musicList.innerHTML = '';
-  const stopBtn = document.createElement('div'); stopBtn.className = 'music-item stop-btn'; stopBtn.textContent = '🛑 Stop'; stopBtn.onclick = stopMusic; musicList.appendChild(stopBtn);
-  const pauseBtn = document.createElement('div'); pauseBtn.className = 'music-item pause-btn'; pauseBtn.textContent = bgAudio.paused ? '▶️ Play' : '⏸️ Pause';
-  pauseBtn.onclick = (e) => { e.stopPropagation(); if (bgAudio.src) { if (bgAudio.paused) bgAudio.play(); else bgAudio.pause(); renderPlaylist(); } }; musicList.appendChild(pauseBtn);
-  const addBtn = document.createElement('div'); addBtn.className = 'music-item add-more'; addBtn.textContent = '➕ Add'; addBtn.onclick = () => { audioUpload.value = ''; audioUpload.click(); }; musicList.appendChild(addBtn);
-  playlist.forEach((song, index) => {
-    const div = document.createElement('div'); div.className = 'music-item';
-    const name = document.createElement('span'); name.className = 'song-name'; name.textContent = song.name;
-    const del = document.createElement('span'); del.className = 'delete-song'; del.textContent = '✕';
-    del.onclick = (e) => { e.stopPropagation(); if (currentSongIndex === index) stopMusic(); playlist.splice(index, 1); if(currentSongIndex > index) currentSongIndex--; renderPlaylist(); };
-    div.appendChild(name); div.appendChild(del);
-    if (index === currentSongIndex && !bgAudio.paused) div.classList.add('active');
-    div.onclick = () => { if (currentSongIndex === index && !bgAudio.paused) { bgAudio.pause(); renderPlaylist(); } else { currentSongIndex = index; bgAudio.src = playlist[index].url; bgAudio.play(); renderPlaylist(); } };
-    musicList.appendChild(div);
+    const syms = [...document.querySelectorAll("#symptoms input:checked")].map(x => x.value);
+    const pSyms = [...document.querySelectorAll("#partnerSymptoms input:checked")].map(x => x.value);
+    const emergency = document.getElementById("emergency").value;
+    const result = document.getElementById("analysisResult");
+    
+    document.getElementById("saveAssessmentBtn").classList.add("hidden");
+
+    if(emergency === "yes") {
+      result.innerHTML = `<div class="warning"><strong>⚠️</strong> ${lang==='ar'?'ألم مفاجئ وشديد. توجه للطوارئ فوراً.':(lang==='fr'?'Douleur soudaine. Urgence.':'Sudden pain. Emergency.')}</div>`;
+      return;
+    }
+
+    let html = "";
+    let isHigh = false;
+
+    if(syms.includes("lump")) {
+        isHigh = true;
+        html += `<div class="warning"><strong>⚠️ ${lang==='ar'?'تنبيه:':(lang==='fr'?'Alerte:':'Alert:')}</strong> ${lang==='ar'?'توجد كتلة تستدعي زيارة طبيب مسالك.':(lang==='fr'?'Masse détectée.':'Lump detected.')}</div>`;
+        html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solLump")}</div>`;
+    }
+    if(syms.includes("erection")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solErection")}</div>`;
+    if(syms.includes("desire")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solDesire")}</div>`;
+    if(syms.includes("pain")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPain")}</div>`;
+    if(syms.includes("fatigue")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solFatigue")}</div>`;
+    
+    if(pSyms.length > 0) {
+        isHigh = true;
+        html += `<div class="warning"><strong>${lang==='ar'?'تنبيه:':(lang==='fr'?'Alerte:':'Alert:')}</strong> ${lang==='ar'?'المشكلة قد تكون لدى الشريكة.':(lang==='fr'?'Problème partenaire.':'Partner issue.')}</div>`;
+        if(pSyms.includes("pcos")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerPCOS")}</div>`;
+        if(pSyms.includes("tubes")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerTubes")}</div>`;
+        if(pSyms.includes("endo")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerEndo")}</div>`;
+        if(pSyms.includes("irregular")) html += `<div class="result"><strong>💡 ${lang==='ar'?'نصيحة:':(lang==='fr'?'Conseil:':'Advice:')}</strong> ${t("solPartnerIrregular")}</div>`;
+    }
+    
+    if(!isHigh && syms.length === 0 && pSyms.length === 0) {
+        html += `<div class="result">${lang==='ar'?'لا توجد أعراض خطيرة حالياً.':(lang==='fr'?'Pas de symptômes graves.':'No severe symptoms.')}</div>`;
+    }
+    result.innerHTML = html;
+
+    document.getElementById("saveAssessmentBtn").classList.remove("hidden");
+    lastAssessmentData = { date: new Date().toISOString().slice(0,10), age, syms, pSyms };
   });
-}
-function stopMusic() { bgAudio.pause(); bgAudio.currentTime = 0; currentSongIndex = -1; renderPlaylist(); }
-bgAudio.addEventListener('ended', () => { if(playlist.length > 0) { currentSongIndex = (currentSongIndex + 1) % playlist.length; bgAudio.src = playlist[currentSongIndex].url; bgAudio.play(); renderPlaylist(); } });
-bgAudio.addEventListener('play', renderPlaylist); bgAudio.addEventListener('pause', renderPlaylist);
-renderPlaylist(); 
+
+  window.saveAssessment = function() {
+      if(!lastAssessmentData) return;
+      let records = getData("sahapath_assessments");
+      records.push(lastAssessmentData);
+      setData("sahapath_assessments", records);
+      document.getElementById("saveAssessmentBtn").classList.add("hidden");
+      alert(t("assessmentSaved"));
+      renderRecords();
+  }
+
+  // --- حفظ البيانات ---
+  window.saveSemenData = function() {
+      const count = document.getElementById("semenCount").value;
+      const motility = document.getElementById("semenMotility").value;
+      const morph = document.getElementById("semenMorphology").value;
+      const date = document.getElementById("semenDate").value;
+      
+      if(!count && !motility && !morph) return;
+      if(!date) { document.getElementById("semenMessage").textContent = lang==='ar'?'أدخل التاريخ':(lang==='fr'?'Entrez la date':'Enter date'); return; }
+      
+      const history = getData("sahapath_semen");
+      history.push({ count, motility, morph, date });
+      setData("sahapath_semen", history);
+      
+      document.getElementById("semenMessage").textContent = lang==='ar'?'تم الحفظ!':(lang==='fr'?'Enregistré!':'Saved!');
+      setTimeout(()=>document.getElementById("semenMessage").textContent="", 3000);
+      renderRecords();
+  }
+
+  function getSemenData() {
+      const data = getData("sahapath_semen");
+      return data.length ? data[data.length - 1] : null;
+  }
+  function getSemenHistory() { return getData("sahapath_semen"); }
+
+  document.getElementById("saveLabBtn").addEventListener("click", function() {
+    const name = document.getElementById("testName").value;
+    const val = document.getElementById("testValue").value;
+    const date = document.getElementById("testDate").value;
+    if(!name || !val || !date) { document.getElementById("labMessage").textContent = t("needFields"); return; }
+    const labs = getData("sahapath_labs");
+    labs.push({name, val, date});
+    setData("sahapath_labs", labs);
+    document.getElementById("labMessage").textContent = lang==='ar'?'تم الحفظ!':(lang==='fr'?'Enregistré!':'Saved!');
+    setTimeout(()=>document.getElementById("labMessage").textContent="", 3000);
+    renderRecords();
+  });
+
+  function renderRecords() {
+    const box = document.getElementById("recordList");
+    const labs = getData("sahapath_labs");
+    const semenHist = getSemenHistory();
+    const assessments = getData("sahapath_assessments");
+    let html = "";
+    
+    if(semenHist.length) {
+        html += `<div class="item" style="border-right: 4px solid var(--gold);"><strong>${lang==='ar'?'تاريخ تحاليل السائل المنوي':(lang==='fr'?'Historique sperme':'Semen History')}</strong>`;
+        semenHist.forEach(s => {
+            html += `<div style="margin-top:6px; font-size:13px;">📅 ${s.date}: ${s.count||'-'} M/ml | ${s.motility||'-'}% | ${s.morph||'-'}%</div>`;
+        });
+        html += `</div>`;
+    }
+
+    if(labs.length) {
+        html += labs.map(l => `<div class="item"><strong>${l.name}</strong>: ${l.val} (${l.date})</div>`).join("");
+    }
+
+    if(assessments.length) {
+        html += `<div class="item" style="border-right: 4px solid var(--primary);"><strong>${lang==='ar'?'تقييم الأعراض':(lang==='fr'?'Évaluation clinique':'Clinical Assessment')} (${assessments[assessments.length-1].date})</strong><br>${lang==='ar'?'العمر':(lang==='fr'?'Âge':'Age')}: ${assessments[assessments.length-1].age}</div>`;
+    }
+
+    box.innerHTML = html || `<p class="small">${t("noData")}</p>`;
+  }
+
+  // --- واجهة الطبيب ---
+  window.openDoctorView = function() {
+      const age = document.getElementById("userAge").value || "N/A";
+      const semen = getSemenData();
+      const labs = getData("sahapath_labs");
+      
+      let html = `
+        <div class="clinical-row"><span class="clinical-label">Patient Age:</span> <span>${age} years</span></div>
+        <div class="clinical-row"><span class="clinical-label">Date Generated:</span> <span>${new Date().toLocaleDateString()}</span></div>
+        <div style="margin-top:20px; margin-bottom:10px; font-weight:bold; color:#333; border-bottom: 1px solid #ccc; padding-bottom:5px;">Semen Analysis (Latest)</div>
+        <div class="clinical-row"><span class="clinical-label">Count (M/ml):</span> <span>${semen ? semen.count : 'Not provided'}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Motility (%):</span> <span>${semen ? semen.motility : 'Not provided'}</span></div>
+        <div class="clinical-row"><span class="clinical-label">Morphology (%):</span> <span>${semen ? semen.morph : 'Not provided'}</span></div>
+      `;
+      
+      if(labs.length) {
+          html += `<div style="margin-top:20px; margin-bottom:10px; font-weight:bold; color:#333; border-bottom: 1px solid #ccc; padding-bottom:5px;">Hormonal Labs</div>`;
+          labs.forEach(l => {
+              html += `<div class="clinical-row"><span class="clinical-label">${l.name} (${l.date}):</span> <span>${l.val}</span></div>`;
+          });
+      }
+      
+      document.getElementById("doctorViewContent").innerHTML = html;
+      document.getElementById("doctorViewModal").classList.remove("hidden");
+  }
+  window.closeDoctorView = function() {
+      document.getElementById("doctorViewModal").classList.add("hidden");
+  }
+
+  // --- إرسال الملخص ---
+  window.sendToMyDoctor = function() {
+      const customDocs = getData("sahapath_custom_doctors");
+      const allDocs = [...defaultDoctors, ...customDocs];
+      
+      if(allDocs.length === 0) {
+          document.getElementById("shareMessage").textContent = t("noDoctorFound");
+          document.getElementById("shareMessage").style.color = "red";
+          return;
+      }
+
+      const targetDoc = allDocs[0];
+      const semen = getSemenData();
+      let text = "SahaPath Clinical Summary:\n";
+      if(semen) text += `Semen Analysis: Count ${semen.count}, Motility ${semen.motility}%, Morphology ${semen.morph}%\n`;
+      
+      if(targetDoc.phone) { window.open(`https://wa.me/${targetDoc.phone}?text=${encodeURIComponent(text)}`); }
+      else if(targetDoc.email) { window.location.href = `mailto:${targetDoc.email}?body=${encodeURIComponent(text)}`; }
+      
+      document.getElementById("shareMessage").textContent = lang==='ar'?'تم فتح المحادثة مع طبيبك.':(lang==='fr'?'Discussion ouverte avec votre médecin.':'Chat opened with your doctor.');
+      document.getElementById("shareMessage").style.color = "green";
+  }
+
+  // --- الأطباء ---
+  function renderDoctors() {
+    const box = document.getElementById("doctorsList");
+    const customDocs = getData("sahapath_custom_doctors");
+    const allDocs = [...defaultDoctors, ...customDocs];
+    
+    box.innerHTML = allDocs.map(doc => {
+      const d = doc[lang];
+      return `
+        <div class="doctor-card">
+          <h4>${d.name}</h4>
+          <span class="badge">${d.spec}</span>
+          <p>📍 ${d.addr}</p>
+          <p>📞 ${doc.phone}</p>
+          ${d.card ? `<div class="result" style="font-size:13px; padding:8px;">${d.card}</div>` : ''}
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.toggleAddDoctorForm = function() {
+      document.getElementById("addDocForm").classList.toggle("hidden");
+  }
+
+  window.addNewDoctor = function() {
+      const name = document.getElementById("newDocName").value.trim();
+      const spec = document.getElementById("newDocSpec").value.trim();
+      const phone = document.getElementById("newDocPhone").value.trim();
+      const email = document.getElementById("newDocEmail").value.trim();
+      const msg = document.getElementById("addDocMessage");
+
+      if(!name || !phone) { msg.textContent = t("needDoc"); msg.style.color = "red"; return; }
+
+      const newDoc = {
+          ar: { name: name, spec: spec || "طبيب", addr: "غير محدد", card: "" },
+          fr: { name: name, spec: spec || "Médecin", addr: "Non spécifié", card: "" },
+          en: { name: name, spec: spec || "Doctor", addr: "Not specified", card: "" },
+          phone: phone,
+          email: email
+      };
+
+      const customDocs = getData("sahapath_custom_doctors");
+      customDocs.push(newDoc);
+      setData("sahapath_custom_doctors", customDocs);
+      
+      msg.textContent = t("docSaved");
+      msg.style.color = "green";
+      document.getElementById("newDocName").value = "";
+      document.getElementById("newDocSpec").value = "";
+      document.getElementById("newDocPhone").value = "";
+      document.getElementById("newDocEmail").value = "";
+      renderDoctors();
+      toggleAddDoctorForm();
+  }
+
+  // --- قصص الأمل ---
+  function renderHopeStories() {
+    const box = document.getElementById("storiesContainer");
+    box.innerHTML = hopeStoriesData.map(s => {
+      const d = s[lang];
+      return `
+        <div class="item">
+          <div class="story-title">${d.title}</div>
+          <p><strong>${lang === 'ar' ? 'ما حدث' : (lang === 'fr' ? 'Ce qui s\'est passé' : 'What happened')}:</strong> ${d.problem}</p>
+          <p><strong>${lang === 'ar' ? 'العلاج والنتيجة' : (lang === 'fr' ? 'Traitement et résultat' : 'Treatment & Result')}:</strong> ${d.result}</p>
+          <a href="${s.source}" target="_blank" class="source-link">🔗 Source</a>
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.openStoryModal = function() {
+      document.getElementById("addStoryModal").classList.remove("hidden");
+  }
+  window.closeStoryModal = function() {
+      document.getElementById("addStoryModal").classList.add("hidden");
+  }
+
+  window.submitStory = function() {
+    const author = document.getElementById("storyAuthor").value.trim();
+    const text = document.getElementById("storyText").value.trim();
+    if(!text) { document.getElementById("storyMessage").textContent = t("needStory"); document.getElementById("storyMessage").style.color = "red"; return; }
+    
+    const stories = getData("sahapath_user_stories");
+    stories.unshift({author: author || (lang==='ar'?'مجهول':(lang==='fr'?'Anonyme':'Anonymous')), text, date: new Date().toISOString().slice(0,10)});
+    setData("sahapath_user_stories", stories);
+    
+    document.getElementById("storyMessage").textContent = t("storySaved");
+    document.getElementById("storyMessage").style.color = "green";
+    document.getElementById("storyText").value = "";
+    renderUserStories();
+    setTimeout(() => closeStoryModal(), 1500);
+  }
+
+  function renderUserStories() {
+    const box = document.getElementById("userStoriesContainer");
+    const stories = getData("sahapath_user_stories");
+    if(!stories.length) { box.innerHTML = `<p class="small">${t("noData")}</p>`; return; }
+    box.innerHTML = stories.map(s => `
+      <div class="item" style="border-right: 4px solid var(--gold);">
+        <strong>${s.author}</strong> <span class="small">- ${s.date}</span>
+        <p>${s.text}</p>
+      </div>
+    `).join("");
+  }
+
+  // --- الشات بوت ---
+  window.clearChat = function() {
+    document.getElementById("chatMessages").innerHTML = `<div class="chat-msg chat-bot">${t("chatWelcome")}</div>`;
+  }
+
+  window.handleChatEnter = function(e) { if(e.key === "Enter") sendChatMessage(); }
+  
+  window.sendQuickReply = function(btn) { 
+      const text = btn.getAttribute(`data-${lang}`) || btn.getAttribute("data-ar");
+      document.getElementById("chatInput").value = text; 
+      sendChatMessage(); 
+  }
+
+  window.sendChatMessage = function() {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if(!text) return;
+    const box = document.getElementById("chatMessages");
+    box.innerHTML += `<div class="chat-msg chat-user">${text}</div>`;
+    input.value = "";
+    box.scrollTop = box.scrollHeight;
+
+    setTimeout(() => {
+      let reply = t("chatFallback");
+      const lower = text.toLowerCase();
+      let isKnown = true;
+      
+      if(lower.includes("دوالي") || lower.includes("varicocele")) reply = t("chatVaricocele");
+      else if(lower.includes("سائل") || lower.includes("semen")) reply = t("chatSemen");
+      else if(lower.includes("تستوستيرون") || lower.includes("testosterone")) reply = t("chatTestosterone");
+      else isKnown = false;
+      
+      let htmlReply = `<div class="chat-msg chat-bot">${reply}`;
+      if(!isKnown) {
+          // إضافة زر التوجيه الذكي
+          htmlReply += `<br><br><button class="btn secondary" style="font-size:12px; margin-top:5px; padding:5px 10px;" onclick="document.getElementById('navEvaluate').click();">الذهاب لتقييم الأعراض</button>`;
+      }
+      htmlReply += `</div>`;
+      
+      box.innerHTML += htmlReply;
+      box.scrollTop = box.scrollHeight;
+    }, 800);
+  }
+
+  // --- نظام الحماية (PIN) والتشفير ---
+  let savedPinHash = localStorage.getItem("sahapath_pin_hash") || null;
+
+  if (!savedPinHash && localStorage.getItem("sahapath_pin")) {
+      const oldPin = localStorage.getItem("sahapath_pin");
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(oldPin)).then(buf => {
+          const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+          localStorage.setItem("sahapath_pin_hash", hash);
+          localStorage.removeItem("sahapath_pin");
+          savedPinHash = hash;
+      });
+  }
+
+  async function hashPin(pin) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  let currentPinInput = "";
+  let isSettingPin = false;
+  let firstPinEntry = "";
+
+  window.openLockScreen = function() {
+      document.getElementById("lockScreen").classList.remove("hidden");
+      document.getElementById("pinDisplay").textContent = "••••";
+      document.getElementById("pinError").textContent = "";
+      currentPinInput = "";
+      updateLockScreenText();
+  }
+  window.closeLockScreen = function() { document.getElementById("lockScreen").classList.add("hidden"); }
+  
+  window.updateLockScreenText = function() {
+      const title = document.getElementById("lockTitle");
+      const desc = document.getElementById("lockDesc");
+      if(!savedPinHash) {
+          title.textContent = "🔒 " + (lang==='ar'?'حماية الملف':(lang==='fr'?'Protection':'Protect Profile'));
+          desc.textContent = isSettingPin ? t("pinConfirm") : t("pinCreate");
+      } else {
+          title.textContent = "🔒 " + (lang==='ar'?'الملف الشخصي محمي':(lang==='fr'?'Dossier protégé':'Protected Profile'));
+          desc.textContent = t("pinEnter");
+      }
+  }
+
+  window.cancelLock = function() {
+      closeLockScreen();
+      showTab("home", document.getElementById("navHome"));
+  }
+
+  window.inputPin = function(num) {
+      if(currentPinInput.length < 4) {
+          currentPinInput += num;
+          document.getElementById("pinDisplay").textContent = "•".repeat(currentPinInput.length);
+      }
+  }
+  window.submitPin = function() {
+      if(currentPinInput.length === 4) checkPin();
+      else document.getElementById("pinError").textContent = t("pinLength");
+  }
+  window.clearPin = function() {
+      currentPinInput = "";
+      document.getElementById("pinDisplay").textContent = "••••";
+  }
+  
+  async function checkPin() {
+      const errorMsg = document.getElementById("pinError");
+      if(!savedPinHash) {
+          if(!isSettingPin) {
+              firstPinEntry = currentPinInput;
+              isSettingPin = true;
+              clearPin();
+              updateLockScreenText();
+          } else {
+              if(firstPinEntry === currentPinInput) {
+                  savedPinHash = await hashPin(currentPinInput);
+                  localStorage.setItem("sahapath_pin_hash", savedPinHash);
+                  isSettingPin = false;
+                  closeLockScreen();
+                  showTab("askDoctor", document.getElementById("navAskDoctor"));
+              } else {
+                  errorMsg.textContent = t("pinMismatch");
+                  isSettingPin = false;
+                  clearPin();
+                  updateLockScreenText();
+              }
+          }
+      } else {
+          const enteredHash = await hashPin(currentPinInput);
+          if(enteredHash === savedPinHash) {
+              closeLockScreen();
+              showTab("askDoctor", document.getElementById("navAskDoctor"));
+          } else {
+              errorMsg.textContent = t("pinWrong");
+              clearPin();
+          }
+      }
+  }
+  window.lockProfile = function() {
+      closeLockScreen();
+      showTab("home", document.getElementById("navHome"));
+  }
+
+  // ==========================================
+  // التهيئة الأولية
+  // ==========================================
+  document.getElementById("testDate").value = new Date().toISOString().slice(0,10);
+  document.getElementById("semenDate").value = new Date().toISOString().slice(0,10);
+  
+  clearChat();
+  renderRecords();
+  renderDoctors();
+  renderHopeStories();
+  renderUserStories();
+  calculateDigitalLab();
+
+});
 </script>
 </body>
 </html>
