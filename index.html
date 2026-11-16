@@ -97,105 +97,20 @@ textarea{min-height:90px;resize:vertical}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 
-/* =========================================
-   تصميم الزجاج السائل (Liquid Glass) لبوابة الطبيب
-   ========================================= */
-.glass-container {
-    background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%);
-    padding: 20px 10px;
-    border-radius: 20px;
-    margin-top: 10px;
-    box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
-}
+/* تصميم الزجاج السائل */
+.glass-container { background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%); padding: 20px 10px; border-radius: 20px; margin-top: 10px; box-shadow: inset 0 0 20px rgba(255,255,255,0.5); }
+.glass-card { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 20px; padding: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); margin-bottom: 15px; }
+.glass-title { color: #004D40; font-size: 18px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+.glass-input-group { margin-bottom: 15px; }
+.glass-input-group label { color: #00695C; font-weight: 600; font-size: 13px; margin-bottom: 5px; display: block; }
+.glass-input-group input { width: 100%; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 12px; background: rgba(255, 255, 255, 0.6); color: #004D40; font-weight: bold; outline: none; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+.glass-input-group input:focus { background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 10px rgba(66, 191, 163, 0.4); }
+.glass-btn { background: linear-gradient(135deg, #42BFA3 0%, #26765F 100%); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(66, 191, 163, 0.4); transition: 0.3s; }
+.glass-btn:active { transform: scale(0.98); }
+.glass-result { background: rgba(255, 255, 255, 0.7); border-right: 5px solid #42BFA3; border-radius: 12px; padding: 15px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    margin-bottom: 15px;
-}
-
-.glass-title {
-    color: #004D40;
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-}
-
-.glass-input-group {
-    margin-bottom: 15px;
-}
-
-.glass-input-group label {
-    color: #00695C;
-    font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.glass-input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.6);
-    color: #004D40;
-    font-weight: bold;
-    outline: none;
-    transition: 0.3s;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.glass-input-group input:focus {
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 10px rgba(66, 191, 163, 0.4);
-}
-
-.glass-btn {
-    background: linear-gradient(135deg, #42BFA3 0%, #26765F 100%);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(66, 191, 163, 0.4);
-    transition: 0.3s;
-}
-
-.glass-btn:active {
-    transform: scale(0.98);
-}
-
-.glass-result {
-    background: rgba(255, 255, 255, 0.7);
-    border-right: 5px solid #42BFA3;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* =========================================
-   تحسينات الشاشات الكبيرة (اللابتوب والكمبيوتر)
-   ========================================= */
+/* تحسينات اللابتوب */
 @media (min-width: 1024px) {
     main { max-width: 1100px; }
     .card { padding: 30px; border-radius: 24px; }
@@ -239,7 +154,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
         <div class="modal-header">
             <h3 data-ar="تقرير طبي (SahaPath AI)" data-fr="Rapport Médical" data-en="Medical Report">تقرير طبي (SahaPath AI)</h3>
             <div>
-                <button class="btn secondary print-btn" onclick="window.print()" style="margin:0; padding:5px 10px; font-size:12px; margin-left:5px;">🖨️ طباعة</button>
+                <button class="btn secondary print-btn" onclick="window.print()" style="margin:0; padding:5px 10px; font-size:12px; margin-left:5px;">🖨️ <span data-ar="طباعة" data-fr="Imprimer" data-en="Print">طباعة</span></button>
                 <button class="close-modal" onclick="closeDoctorView()">×</button>
             </div>
         </div>
@@ -256,10 +171,10 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
             <button class="close-modal" onclick="closeStoryModal()">×</button>
         </div>
         <label data-ar="اسمك (اختياري)" data-fr="Votre nom (optionnel)" data-en="Your name (optional)">اسمك (اختياري)</label>
-        <input type="text" id="storyAuthor" placeholder="مثال: أحمد">
+        <input type="text" id="storyAuthor" data-ar-placeholder="مثال: أحمد" data-fr-placeholder="Ex: Ahmed" data-en-placeholder="Ex: Ahmed" placeholder="مثال: أحمد">
         <label data-ar="قصتك" data-fr="Votre histoire" data-en="Your story">قصتك</label>
-        <textarea id="storyText" placeholder="اكتب تجربتك هنا..."></textarea>
-        <button class="btn gold full" onclick="submitStory()" data-ar="نشر القصة" data-fr="Publier" data-en="Publish">نشر القصة</button>
+        <textarea id="storyText" data-ar-placeholder="اكتب تجربتك هنا..." data-fr-placeholder="Écrivez votre expérience ici..." data-en-placeholder="Write your experience here..." placeholder="اكتب تجربتك هنا..."></textarea>
+        <button class="btn gold full" onclick="submitStory()" data-ar="نشر القصة" data-fr="Publier l'histoire" data-en="Publish Story">نشر القصة</button>
         <div id="storyMessage" class="small" style="text-align:center; margin-top:10px; color:green;"></div>
     </div>
 </div>
@@ -364,7 +279,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <div style="display:flex; justify-content:space-between; align-items:flex-end;">
         <div style="flex:1; margin-left:10px;">
             <label data-ar="عمرك (لحساب عامل العمر)" data-fr="Votre âge (facteur d'âge)" data-en="Your age (age factor)">عمرك (لحساب عامل العمر)</label>
-            <input type="number" id="ageInputLab" onchange="calculateDigitalLab()" placeholder="أدخل عمرك">
+            <input type="number" id="ageInputLab" onchange="calculateDigitalLab()" data-ar-placeholder="أدخل عمرك" data-fr-placeholder="Entrez votre âge" data-en-placeholder="Enter your age" placeholder="أدخل عمرك">
         </div>
         <button class="btn secondary" style="margin-bottom:0;" onclick="resetLab()" data-ar="مسح الكل" data-fr="Réinitialiser" data-en="Reset">مسح الكل</button>
     </div>
@@ -381,7 +296,6 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <h3 data-ar="1. البيئة والمهنة (Occupational)" data-fr="1. Environnement" data-en="1. Environment">1. البيئة والمهنة (Occupational)</h3>
     <div class="checks" id="labEnv">
       <label class="check"><input type="checkbox" value="heat" onchange="calculateDigitalLab()"> <span data-ar="العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات" data-fr="Travail à >35°C > 4h/jour" data-en="Work >35°C > 4h/day">العمل ببيئة تتجاوز 35°م (لحام، مطابخ) > 4 ساعات</span></label>
-      <label class="check"><input type="checkbox" value="welding" onchange="calculateDigitalLab()"> <span data-ar="لحام TIG/MIG أو صهر معادن" data-fr="Soudure TIG/MIG" data-en="TIG/MIG welding">لحام TIG/MIG أو صهر معادن</span></label>
       <label class="check"><input type="checkbox" value="chemicals" onchange="calculateDigitalLab()"> <span data-ar="التعرض للمبيدات أو المذيبات" data-fr="Pesticides ou solvants" data-en="Pesticides or solvents">التعرض للمبيدات أو المذيبات</span></label>
       <label class="check"><input type="checkbox" value="driving" onchange="calculateDigitalLab()"> <span data-ar="قيادة سيارة بدون تكييف > ساعتين يومياً" data-fr="Conduite sans climatisation > 2h/jour" data-en="Driving without AC > 2h/day">قيادة سيارة بدون تكييف > ساعتين يومياً</span></label>
     </div>
@@ -412,9 +326,9 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     </div>
 
     <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: #FFF8E8;">
-        <h3 style="margin-top:0; color:#8A6D2A;">⏳ رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</h3>
-        <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
-        <button class="btn gold full hidden" id="startJourneyBtn" onclick="startJourney()">ابدأ رحلة الـ 74 يوماً الآن</button>
+        <h3 style="margin-top:0; color:#8A6D2A;">⏳ <span data-ar="رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)" data-fr="Parcours de 74 jours (cycle de spermatogenèse)" data-en="74-day Journey (Spermatogenesis Cycle)">رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</span></h3>
+        <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;" data-ar="ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك." data-fr="Commencez votre parcours aujourd'hui pour changer vos habitudes et suivre votre amélioration." data-en="Start your journey today to change your habits and track your improvement.">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
+        <button class="btn gold full hidden" id="startJourneyBtn" onclick="startJourney()" data-ar="ابدأ رحلة الـ 74 يوماً الآن" data-fr="Commencer le parcours de 74 jours" data-en="Start 74-day Journey Now">ابدأ رحلة الـ 74 يوماً الآن</button>
     </div>
 
   </div>
@@ -428,11 +342,12 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     </div>
 
     <div class="note" style="margin-bottom:15px;">
-        <strong>💾 حماية بياناتك:</strong> يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً.
+        <strong>💾 <span data-ar="حماية بياناتك:" data-fr="Protection des données:" data-en="Data protection:">حماية بياناتك:</span></strong> 
+        <span data-ar="يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً." data-fr="Vous pouvez exporter une sauvegarde de vos données ou les restaurer plus tard." data-en="You can export a backup of your data or restore it later.">يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً.</span>
         <div style="display:flex; gap:10px; margin-top:10px;">
-            <button class="btn secondary" style="margin:0; flex:1; font-size:12px;" onclick="exportData()">تصدير البيانات</button>
+            <button class="btn secondary" style="margin:0; flex:1; font-size:12px;" onclick="exportData()" data-ar="تصدير البيانات" data-fr="Exporter" data-en="Export">تصدير البيانات</button>
             <label class="btn secondary" style="margin:0; flex:1; font-size:12px; text-align:center; cursor:pointer;">
-                استيراد البيانات
+                <span data-ar="استيراد البيانات" data-fr="Importer" data-en="Import">استيراد البيانات</span>
                 <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
             </label>
         </div>
@@ -464,9 +379,9 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 
     <h3 style="margin-top:20px;" data-ar="التحاليل الهرمونية (اختياري)" data-fr="Hormones (Optionnel)" data-en="Hormones (Optional)">التحاليل الهرمونية (اختياري)</h3>
     <label data-ar="اسم التحليل" data-fr="Nom de l'analyse" data-en="Test name">اسم التحليل</label>
-    <input id="testName" type="text" placeholder="Testosterone">
+    <input id="testName" type="text" data-ar-placeholder="Testosterone" data-fr-placeholder="Testosterone" data-en-placeholder="Testosterone" placeholder="Testosterone">
     <label data-ar="القيمة" data-fr="Valeur" data-en="Value">القيمة</label>
-    <input id="testValue" type="text" placeholder="450">
+    <input id="testValue" type="text" data-ar-placeholder="450" data-fr-placeholder="450" data-en-placeholder="450" placeholder="450">
     <label data-ar="تاريخ التحليل" data-fr="Date" data-en="Date">تاريخ التحليل</label>
     <input id="testDate" type="date">
     <button class="btn full" id="saveLabBtn" data-ar="حفظ النتيجة" data-fr="Enregistrer" data-en="Save">حفظ النتيجة</button>
@@ -498,22 +413,22 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
             
             <div class="glass-input-group">
                 <label data-ar="عمر المريض" data-fr="Âge du patient" data-en="Patient Age">عمر المريض</label>
-                <input type="number" id="docPatientAge" placeholder="مثال: 32">
+                <input type="number" id="docPatientAge" data-ar-placeholder="مثال: 32" data-fr-placeholder="Ex: 32" data-en-placeholder="Ex: 32" placeholder="مثال: 32">
             </div>
             
             <div class="glass-input-group">
                 <label data-ar="عدد الحيوانات المنوية (مليون/مل)" data-fr="Numération (M/ml)" data-en="Sperm Count (M/ml)">عدد الحيوانات المنوية (مليون/مل)</label>
-                <input type="number" id="docSemenCount" placeholder="مثال: 12">
+                <input type="number" id="docSemenCount" data-ar-placeholder="مثال: 12" data-fr-placeholder="Ex: 12" data-en-placeholder="Ex: 12" placeholder="مثال: 12">
             </div>
             
             <div class="glass-input-group">
                 <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
-                <input type="number" id="docSemenMotility" placeholder="مثال: 30">
+                <input type="number" id="docSemenMotility" data-ar-placeholder="مثال: 30" data-fr-placeholder="Ex: 30" data-en-placeholder="Ex: 30" placeholder="مثال: 30">
             </div>
             
             <div class="glass-input-group">
                 <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
-                <input type="number" id="docSemenMorph" placeholder="مثال: 2">
+                <input type="number" id="docSemenMorph" data-ar-placeholder="مثال: 2" data-fr-placeholder="Ex: 2" data-en-placeholder="Ex: 2" placeholder="مثال: 2">
             </div>
             
             <button class="glass-btn" onclick="runDoctorAutomation()" data-ar="أتمتة التحليل وإظهار التوصيات" data-fr="Automatiser l'analyse" data-en="Automate Analysis">أتمتة التحليل وإظهار التوصيات</button>
@@ -533,10 +448,10 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     
     <div id="addDocForm" class="hidden" style="margin-top:15px;">
         <h3 data-ar="بيانات الطبيب" data-fr="Détails du médecin" data-en="Doctor Details">بيانات الطبيب</h3>
-        <input type="text" id="newDocName" placeholder="اسم الطبيب">
-        <input type="text" id="newDocSpec" placeholder="التخصص">
-        <input type="text" id="newDocPhone" placeholder="رقم الهاتف">
-        <input type="text" id="newDocEmail" placeholder="البريد الإلكتروني (اختياري)">
+        <input type="text" id="newDocName" data-ar-placeholder="اسم الطبيب" data-fr-placeholder="Nom du médecin" data-en-placeholder="Doctor name" placeholder="اسم الطبيب">
+        <input type="text" id="newDocSpec" data-ar-placeholder="التخصص" data-fr-placeholder="Spécialité" data-en-placeholder="Specialty" placeholder="التخصص">
+        <input type="text" id="newDocPhone" data-ar-placeholder="رقم الهاتف" data-fr-placeholder="Numéro de téléphone" data-en-placeholder="Phone number" placeholder="رقم الهاتف">
+        <input type="text" id="newDocEmail" data-ar-placeholder="البريد الإلكتروني (اختياري)" data-fr-placeholder="Email (optionnel)" data-en-placeholder="Email (optional)" placeholder="البريد الإلكتروني (اختياري)">
         <button class="btn full" onclick="addNewDoctor()" data-ar="حفظ الطبيب" data-fr="Enregistrer" data-en="Save Doctor">حفظ الطبيب</button>
         <div id="addDocMessage" class="small" style="text-align:center; margin-top:5px;"></div>
     </div>
@@ -558,7 +473,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
         <button class="quick-reply" onclick="sendQuickReply(this)" data-ar="التستوستيرون والخصوبة" data-fr="Testostérone et fertilité" data-en="Testosterone and fertility">التستوستيرون والخصوبة</button>
       </div>
       <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="handleChatEnter(event)">
+        <input type="text" id="chatInput" data-ar-placeholder="اكتب سؤالك هنا..." data-fr-placeholder="Écrivez votre question..." data-en-placeholder="Type your question..." placeholder="اكتب سؤالك هنا..." onkeypress="handleChatEnter(event)">
         <button class="btn" onclick="sendChatMessage()">➤</button>
       </div>
     </div>
@@ -614,20 +529,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labBenchmark:"مقارنة سريعة: 📊", labBenchmarkText:"مؤشرك الحالي أقل من المعدل المثالي لرجل في عمرك، لكن التغيير يبدأ بخطوة واحدة، وأنت قادر على ذلك.",
         storySaved:"تم نشر قصتك!", needStory:"اكتب قصتك أولاً.", assessmentSaved:"تم حفظ التقييم في السجل الطبي.", noDoctorFound:"لم يتم العثور على طبيب في القائمة. يرجى إضافة طبيب من قسم (قائمة الأطباء).",
         exportSuccess:"تم تصدير البيانات بنجاح!", importSuccess:"تم استيراد البيانات بنجاح! سيتم إعادة تحميل الصفحة.", importError:"ملف غير صالح!",
-        
-        solVaricocele:"نصيحة طبيبك: لا تقلق، الدوالي سبب شائع جداً وعلاجه فعال. توجد عملية جراحية دقيقة (ربط الأوردة بالمجهر) تضاعف من فرص الحمل الطبيعي. ناقشها مع طبيبك.",
-        solErection:"نصيحة طبيبك: ضعف الانتصاب قد يكون مرتبطاً بالتوتر أو هرمونات أو أدوية. لا تقلق، طبيبك سيقوم بفحص بسيط للتستوستيرون وسيوجهك للعلاج المناسب.",
-        solDesire:"نصيحة طبيبك: انخفاض الرغبة له أسباب كثيرة (نفسية أو هرمونية). تحدث مع طبيبك بصراحة، فالحل بسيط في كثير من الحالات.",
-        solMumps:"نصيحة طبيبك: النكاف بعد البلوغ قد يؤثر على الخصية. لكن لا تقلق، توجد تقنيات متقدمة لاستخراج الحيوانات المنوية (Micro-TESE) حققت نجاحات كبيرة.",
-        solUndescended:"نصيحة طبيبك: بما أنك أجريت عملية إنزال الخصية سابقاً، ننصحك بمتابعة دورية بسيطة لتقييم أي تأثير على الخصوبة. أنت في أيدٍ أمينة.",
-        solTestosterone:"نصيحة طبيبك: التستوستيرون الخارجي يوقف إنتاج الحيوانات المنوية. لا تقلق، بإشراف الطبيب يمكنك التوقف عنه واستخدام أدوية بديلة (مثل Clomiphene) لاستعادة الإنتاج الطبيعي.",
-        solPain:"نصيحة طبيبك: الألم المتكرر قد يكون بسبب دوالي أو التهاب. فحص بسيط بالموجات فوق الصوتية (Doppler) سيحدد السبب بدقة وسنعالجه.",
-        solLump:"نصيحة طبيبك: وجود كتلة يتطلب فحصاً فورياً. لا تيأس، معظم الكتل حميدة، لكن الفحص المبكر يضمن سلامتك.",
-        solFatigue:"نصيحة طبيبك: التعب المستمر قد يكون بسبب نقص التستوستيرون أو الغدة الدرقية. ننصحك بفحص شامل بسيط لمعرفة السبب.",
-        solPartnerPCOS:"نصيحة طبيبة الشريكة: تكيس المبايض سبب شائع جداً وقابل للعلاج. زيارة طبيبة النساء وتنظيم التبويض أو تعديل نمط الحياة كفيل بحدوث حمل بإذن الله.",
-        solPartnerTubes:"نصيحة طبيبة الشريكة: انسداد القنوات قد يحتاج تدخلاً بسيطاً بالمنظار أو أطفال الأنابيب. تحدثا معاً كفريق واحد مع الطبيب.",
-        solPartnerEndo:"نصيحة طبيبة الشريكة: بطانة الرحم المهاجرة تحتاج تقييماً متخصصاً. استشارة طبيبة خصوبة هي الخطوة الصحيحة والأولى.",
-        solPartnerIrregular:"نصيحة طبيبة الشريكة: الدورة غير المنتظمة تعني أن التبويض غير منتظم. فحص هرموني بسيط سيساعد في ضبطها وتحسين فرص الحمل."
+        doctorAutoTitle:"نتيجة الأتمتة:", doctorAutoNormal:"✅ التحليل طبيعي. جميع المؤشرات ضمن معايير منظمة الصحة العالمية (WHO).", doctorAutoNormalRec:"لا توجد توصيات عاجلة. يُنصح بمراجعة العادات الحياتية والاستمرار فيها.", doctorAutoAbnormal:"🚨 تم اكتشاف اضطرابات في السائل المنوي:", doctorAutoAbnormalRec:"التوصيات الطبية المقترحة آلياً: <br>1. فحص سريري للخصية لاستبعاد دوالي الخصية.<br>2. فحص هرموني (Testosterone, FSH, LH).<br>3. مراجعة الأدوية والعادات (التدخين، الحرارة).", doctorAutoAlerts:"قلة عدد الحيوانات المنوية (Oligozoospermia): العدد {count} أقل من الحد الطبيعي (16 مليون/مل).|ضعف الحركة (Asthenozoospermia): الحركة {motility}% أقل من الحد الطبيعي (42%).|تشوه الشكل (Teratozoospermia): النسبة {morph}% أقل من الحد الطبيعي (4%)."
     },
     fr: { 
         chatWelcome:"Bienvenue ! Comment puis-je vous aider ?", noData:"Aucune donnée.", needFields:"Remplissez les champs.", shareCopied:"Copié!", docSaved:"Médecin enregistré!", needDoc:"Entrez le nom et le téléphone.",
@@ -639,20 +541,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labBenchmark:"Comparaison : 📊", labBenchmarkText:"Votre score est inférieur à la moyenne idéale pour votre âge, mais le changement commence par une étape. Vous pouvez le faire !",
         storySaved:"Histoire publiée!", needStory:"Écrivez votre histoire.", assessmentSaved:"Évaluation enregistrée.", noDoctorFound:"Aucun médecin trouvé. Ajoutez-en un dans l'annuaire.",
         exportSuccess:"Données exportées!", importSuccess:"Données importées!", importError:"Fichier invalide!",
-        
-        solVaricocele:"Conseil de votre médecin : Ne vous inquiétez pas, la varicocèle est une cause fréquente et traitable. La microchirurgie double les chances de grossesse naturelle.",
-        solErection:"Conseil de votre médecin : L'absence d'érection peut être liée au stress, aux hormones ou aux médicaments. Ne vous inquiétez pas, un simple test de testostérone aidera.",
-        solDesire:"Conseil de votre médecin : La baisse de libido a plusieurs causes. Parlez-en ouvertement à votre médecin.",
-        solMumps:"Conseil de votre médecin : Les oreillons peuvent affecter les testicules. Ne vous inquiétez pas, la Micro-TESE offre d'excellents résultats.",
-        solUndescended:"Conseil de votre médecin : Un suivi régulier est recommandé pour évaluer la fertilité. Vous êtes entre de bonnes mains.",
-        solTestosterone:"Conseil de votre médecin : Sous surveillance médicale, vous pouvez arrêter la testostérone et utiliser des alternatives comme le Clomifène.",
-        solPain:"Conseil de votre médecin : Une échographie Doppler simple identifiera la cause de la douleur pour un traitement précis.",
-        solLump:"Conseil de votre médecin : Une masse nécessite un examen immédiat. Ne paniquez pas, la plupart sont bénignes, mais il faut vérifier.",
-        solFatigue:"Conseil de votre médecin : La fatigue peut être liée à la testostérone ou à la thyroïde. Un bilan simple est recommandé.",
-        solPartnerPCOS:"Conseil pour votre partenaire : Le SOPK est très courant et traitable. Consultez une gynécologue.",
-        solPartnerTubes:"Conseil pour votre partenaire : L'obstruction peut nécessiter une cœlioscopie ou une FIV.",
-        solPartnerEndo:"Conseil pour votre partenaire : L'endométriose nécessite un avis spécialisé en fertilité.",
-        solPartnerIrregular:"Conseil pour votre partenaire : Un bilan hormonal simple aidera à réguler l'ovulation."
+        doctorAutoTitle:"Résultat de l'automatisation :", doctorAutoNormal:"✅ Analyse normale. Tous les indicateurs sont conformes à l'OMS.", doctorAutoNormalRec:"Aucune recommandation urgente. Continuez vos bonnes habitudes.", doctorAutoAbnormal:"🚨 Troubles du sperme détectés :", doctorAutoAbnormalRec:"Recommandations : <br>1. Examen clinique testiculaire.<br>2. Bilan hormonal (Testostérone, FSH, LH).<br>3. Réviser les médicaments et habitudes.", doctorAutoAlerts:"Oligozoospermie: Le nombre {count} est inférieur à la normale (16 M/ml).|Asthénozoospermie: La motilité {motility}% est inférieure à la normale (42%).|Tératozoospermie: La morphologie {morph}% est inférieure à la normale (4%)."
     },
     en: { 
         chatWelcome:"Welcome! How can I help you?", noData:"No data.", needFields:"Fill fields.", shareCopied:"Copied!", docSaved:"Doctor saved!", needDoc:"Enter name and phone.",
@@ -664,20 +553,7 @@ document.addEventListener("DOMContentLoaded", function() {
         labBenchmark:"Quick comparison: 📊", labBenchmarkText:"Your current score is below the ideal average for your age, but change starts with one step. You can do it!",
         storySaved:"Story published!", needStory:"Write your story.", assessmentSaved:"Assessment saved.", noDoctorFound:"No doctor found in your list. Please add one in Doctors Directory.",
         exportSuccess:"Data exported successfully!", importSuccess:"Data imported successfully! Page will reload.", importError:"Invalid file!",
-        
-        solVaricocele:"Doctor's advice: Don't worry, varicocele is a very common and treatable cause. Microsurgery doubles natural pregnancy chances.",
-        solErection:"Doctor's advice: Erectile dysfunction can be linked to stress, hormones, or meds. A simple testosterone test will guide us.",
-        solDesire:"Doctor's advice: Low libido has many causes. Talk openly with your doctor, the solution is often simple.",
-        solMumps:"Doctor's advice: Mumps can affect testicles. Don't worry, advanced techniques like Micro-TESE offer great success.",
-        solUndescended:"Doctor's advice: Regular follow-up is recommended to assess fertility. You are in good hands.",
-        solTestosterone:"Doctor's advice: Under medical supervision, you can stop testosterone and use alternatives like Clomiphene.",
-        solPain:"Doctor's advice: A simple Doppler ultrasound will identify the cause of pain for precise treatment.",
-        solLump:"Doctor's advice: A mass requires immediate examination. Don't panic, most are benign, but early check is key.",
-        solFatigue:"Doctor's advice: Fatigue can be linked to low testosterone or thyroid. A simple check-up is recommended.",
-        solPartnerPCOS:"Partner's advice: PCOS is very common and treatable. Consult a gynecologist.",
-        solPartnerTubes:"Partner's advice: Tubal blockage may require laparoscopy or IVF.",
-        solPartnerEndo:"Partner's advice: Endometriosis needs a specialized fertility consultation.",
-        solPartnerIrregular:"Partner's advice: A simple hormonal panel will help regulate ovulation."
+        doctorAutoTitle:"Automation Result:", doctorAutoNormal:"✅ Normal analysis. All indicators are within WHO standards.", doctorAutoNormalRec:"No urgent recommendations. Keep up the good habits.", doctorAutoAbnormal:"🚨 Semen abnormalities detected:", doctorAutoAbnormalRec:"Recommendations: <br>1. Clinical testicular exam.<br>2. Hormonal panel (Testosterone, FSH, LH).<br>3. Review meds and habits.", doctorAutoAlerts:"Oligozoospermia: Count {count} is below normal (16 M/ml).|Asthenozoospermia: Motility {motility}% is below normal (42%).|Teratozoospermia: Morphology {morph}% is below normal (4%)."
     }
   };
 
@@ -767,7 +643,6 @@ document.addEventListener("DOMContentLoaded", function() {
       let score = 100, envD = 0, lifeD = 0, medD = 0, ageD = 0;
 
       if(env.includes("heat")) envD += 15;
-      if(env.includes("welding")) envD += 15;
       if(env.includes("chemicals")) envD += 10;
       if(env.includes("driving")) envD += 5;
 
@@ -848,6 +723,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if(!startDate) {
           startBtn.classList.remove("hidden");
+          statusText.setAttribute("data-ar", "ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.");
+          statusText.setAttribute("data-fr", "Commencez votre parcours aujourd'hui pour changer vos habitudes et suivre votre amélioration.");
+          statusText.setAttribute("data-en", "Start your journey today to change your habits and track your improvement.");
+          statusText.textContent = statusText.getAttribute("data-" + lang) || statusText.getAttribute("data-ar");
           return;
       }
       
@@ -1005,43 +884,30 @@ document.addEventListener("DOMContentLoaded", function() {
       const resultBox = document.getElementById("doctorAutomationResult");
 
       if(isNaN(age) || isNaN(count) || isNaN(motility) || isNaN(morph)) {
-          resultBox.innerHTML = `<div class="glass-result" style="border-right-color:#B83232;">⚠️ يرجى إدخال جميع الحقول بشكل صحيح.</div>`;
+          resultBox.innerHTML = `<div class="glass-result" style="border-right-color:#B83232;">⚠️ ${lang==='ar'?'يرجى إدخال جميع الحقول بشكل صحيح.':(lang==='fr'?'Veuillez remplir correctement tous les champs.':'Please fill all fields correctly.')}</div>`;
           resultBox.classList.remove("hidden");
           return;
       }
 
       let alerts = [];
-      let diagnosis = "";
-      let recommendation = "";
+      let alertStrings = t("doctorAutoAlerts").split("|");
+      
+      if (count < 16) alerts.push(alertStrings[0].replace("{count}", count));
+      if (motility < 42) alerts.push(alertStrings[1].replace("{motility}", motility));
+      if (morph < 4) alerts.push(alertStrings[2].replace("{morph}", morph));
 
-      // أتمتة بناءً على معايير WHO 2021
-      if (count < 16) {
-          alerts.push(`قلة عدد الحيوانات المنوية (Oligozoospermia): العدد ${count} أقل من الحد الطبيعي (16 مليون/مل).`);
-      }
-      if (motility < 42) {
-          alerts.push(`ضعف الحركة (Asthenozoospermia): الحركة ${motility}% أقل من الحد الطبيعي (42%).`);
-      }
-      if (morph < 4) {
-          alerts.push(`تشوه الشكل (Teratozoospermia): النسبة ${morph}% أقل من الحد الطبيعي (4%).`);
-      }
-
-      if (alerts.length === 0) {
-          diagnosis = "✅ التحليل طبيعي. جميع المؤشرات ضمن معايير منظمة الصحة العالمية (WHO).";
-          recommendation = "لا توجد توصيات عاجلة. يُنصح بمراجعة العادات الحياتية والاستمرار فيها.";
-      } else {
-          diagnosis = "🚨 تم اكتشاف اضطرابات في السائل المنوي:";
-          recommendation = "التوصيات الطبية المقترحة آلياً: <br>1. فحص سريري للخصية لاستبعاد دوالي الخصية.<br>2. فحص هرموني (Testosterone, FSH, LH).<br>3. مراجعة الأدوية والعادات (التدخين، الحرارة).";
-      }
+      let diagnosis = alerts.length === 0 ? t("doctorAutoNormal") : t("doctorAutoAbnormal");
+      let recommendation = alerts.length === 0 ? t("doctorAutoNormalRec") : t("doctorAutoAbnormalRec");
 
       let html = `
           <div class="glass-result" style="border-right-color: ${alerts.length === 0 ? '#42BFA3' : '#B83232'};">
-              <h3 style="margin-top:0; font-size:16px; color:#004D40;">${lang === 'ar' ? 'نتيجة الأتمتة:' : 'Automation Result:'}</h3>
+              <h3 style="margin-top:0; font-size:16px; color:#004D40;">${t("doctorAutoTitle")}</h3>
               <p style="font-weight:bold; color:${alerts.length === 0 ? '#00695C' : '#B83232'};">${diagnosis}</p>
               <ul style="padding-right:15px; margin-bottom:10px;">
                   ${alerts.map(a => `<li style="margin-bottom:5px; font-size:13px;">${a}</li>`).join('')}
               </ul>
               <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:8px; font-size:13px;">
-                  <strong style="color:#00695C;">التوصيات السريرية:</strong><br>${recommendation}
+                  <strong style="color:#00695C;">${lang==='ar'?'التوصيات السريرية:':(lang==='fr'?'Recommandations cliniques :':'Clinical Recommendations:')}</strong><br>${recommendation}
               </div>
           </div>
       `;
@@ -1242,7 +1108,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
       let htmlReply = `<div class="chat-msg chat-bot">${reply}`;
       if(!isKnown) {
-          htmlReply += `<br><br><button class="btn secondary" style="font-size:12px; margin-top:5px; padding:5px 10px;" onclick="document.getElementById('navEvaluate').click();">الذهاب لتقييم الأعراض</button>`;
+          htmlReply += `<br><br><button class="btn secondary" style="font-size:12px; margin-top:5px; padding:5px 10px;" onclick="document.getElementById('navEvaluate').click();">${lang === 'ar' ? 'الذهاب لتقييم الأعراض' : (lang === 'fr' ? 'Aller à l\'évaluation' : 'Go to Evaluation')}</button>`;
       }
       htmlReply += `</div>`;
       
