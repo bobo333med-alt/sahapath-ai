@@ -108,6 +108,102 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     .modal-header h3 { font-size: 24px; color: black; border-bottom: 2px solid black; padding-bottom: 10px; }
     .clinical-row { font-size: 16px; padding: 10px 0; border-bottom: 1px solid #ccc; }
 }
+
+/* =========================================
+   تصميم الزجاج السائل (Liquid Glass) لبوابة الطبيب
+   ========================================= */
+.glass-container {
+    background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%);
+    padding: 20px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    margin-bottom: 15px;
+}
+
+.glass-title {
+    color: #004D40;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+.glass-input-group {
+    margin-bottom: 15px;
+}
+
+.glass-input-group label {
+    color: #00695C;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.glass-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #004D40;
+    font-weight: bold;
+    outline: none;
+    transition: 0.3s;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.glass-input-group input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(66, 191, 163, 0.4);
+}
+
+.glass-btn {
+    background: linear-gradient(135deg, #42BFA3 0%, #26765F 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(66, 191, 163, 0.4);
+    transition: 0.3s;
+}
+
+.glass-btn:active {
+    transform: scale(0.98);
+}
+
+.glass-result {
+    background: rgba(255, 255, 255, 0.7);
+    border-right: 5px solid #42BFA3;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -182,6 +278,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
   <button data-target="doctorsDirectory" id="navDoctorsDirectory" data-ar="قائمة الأطباء" data-fr="Annuaire" data-en="Doctors">قائمة الأطباء</button>
   <button data-target="chatbot" id="navChatbot" data-ar="المساعد الذكي" data-fr="Chatbot" data-en="AI Assistant">المساعد الذكي</button>
   <button data-target="hopeStories" id="navHopeStories" data-ar="قصص أمل" data-fr="Histoires" data-en="Hope Stories">قصص أمل</button>
+  <button data-target="doctorPortal" id="navDoctorPortal" data-ar="بوابة الطبيب" data-fr="Portail Médecin" data-en="Doctor Portal">بوابة الطبيب</button>
 </nav>
 
 <main>
@@ -436,6 +533,43 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <h3 style="margin-top:20px;" data-ar="قصص المستخدمين" data-fr="Histoires des utilisateurs" data-en="User Stories">قصص المستخدمين</h3>
     <div id="userStoriesContainer"></div>
   </div>
+</section>
+
+<!-- ============ بوابة الطبيب الذكية ============ -->
+<section id="doctorPortal" class="hidden">
+    <div class="glass-container">
+        <div class="glass-card">
+            <div class="glass-title">
+                <span style="font-size:24px;">👨‍⚕️</span> 
+                <span data-ar="بوابة الطبيب الذكية (CDSS)" data-fr="Portail Médecin Intelligent" data-en="Smart Doctor Portal">بوابة الطبيب الذكية (CDSS)</span>
+            </div>
+            <p class="small" style="color:#00695C; margin-bottom:15px;" data-ar="أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO." data-fr="Entrez les résultats du patient pour une évaluation automatisée (OMS)." data-en="Enter patient results for automated evaluation (WHO).">أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO.</p>
+            
+            <div class="glass-input-group">
+                <label data-ar="عمر المريض" data-fr="Âge du patient" data-en="Patient Age">عمر المريض</label>
+                <input type="number" id="docPatientAge" placeholder="مثال: 32">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="عدد الحيوانات المنوية (مليون/مل)" data-fr="Numération (M/ml)" data-en="Sperm Count (M/ml)">عدد الحيوانات المنوية (مليون/مل)</label>
+                <input type="number" id="docSemenCount" placeholder="مثال: 12">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
+                <input type="number" id="docSemenMotility" placeholder="مثال: 30">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
+                <input type="number" id="docSemenMorph" placeholder="مثال: 2">
+            </div>
+            
+            <button class="glass-btn" onclick="runDoctorAutomation()" data-ar="أتمتة التحليل وإظهار التوصيات" data-fr="Automatiser l'analyse" data-en="Automate Analysis">أتمتة التحليل وإظهار التوصيات</button>
+            
+            <div id="doctorAutomationResult" class="hidden"></div>
+        </div>
+    </div>
 </section>
 
 </main>
@@ -1048,7 +1182,6 @@ document.addEventListener("DOMContentLoaded", function() {
       
       let htmlReply = `<div class="chat-msg chat-bot">${reply}`;
       if(!isKnown) {
-          // إضافة زر التوجيه الذكي
           htmlReply += `<br><br><button class="btn secondary" style="font-size:12px; margin-top:5px; padding:5px 10px;" onclick="document.getElementById('navEvaluate').click();">الذهاب لتقييم الأعراض</button>`;
       }
       htmlReply += `</div>`;
@@ -1157,6 +1290,53 @@ document.addEventListener("DOMContentLoaded", function() {
   window.lockProfile = function() {
       closeLockScreen();
       showTab("home", document.getElementById("navHome"));
+  }
+
+  // --- دالة أتمتة التحاليل للطبيب (بوابة الطبيب) ---
+  window.runDoctorAutomation = function() {
+      const age = parseInt(document.getElementById("docPatientAge").value);
+      const count = parseFloat(document.getElementById("docSemenCount").value);
+      const motility = parseFloat(document.getElementById("docSemenMotility").value);
+      const morph = parseFloat(document.getElementById("docSemenMorph").value);
+      const resultBox = document.getElementById("doctorAutomationResult");
+
+      if(isNaN(age) || isNaN(count) || isNaN(motility) || isNaN(morph)) {
+          resultBox.innerHTML = `<div class="glass-result" style="border-right-color:#B83232;">⚠️ يرجى إدخال جميع الحقول بشكل صحيح.</div>`;
+          resultBox.classList.remove("hidden");
+          return;
+      }
+
+      let alerts = [];
+      let diagnosis = "";
+      let recommendation = "";
+
+      if (count < 16) alerts.push(`قلة عدد الحيوانات المنوية (Oligozoospermia): العدد ${count} أقل من الحد الطبيعي (16 مليون/مل).`);
+      if (motility < 42) alerts.push(`ضعف الحركة (Asthenozoospermia): الحركة ${motility}% أقل من الحد الطبيعي (42%).`);
+      if (morph < 4) alerts.push(`تشوه الشكل (Teratozoospermia): النسبة ${morph}% أقل من الحد الطبيعي (4%).`);
+
+      if (alerts.length === 0) {
+          diagnosis = "✅ التحليل طبيعي. جميع المؤشرات ضمن معايير منظمة الصحة العالمية (WHO).";
+          recommendation = "لا توجد توصيات عاجلة. يُنصح بمراجعة العادات الحياتية والاستمرار فيها.";
+      } else {
+          diagnosis = "🚨 تم اكتشاف اضطرابات في السائل المنوي:";
+          recommendation = "التوصيات الطبية المقترحة آلياً: <br>1. فحص سريري للخصية لاستبعاد دوالي الخصية.<br>2. فحص هرموني (Testosterone, FSH, LH).<br>3. مراجعة الأدوية والعادات (التدخين، الحرارة).";
+      }
+
+      let html = `
+          <div class="glass-result" style="border-right-color: ${alerts.length === 0 ? '#42BFA3' : '#B83232'};">
+              <h3 style="margin-top:0; font-size:16px; color:#004D40;">${lang === 'ar' ? 'نتيجة الأتمتة:' : 'Automation Result:'}</h3>
+              <p style="font-weight:bold; color:${alerts.length === 0 ? '#00695C' : '#B83232'};">${diagnosis}</p>
+              <ul style="padding-right:15px; margin-bottom:10px;">
+                  ${alerts.map(a => `<li style="margin-bottom:5px; font-size:13px;">${a}</li>`).join('')}
+              </ul>
+              <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:8px; font-size:13px;">
+                  <strong style="color:#00695C;">التوصيات السريرية:</strong><br>${recommendation}
+              </div>
+          </div>
+      `;
+
+      resultBox.innerHTML = html;
+      resultBox.classList.remove("hidden");
   }
 
   // ==========================================
