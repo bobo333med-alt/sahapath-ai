@@ -7,214 +7,95 @@
 <title>SahaPath AI | صحة الرجل والخصوبة</title>
 <style>
 :root{
-  --primary:#42BFA3; 
-  --primary-dark:#237F68;
-  --green:#A8DCC0; 
-  --gold:#F4D99B;
-  --ink:#243B35; 
-  --muted:#687A73; 
-  --danger:#B83232; 
-  --border:rgba(255, 255, 255, 0.4);
-  
-  /* إعدادات الزجاج السائل */
-  --glass-bg: rgba(255, 255, 255, 0.45);
-  --glass-bg-hover: rgba(255, 255, 255, 0.65);
-  --glass-blur: blur(16px);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --primary:#42BFA3; --green:#A8DCC0; --cream:#F8FAF6; --gold:#F4D99B;
+  --ink:#243B35; --muted:#687A73; --white:#fff; --danger:#B83232; --border:#E4ECE6; --shadow:0 5px 20px rgba(40,90,70,.07);
 }
-
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background: linear-gradient(135deg, #E0F2F1 0%, #F8FAF6 50%, #FFF8E8 100%);
-  background-attachment: fixed;
-  color:var(--ink);
-  font-family:Arial,"Tahoma",sans-serif;
-  line-height:1.65;
-  min-height: 100vh;
-}
-
-/* شريط علوي زجاجي */
-header{
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--border);
-  padding:22px 16px 18px;
-  text-align:center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.logo{font-size:28px;font-weight:800;color:var(--primary-dark); text-shadow: 0 2px 4px rgba(255,255,255,0.5);}
-.tagline{font-size:13px;color:var(--muted); font-weight: 600;}
-
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Tahoma",sans-serif;line-height:1.65;}
+header{background:linear-gradient(120deg,#DDF4E9,#F8FAF6);padding:22px 16px 18px;text-align:center;border-bottom:1px solid var(--border);}
+.logo{font-size:28px;font-weight:800;color:#237F68}
+.tagline{font-size:13px;color:var(--muted)}
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;max-width:900px;margin:12px auto 0;padding:0 12px;}
-
 select,button,input,textarea{font:inherit;}
-select{
-  border:1px solid var(--border);border-radius:12px;padding:8px;
-  background:var(--glass-bg); color:var(--ink);
-  backdrop-filter: var(--glass-blur);
-  cursor: pointer;
-}
-
-/* شريط تنقل زجاجي */
-nav{
-  display:flex;gap:7px;overflow-x:auto;padding:12px;max-width:900px;margin:auto;
-  scrollbar-width: none;
-  position: sticky;
-  top: 110px;
-  z-index: 99;
-}
+select{border:1px solid var(--border);border-radius:12px;padding:8px;background:white;color:var(--ink);}
+nav{display:flex;gap:7px;overflow-x:auto;padding:12px;max-width:900px;margin:auto;scrollbar-width: none;}
 nav::-webkit-scrollbar { display: none; }
-
-nav button{
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-radius:13px;padding:9px 13px;color:var(--ink);cursor:pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-nav button.active{
-  background:var(--primary);color:white;border-color:var(--primary);
-  box-shadow: 0 4px 15px rgba(66,191,163,0.4);
-}
-
-main{max-width:900px;margin:auto;padding:10px 14px 40px; position: relative; z-index: 1;}
-
-/* البطاقات الزجاجية */
-.card{
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border);
-  border-radius:18px;
-  padding:17px;
-  margin:12px 0;
-  box-shadow: var(--glass-shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
-}
-
-h2{font-size:20px;margin:0 0 10px;color:var(--primary-dark); text-shadow: 0 1px 2px rgba(255,255,255,0.8);}
-h3{font-size:16px;margin:8px 0; color:var(--primary-dark);}
+nav button{white-space:nowrap;border:1px solid var(--border);background:white;border-radius:13px;padding:9px 13px;color:var(--ink);cursor:pointer;}
+nav button.active{background:var(--primary);color:white;border-color:var(--primary)}
+main{max-width:900px;margin:auto;padding:10px 14px 40px}
+.card{background:white;border:1px solid var(--border);border-radius:18px;padding:17px;margin:12px 0;box-shadow:var(--shadow);}
+h2{font-size:20px;margin:0 0 10px;color:#287F68}
+h3{font-size:16px;margin:8px 0}
 p{margin:7px 0}
-.small{font-size:12px;color:var(--muted); font-weight: 600;}
-a{color:var(--primary-dark);text-decoration:none; font-weight: bold;}
+.small{font-size:12px;color:var(--muted)}
+a{color:var(--primary);text-decoration:none;}
 a:hover{text-decoration:underline;}
-
-label{display:block;margin:12px 0 5px;font-weight:600; color: var(--primary-dark);}
-input[type=text],input[type=number],input[type=date],textarea{
-  width:100%;padding:11px;
-  border:1px solid var(--border);
-  border-radius:11px;
-  background:rgba(255,255,255,0.6);
-  color:var(--ink);
-  backdrop-filter: blur(5px);
-  outline: none;
-  transition: 0.3s;
-}
-input:focus, textarea:focus {
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 0 10px rgba(66,191,163,0.3);
-}
+label{display:block;margin:12px 0 5px;font-weight:600}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:11px;background:#FCFEFC;color:var(--ink);}
 textarea{min-height:90px;resize:vertical}
-
 .checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.check{
-  display:flex;align-items:flex-start;gap:8px;
-  border:1px solid var(--border);padding:9px;border-radius:11px;
-  font-weight:400;margin:0;background:rgba(255,255,255,0.5);
-  cursor:pointer;font-size:14px;
-  backdrop-filter: blur(5px);
-}
+.check{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);padding:9px;border-radius:11px;font-weight:400;margin:0;background:#FCFEFC;cursor:pointer; font-size:14px;}
 .check input{accent-color:var(--primary);width:17px;height:17px;margin-top:3px;}
-
-/* الأزرار الزجاجية */
-.btn{
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color:white;border:0;padding:11px 16px;border-radius:12px;cursor:pointer;
-  font-weight:700;margin-top:10px;
-  box-shadow: 0 4px 15px rgba(66,191,163,0.3);
-  transition: 0.2s;
-}
-.btn:active{ transform: scale(0.98); }
-.btn.secondary{background:rgba(255,255,255,0.6); color:var(--primary-dark); border:1px solid var(--border); backdrop-filter: var(--glass-blur);}
-.btn.gold{background:linear-gradient(135deg, #F4D99B 0%, #C9A961 100%); color:#584719;}
-.btn.danger{background:var(--danger);color:white}
+.btn{background:var(--primary);color:white;border:0;padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:700;margin-top:10px;}
+.btn.secondary{background:#E7F5ED;color:#26765F}
+.btn.gold{background:#F4D99B;color:#584719}
+.btn.danger{background:#B83232;color:white}
 .btn.full{width:100%}
-
-.result{background:rgba(237,248,241,0.6);border-right:4px solid var(--primary);border-radius:12px;padding:13px;margin-top:13px; backdrop-filter: blur(5px);}
-.warning{background:rgba(255,241,240,0.6);border-right:4px solid var(--danger);border-radius:12px;padding:13px;margin-top:13px; backdrop-filter: blur(5px);}
-.note{background:rgba(255,248,232,0.6);border-right:4px solid #D7AD4C;padding:12px;border-radius:10px;font-size:13px; backdrop-filter: blur(5px);}
-
+.result{background:#EDF8F1;border-right:4px solid var(--primary);border-radius:12px;padding:13px;margin-top:13px;}
+.warning{background:#FFF1F0;border-right:4px solid var(--danger);border-radius:12px;padding:13px;margin-top:13px;}
+.note{background:#FFF8E8;border-right:4px solid #D7AD4C;padding:12px;border-radius:10px;font-size:13px;}
 .hidden{display:none!important}
-.item{border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;background:rgba(255,255,255,0.5); backdrop-filter: blur(5px);}
-.item strong{color:var(--primary-dark)}
+.item{border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;background:#FCFEFC;}
+.item strong{color:#287F68}
 .story-title { color: var(--primary); margin-bottom: 5px; font-size:15px; font-weight:bold;}
 .source-link { font-size:11px; color:var(--muted); display:block; margin-top:5px; }
 
-.doctor-card {border:1px solid var(--border); border-radius:12px; padding:15px; margin:10px 0; background:rgba(255,255,255,0.5); box-shadow: var(--glass-shadow); backdrop-filter: blur(5px);}
-.doctor-card h4 {margin:0 0 5px; color:var(--primary-dark); font-size:16px;}
+/* Doctor Cards */
+.doctor-card {border:1px solid var(--border); border-radius:12px; padding:15px; margin:10px 0; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+.doctor-card h4 {margin:0 0 5px; color:#287F68; font-size:16px;}
 .doctor-card p {margin:4px 0; font-size:14px;}
-.doctor-card .badge {background:rgba(231,245,237,0.8); color:var(--primary-dark); padding:3px 8px; border-radius:8px; font-size:11px; font-weight:bold;}
+.doctor-card .badge {background:#E7F5ED; color:#26765F; padding:3px 8px; border-radius:8px; font-size:11px; font-weight:bold;}
 
-.chat-container {display:flex; flex-direction:column; height: 400px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.4); backdrop-filter: var(--glass-blur);}
-.chat-header {display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(255,255,255,0.5); border-bottom:1px solid var(--border);}
-.chat-messages {flex:1; overflow-y:auto; padding:15px;}
-.chat-msg {margin-bottom:10px; padding:10px; border-radius:12px; max-width:80%; font-size:14px; backdrop-filter: blur(5px);}
-.chat-bot {background:rgba(231,245,237,0.8); color:var(--ink); border-bottom-right-radius:2px; align-self:flex-start;}
+/* Chatbot UI */
+.chat-container {display:flex; flex-direction:column; height: 400px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:white;}
+.chat-header {display:flex; justify-content:space-between; align-items:center; padding:10px; background:#F8FAF6; border-bottom:1px solid var(--border);}
+.chat-messages {flex:1; overflow-y:auto; padding:15px; background:#FCFEFC;}
+.chat-msg {margin-bottom:10px; padding:10px; border-radius:12px; max-width:80%; font-size:14px;}
+.chat-bot {background:#E7F5ED; color:#243B35; border-bottom-right-radius:2px; align-self:flex-start;}
 .chat-user {background:var(--primary); color:white; border-bottom-left-radius:2px; align-self:flex-end; margin-left:auto;}
-.chat-input-area {display:flex; border-top:1px solid var(--border); padding:10px; background:rgba(255,255,255,0.5);}
-.chat-input-area input {flex:1; border-radius:20px; padding:10px 15px; border:1px solid var(--border); background: rgba(255,255,255,0.8);}
+.chat-input-area {display:flex; border-top:1px solid var(--border); padding:10px; background:white;}
+.chat-input-area input {flex:1; border-radius:20px; padding:10px 15px; border:1px solid var(--border);}
 .chat-input-area button {border-radius:50%; width:40px; height:40px; margin-left:8px; margin-top:0; padding:0; display:flex; align-items:center; justify-content:center;}
+.quick-replies {display:flex; gap:5px; overflow-x:auto; padding:5px 10px; background:white; border-top:1px solid var(--border);}
+.quick-reply {font-size:12px; padding:5px 10px; border:1px solid var(--primary); background:transparent; color:var(--primary); border-radius:15px; cursor:pointer; white-space:nowrap; margin:0;}
 
-.quick-replies {display:flex; gap:5px; overflow-x:auto; padding:5px 10px; background:rgba(255,255,255,0.4); border-top:1px solid var(--border);}
-.quick-reply {font-size:12px; padding:5px 10px; border:1px solid var(--primary); background:transparent; color:var(--primary-dark); border-radius:15px; cursor:pointer; white-space:nowrap; margin:0;}
-
-#lockScreen {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(248,250,246,0.8); backdrop-filter: blur(20px); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;}
-.lock-card {background:var(--glass-bg); padding:30px 20px; border-radius:20px; box-shadow:var(--glass-shadow); text-align:center; width:90%; max-width:350px; border:1px solid var(--border); backdrop-filter: var(--glass-blur);}
-.pin-display {font-size:32px; letter-spacing:12px; margin:20px 0; color:var(--primary-dark); height:45px; font-weight:bold; padding-right:12px;}
+/* Lock Screen UI */
+#lockScreen {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(248,250,246,0.98); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column;}
+.lock-card {background:white; padding:30px 20px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); text-align:center; width:90%; max-width:350px; border:1px solid var(--border);}
+.pin-display {font-size:32px; letter-spacing:12px; margin:20px 0; color:var(--primary); height:45px; font-weight:bold; padding-right:12px;}
 .keypad {display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:20px;}
-.keypad button {font-size:22px; padding:15px 0; border-radius:50%; background:rgba(255,255,255,0.6); border:1px solid var(--border); cursor:pointer; font-weight:bold; color:var(--ink); transition:0.1s;}
+.keypad button {font-size:22px; padding:15px 0; border-radius:50%; background:#F8FAF6; border:1px solid var(--border); cursor:pointer; font-weight:bold; color:var(--ink); transition:0.1s;}
 .keypad button:active {background:var(--primary); color:white;}
-.keypad button.enter-btn {background:var(--primary); color:white; font-size:16px;}
+.keypad button.enter-btn {background:#DDF4E9; color:#287F68; font-size:16px;}
 
-.simulator-bar-container {width:100%; background:rgba(0,0,0,0.05); border-radius:10px; height:25px; margin:15px 0; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);}
+/* Digital Lab UI */
+.simulator-bar-container {width:100%; background:#E4ECE6; border-radius:10px; height:25px; margin:15px 0; overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);}
 .simulator-bar {height:100%; background:var(--primary); width:100%; transition:width 0.5s ease-in-out, background-color 0.5s;}
-.simulator-score {font-size:42px; font-weight:bold; color:var(--primary-dark); text-align:center; margin:10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;}
-.analytics-box {background:rgba(255,255,255,0.4); border:1px dashed var(--primary); border-radius:12px; padding:15px; margin-top:15px; font-size:14px; backdrop-filter: blur(5px);}
-.analytics-box h4 {margin:0 0 8px; color:var(--primary-dark); font-size:15px;}
+.simulator-score {font-size:42px; font-weight:bold; color:var(--primary); text-align:center; margin:10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;}
+.analytics-box {background:#F8FAF6; border:1px dashed var(--primary); border-radius:12px; padding:15px; margin-top:15px; font-size:14px;}
+.analytics-box h4 {margin:0 0 8px; color:var(--primary); font-size:15px;}
 
-.modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter: blur(5px); z-index:10000; display:flex; align-items:center; justify-content:center;}
-.modal-content {background:var(--glass-bg); backdrop-filter: var(--glass-blur); width:90%; max-width:500px; border-radius:15px; padding:20px; max-height:80vh; overflow-y:auto; box-shadow:var(--glass-shadow); border: 1px solid var(--border);}
+/* Modals */
+.modal {position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:10000; display:flex; align-items:center; justify-content:center;}
+.modal-content {background:white; width:90%; max-width:500px; border-radius:15px; padding:20px; max-height:80vh; overflow-y:auto; box-shadow:0 10px 30px rgba(0,0,0,0.2);}
 .modal-header {display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:15px;}
-.modal-header h3 {margin:0; color:var(--primary-dark);}
+.modal-header h3 {margin:0; color:var(--primary);}
 .close-modal {background:none; border:none; font-size:24px; cursor:pointer; color:var(--muted);}
 .clinical-row {display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding:8px 0; font-size:14px;}
 .clinical-label {font-weight:bold; color:var(--muted);}
 
-footer{text-align:center;color:var(--muted);font-size:12px;padding:20px; font-weight: 600;}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 hr{border:0;border-top:1px solid var(--border);margin:15px 0}
-
-@media(max-width:480px){.checks{grid-template-columns:1fr}.card{padding:14px}}
-
-@media print {
-    body * { visibility: hidden; }
-    #doctorViewModal, #doctorViewModal * { visibility: visible; }
-    #doctorViewModal { position: absolute; left: 0; top: 0; width: 100%; background: white; }
-    .modal-content { box-shadow: none; border: none; max-width: 100%; width: 100%; padding: 0; }
-    .close-modal, .print-btn { display: none !important; }
-    .modal-header h3 { font-size: 24px; color: black; border-bottom: 2px solid black; padding-bottom: 10px; }
-    .clinical-row { font-size: 16px; padding: 10px 0; border-bottom: 1px solid #ccc; }
-}
 
 /* =========================================
    تصميم الزجاج السائل (Liquid Glass) لبوابة الطبيب
@@ -311,6 +192,25 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* =========================================
+   تحسينات الشاشات الكبيرة (اللابتوب والكمبيوتر)
+   ========================================= */
+@media (min-width: 1024px) {
+    main { max-width: 1100px; }
+    .card { padding: 30px; border-radius: 24px; }
+    nav { max-width: 100%; justify-content: center; padding: 15px; background: white; border-bottom: 1px solid var(--border); }
+    nav button { font-size: 15px; padding: 12px 20px; }
+    .glass-container { padding: 40px; }
+    .glass-card { padding: 30px; max-width: 700px; margin: 0 auto; }
+    .glass-card form, .glass-card .glass-input-group { display: inline-block; width: 48%; margin-left: 1%; vertical-align: top; }
+    .glass-btn { width: 100%; margin-top: 10px; }
+    .checks { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+    main { max-width: 95%; }
+}
+@media(max-width:480px){.checks{grid-template-columns:1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
@@ -382,10 +282,10 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
   <button data-target="evaluate" id="navEvaluate" data-ar="قيم حالتك" data-fr="Évaluer" data-en="Evaluate">قيم حالتك</button>
   <button data-target="digitalLab" id="navDigitalLab" data-ar="المختبر الرقمي" data-fr="Labo Numérique" data-en="Digital Lab">المختبر الرقمي</button>
   <button data-target="askDoctor" id="navAskDoctor" data-ar="اسأل طبيبك" data-fr="Médecin" data-en="Ask Doctor">اسأل طبيبك</button>
+  <button data-target="doctorPortal" id="navDoctorPortal" data-ar="بوابة الطبيب" data-fr="Portail Médecin" data-en="Doctor Portal">بوابة الطبيب</button>
   <button data-target="doctorsDirectory" id="navDoctorsDirectory" data-ar="قائمة الأطباء" data-fr="Annuaire" data-en="Doctors">قائمة الأطباء</button>
   <button data-target="chatbot" id="navChatbot" data-ar="المساعد الذكي" data-fr="Chatbot" data-en="AI Assistant">المساعد الذكي</button>
   <button data-target="hopeStories" id="navHopeStories" data-ar="قصص أمل" data-fr="Histoires" data-en="Hope Stories">قصص أمل</button>
-  <button data-target="doctorPortal" id="navDoctorPortal" data-ar="بوابة الطبيب" data-fr="Portail Médecin" data-en="Doctor Portal">بوابة الطبيب</button>
 </nav>
 
 <main>
@@ -511,7 +411,7 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
       <p id="labBenchmark"></p>
     </div>
 
-    <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: rgba(255,248,232,0.7);">
+    <div class="result" id="journeyBox" style="margin-top:20px; border-right-color: #F4D99B; background: #FFF8E8;">
         <h3 style="margin-top:0; color:#8A6D2A;">⏳ رحلة الـ 74 يوماً (دورة تكوين الحيوانات المنوية)</h3>
         <div id="journeyStatus" style="font-size:14px; margin-bottom:10px;">ابدأ رحلتك اليوم لتغيير عاداتك ومتابعة تحسن خصوبتك.</div>
         <button class="btn gold full hidden" id="startJourneyBtn" onclick="startJourney()">ابدأ رحلة الـ 74 يوماً الآن</button>
@@ -527,7 +427,6 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
         <button onclick="lockProfile()" style="margin:0; padding:5px 10px; font-size:14px; background:var(--danger); color:white; border:0; border-radius:8px; cursor:pointer;">🔒 <span data-ar="قفل" data-fr="Verrouiller" data-en="Lock">قفل</span></button>
     </div>
 
-    <!-- النسخ الاحتياطي والاستيراد -->
     <div class="note" style="margin-bottom:15px;">
         <strong>💾 حماية بياناتك:</strong> يمكنك تصدير نسخة احتياطية من بياناتك (لحفظها في هاتفك) أو استعادتها لاحقاً.
         <div style="display:flex; gap:10px; margin-top:10px;">
@@ -587,6 +486,43 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
   </div>
 </section>
 
+<!-- ============ بوابة الطبيب الذكية ============ -->
+<section id="doctorPortal" class="hidden">
+    <div class="glass-container">
+        <div class="glass-card">
+            <div class="glass-title">
+                <span style="font-size:24px;">👨‍⚕️</span> 
+                <span data-ar="بوابة الطبيب الذكية (CDSS)" data-fr="Portail Médecin Intelligent" data-en="Smart Doctor Portal">بوابة الطبيب الذكية (CDSS)</span>
+            </div>
+            <p class="small" style="color:#00695C; margin-bottom:15px;" data-ar="أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO." data-fr="Entrez les résultats du patient pour une évaluation automatisée (OMS)." data-en="Enter patient results for automated evaluation (WHO).">أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO.</p>
+            
+            <div class="glass-input-group">
+                <label data-ar="عمر المريض" data-fr="Âge du patient" data-en="Patient Age">عمر المريض</label>
+                <input type="number" id="docPatientAge" placeholder="مثال: 32">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="عدد الحيوانات المنوية (مليون/مل)" data-fr="Numération (M/ml)" data-en="Sperm Count (M/ml)">عدد الحيوانات المنوية (مليون/مل)</label>
+                <input type="number" id="docSemenCount" placeholder="مثال: 12">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
+                <input type="number" id="docSemenMotility" placeholder="مثال: 30">
+            </div>
+            
+            <div class="glass-input-group">
+                <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
+                <input type="number" id="docSemenMorph" placeholder="مثال: 2">
+            </div>
+            
+            <button class="glass-btn" onclick="runDoctorAutomation()" data-ar="أتمتة التحليل وإظهار التوصيات" data-fr="Automatiser l'analyse" data-en="Automate Analysis">أتمتة التحليل وإظهار التوصيات</button>
+            
+            <div id="doctorAutomationResult" class="hidden"></div>
+        </div>
+    </div>
+</section>
+
 <section id="doctorsDirectory" class="hidden">
   <div class="card">
     <h2 data-ar="دليل الأطباء المتخصصين" data-fr="Annuaire des médecins" data-en="Doctors Directory">دليل الأطباء المتخصصين</h2>
@@ -640,43 +576,6 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
     <h3 style="margin-top:20px;" data-ar="قصص المستخدمين" data-fr="Histoires des utilisateurs" data-en="User Stories">قصص المستخدمين</h3>
     <div id="userStoriesContainer"></div>
   </div>
-</section>
-
-<!-- ============ بوابة الطبيب الذكية ============ -->
-<section id="doctorPortal" class="hidden">
-    <div class="glass-container">
-        <div class="glass-card">
-            <div class="glass-title">
-                <span style="font-size:24px;">👨‍⚕️</span> 
-                <span data-ar="بوابة الطبيب الذكية (CDSS)" data-fr="Portail Médecin Intelligent" data-en="Smart Doctor Portal">بوابة الطبيب الذكية (CDSS)</span>
-            </div>
-            <p class="small" style="color:#00695C; margin-bottom:15px;" data-ar="أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO." data-fr="Entrez les résultats du patient pour une évaluation automatisée (OMS)." data-en="Enter patient results for automated evaluation (WHO).">أدخل نتائج تحليل المريض، وسيقوم النظام بأتمتة التقييم ومقارنته بمعايير WHO.</p>
-            
-            <div class="glass-input-group">
-                <label data-ar="عمر المريض" data-fr="Âge du patient" data-en="Patient Age">عمر المريض</label>
-                <input type="number" id="docPatientAge" placeholder="مثال: 32">
-            </div>
-            
-            <div class="glass-input-group">
-                <label data-ar="عدد الحيوانات المنوية (مليون/مل)" data-fr="Numération (M/ml)" data-en="Sperm Count (M/ml)">عدد الحيوانات المنوية (مليون/مل)</label>
-                <input type="number" id="docSemenCount" placeholder="مثال: 12">
-            </div>
-            
-            <div class="glass-input-group">
-                <label data-ar="الحركة (%)" data-fr="Motilité (%)" data-en="Motility (%)">الحركة (%)</label>
-                <input type="number" id="docSemenMotility" placeholder="مثال: 30">
-            </div>
-            
-            <div class="glass-input-group">
-                <label data-ar="التشوه (%)" data-fr="Morphologie (%)" data-en="Morphology (%)">التشوه (%)</label>
-                <input type="number" id="docSemenMorph" placeholder="مثال: 2">
-            </div>
-            
-            <button class="glass-btn" onclick="runDoctorAutomation()" data-ar="أتمتة التحليل وإظهار التوصيات" data-fr="Automatiser l'analyse" data-en="Automate Analysis">أتمتة التحليل وإظهار التوصيات</button>
-            
-            <div id="doctorAutomationResult" class="hidden"></div>
-        </div>
-    </div>
 </section>
 
 </main>
@@ -1097,6 +996,60 @@ document.addEventListener("DOMContentLoaded", function() {
     box.innerHTML = html || `<p class="small">${t("noData")}</p>`;
   }
 
+  // --- دالة أتمتة التحاليل للطبيب (Rule-Based Logic) ---
+  window.runDoctorAutomation = function() {
+      const age = parseInt(document.getElementById("docPatientAge").value);
+      const count = parseFloat(document.getElementById("docSemenCount").value);
+      const motility = parseFloat(document.getElementById("docSemenMotility").value);
+      const morph = parseFloat(document.getElementById("docSemenMorph").value);
+      const resultBox = document.getElementById("doctorAutomationResult");
+
+      if(isNaN(age) || isNaN(count) || isNaN(motility) || isNaN(morph)) {
+          resultBox.innerHTML = `<div class="glass-result" style="border-right-color:#B83232;">⚠️ يرجى إدخال جميع الحقول بشكل صحيح.</div>`;
+          resultBox.classList.remove("hidden");
+          return;
+      }
+
+      let alerts = [];
+      let diagnosis = "";
+      let recommendation = "";
+
+      // أتمتة بناءً على معايير WHO 2021
+      if (count < 16) {
+          alerts.push(`قلة عدد الحيوانات المنوية (Oligozoospermia): العدد ${count} أقل من الحد الطبيعي (16 مليون/مل).`);
+      }
+      if (motility < 42) {
+          alerts.push(`ضعف الحركة (Asthenozoospermia): الحركة ${motility}% أقل من الحد الطبيعي (42%).`);
+      }
+      if (morph < 4) {
+          alerts.push(`تشوه الشكل (Teratozoospermia): النسبة ${morph}% أقل من الحد الطبيعي (4%).`);
+      }
+
+      if (alerts.length === 0) {
+          diagnosis = "✅ التحليل طبيعي. جميع المؤشرات ضمن معايير منظمة الصحة العالمية (WHO).";
+          recommendation = "لا توجد توصيات عاجلة. يُنصح بمراجعة العادات الحياتية والاستمرار فيها.";
+      } else {
+          diagnosis = "🚨 تم اكتشاف اضطرابات في السائل المنوي:";
+          recommendation = "التوصيات الطبية المقترحة آلياً: <br>1. فحص سريري للخصية لاستبعاد دوالي الخصية.<br>2. فحص هرموني (Testosterone, FSH, LH).<br>3. مراجعة الأدوية والعادات (التدخين، الحرارة).";
+      }
+
+      let html = `
+          <div class="glass-result" style="border-right-color: ${alerts.length === 0 ? '#42BFA3' : '#B83232'};">
+              <h3 style="margin-top:0; font-size:16px; color:#004D40;">${lang === 'ar' ? 'نتيجة الأتمتة:' : 'Automation Result:'}</h3>
+              <p style="font-weight:bold; color:${alerts.length === 0 ? '#00695C' : '#B83232'};">${diagnosis}</p>
+              <ul style="padding-right:15px; margin-bottom:10px;">
+                  ${alerts.map(a => `<li style="margin-bottom:5px; font-size:13px;">${a}</li>`).join('')}
+              </ul>
+              <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:8px; font-size:13px;">
+                  <strong style="color:#00695C;">التوصيات السريرية:</strong><br>${recommendation}
+              </div>
+          </div>
+      `;
+
+      resultBox.innerHTML = html;
+      resultBox.classList.remove("hidden");
+  }
+
   // --- واجهة الطبيب ---
   window.openDoctorView = function() {
       const age = document.getElementById("userAge").value || "N/A";
@@ -1399,53 +1352,6 @@ document.addEventListener("DOMContentLoaded", function() {
       showTab("home", document.getElementById("navHome"));
   }
 
-  // --- دالة أتمتة التحاليل للطبيب (بوابة الطبيب) ---
-  window.runDoctorAutomation = function() {
-      const age = parseInt(document.getElementById("docPatientAge").value);
-      const count = parseFloat(document.getElementById("docSemenCount").value);
-      const motility = parseFloat(document.getElementById("docSemenMotility").value);
-      const morph = parseFloat(document.getElementById("docSemenMorph").value);
-      const resultBox = document.getElementById("doctorAutomationResult");
-
-      if(isNaN(age) || isNaN(count) || isNaN(motility) || isNaN(morph)) {
-          resultBox.innerHTML = `<div class="glass-result" style="border-right-color:#B83232;">⚠️ يرجى إدخال جميع الحقول بشكل صحيح.</div>`;
-          resultBox.classList.remove("hidden");
-          return;
-      }
-
-      let alerts = [];
-      let diagnosis = "";
-      let recommendation = "";
-
-      if (count < 16) alerts.push(`قلة عدد الحيوانات المنوية (Oligozoospermia): العدد ${count} أقل من الحد الطبيعي (16 مليون/مل).`);
-      if (motility < 42) alerts.push(`ضعف الحركة (Asthenozoospermia): الحركة ${motility}% أقل من الحد الطبيعي (42%).`);
-      if (morph < 4) alerts.push(`تشوه الشكل (Teratozoospermia): النسبة ${morph}% أقل من الحد الطبيعي (4%).`);
-
-      if (alerts.length === 0) {
-          diagnosis = "✅ التحليل طبيعي. جميع المؤشرات ضمن معايير منظمة الصحة العالمية (WHO).";
-          recommendation = "لا توجد توصيات عاجلة. يُنصح بمراجعة العادات الحياتية والاستمرار فيها.";
-      } else {
-          diagnosis = "🚨 تم اكتشاف اضطرابات في السائل المنوي:";
-          recommendation = "التوصيات الطبية المقترحة آلياً: <br>1. فحص سريري للخصية لاستبعاد دوالي الخصية.<br>2. فحص هرموني (Testosterone, FSH, LH).<br>3. مراجعة الأدوية والعادات (التدخين، الحرارة).";
-      }
-
-      let html = `
-          <div class="glass-result" style="border-right-color: ${alerts.length === 0 ? '#42BFA3' : '#B83232'};">
-              <h3 style="margin-top:0; font-size:16px; color:#004D40;">${lang === 'ar' ? 'نتيجة الأتمتة:' : 'Automation Result:'}</h3>
-              <p style="font-weight:bold; color:${alerts.length === 0 ? '#00695C' : '#B83232'};">${diagnosis}</p>
-              <ul style="padding-right:15px; margin-bottom:10px;">
-                  ${alerts.map(a => `<li style="margin-bottom:5px; font-size:13px;">${a}</li>`).join('')}
-              </ul>
-              <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:8px; font-size:13px;">
-                  <strong style="color:#00695C;">التوصيات السريرية:</strong><br>${recommendation}
-              </div>
-          </div>
-      `;
-
-      resultBox.innerHTML = html;
-      resultBox.classList.remove("hidden");
-  }
-
   // ==========================================
   // التهيئة الأولية
   // ==========================================
@@ -1460,67 +1366,6 @@ document.addEventListener("DOMContentLoaded", function() {
   calculateDigitalLab();
 
 });
-  /* =========================================
-   تحسينات الشاشات الكبيرة (اللابتوب والكمبيوتر)
-   ========================================= */
-@media (min-width: 1024px) {
-    /* توسيع مساحة المحتوى */
-    main {
-        max-width: 1100px;
-    }
-
-    /* تحسين شكل البطاقات (تصبح أوسع وأكثر فخامة) */
-    .card {
-        padding: 30px;
-        border-radius: 24px;
-    }
-
-    /* تحسين شريط التنقل (Nav) ليصبح في المنتصف وبأزرار أكبر */
-    nav {
-        max-width: 100%;
-        justify-content: center;
-        padding: 15px;
-        background: white;
-        border-bottom: 1px solid var(--border);
-    }
-
-    nav button {
-        font-size: 15px;
-        padding: 12px 20px;
-    }
-
-    /* تحسين تصميم بوابة الطبيب (الزجاج السائل) ليكون أوسع وأجمل */
-    .glass-container {
-        padding: 40px;
-    }
-    
-    .glass-card {
-        padding: 30px;
-        max-width: 700px;
-        margin: 0 auto;
-    }
-    
-    /* توزيع الحقول في بوابة الطبيب على شكل شبكة (Grid) بدلاً من عمود واحد */
-    .glass-card form, .glass-card .glass-input-group {
-        display: inline-block;
-        width: 48%;
-        margin-left: 1%;
-        vertical-align: top;
-    }
-    
-    /* زر الأتمتة يأخذ العرض الكامل */
-    .glass-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-}
-
-/* تحسين شريط التنقل على الشاشات المتوسطة (التابلت) */
-@media (min-width: 768px) and (max-width: 1023px) {
-    main {
-        max-width: 95%;
-    }
-}
 </script>
 </body>
 </html>
