@@ -1460,6 +1460,67 @@ document.addEventListener("DOMContentLoaded", function() {
   calculateDigitalLab();
 
 });
+  /* =========================================
+   تحسينات الشاشات الكبيرة (اللابتوب والكمبيوتر)
+   ========================================= */
+@media (min-width: 1024px) {
+    /* توسيع مساحة المحتوى */
+    main {
+        max-width: 1100px;
+    }
+
+    /* تحسين شكل البطاقات (تصبح أوسع وأكثر فخامة) */
+    .card {
+        padding: 30px;
+        border-radius: 24px;
+    }
+
+    /* تحسين شريط التنقل (Nav) ليصبح في المنتصف وبأزرار أكبر */
+    nav {
+        max-width: 100%;
+        justify-content: center;
+        padding: 15px;
+        background: white;
+        border-bottom: 1px solid var(--border);
+    }
+
+    nav button {
+        font-size: 15px;
+        padding: 12px 20px;
+    }
+
+    /* تحسين تصميم بوابة الطبيب (الزجاج السائل) ليكون أوسع وأجمل */
+    .glass-container {
+        padding: 40px;
+    }
+    
+    .glass-card {
+        padding: 30px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    /* توزيع الحقول في بوابة الطبيب على شكل شبكة (Grid) بدلاً من عمود واحد */
+    .glass-card form, .glass-card .glass-input-group {
+        display: inline-block;
+        width: 48%;
+        margin-left: 1%;
+        vertical-align: top;
+    }
+    
+    /* زر الأتمتة يأخذ العرض الكامل */
+    .glass-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+/* تحسين شريط التنقل على الشاشات المتوسطة (التابلت) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    main {
+        max-width: 95%;
+    }
+}
 </script>
 </body>
 </html>
