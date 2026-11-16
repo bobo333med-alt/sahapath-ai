@@ -284,13 +284,15 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
         <button class="btn secondary" style="margin-bottom:0;" onclick="resetLab()" data-ar="مسح الكل" data-fr="Réinitialiser" data-en="Reset">مسح الكل</button>
     </div>
 
-    <div class="simulator-score" id="labScoreDisplay">
+       <div class="simulator-score" id="labScoreDisplay">
         <span id="scoreText">100%</span>
-        <span onclick="showEvidence()" style="font-size: 20px; cursor: pointer; color: var(--primary);" title="المرجع العلمي">ℹ️</span>
     </div>
     
     <div class="simulator-bar-container"><div class="simulator-bar" id="labBar" style="width:100%;"></div></div>
-    <p class="small" style="text-align:center;" data-ar="مؤشر الخصوبة التنبؤي" data-fr="Indice de fertilité prédictif" data-en="Predictive Fertility Score">مؤشر الخصوبة التنبؤي</p>
+    <p class="small" style="text-align:center; margin-bottom: 5px;" data-ar="مؤشر الخصوبة التنبؤي" data-fr="Indice de fertilité prédictif" data-en="Predictive Fertility Score">مؤشر الخصوبة التنبؤي</p>
+    <div style="text-align:center; margin-bottom: 15px;">
+        <span onclick="showEvidence()" style="font-size: 14px; cursor: pointer; color: var(--primary); text-decoration: underline;" data-ar="ℹ️ المرجع العلمي (WHO/EAU)" data-fr="ℹ️ Référence scientifique (OMS/EAU)" data-en="ℹ️ Scientific Reference (WHO/EAU)">ℹ️ المرجع العلمي (WHO/EAU)</span>
+    </div>
     
     <hr>
     <h3 data-ar="1. البيئة والمهنة (Occupational)" data-fr="1. Environnement" data-en="1. Environment">1. البيئة والمهنة (Occupational)</h3>
